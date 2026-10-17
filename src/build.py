@@ -166,6 +166,11 @@ def seo_head(fname, title, noindex):
         graph.append({'@type': 'Article', 'headline': c['title'], 'description': desc, 'datePublished': c['date'], 'dateModified': c['date'],
                       'author': {'@id': PERSON['@id']}, 'publisher': {'@id': BASE + '#org'}, 'image': BASE + 'ogp.png',
                       'mainEntityOfPage': url, 'inLanguage': 'ja'})
+    if fname.startswith('case-'):   # 事例も記事として扱い、数字の出どころ（会社と代表）を結びつける
+        graph += [ORG, PERSON]
+        graph.append({'@type': 'Article', 'headline': title.rsplit('｜', 1)[0], 'description': desc, 'datePublished': '2026-10-17', 'dateModified': '2026-10-17',
+                      'author': {'@id': PERSON['@id']}, 'publisher': {'@id': BASE + '#org'}, 'image': BASE + 'ogp.png',
+                      'mainEntityOfPage': url, 'inLanguage': 'ja', 'articleSection': '事例'})
     if SEO['crumbs']:
         graph.append({'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': i + 1, 'name': strip_tags(l), **({'item': BASE + ('' if h == 'index.html' else h)} if h else {'item': url})}
