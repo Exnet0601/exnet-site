@@ -1056,4 +1056,4 @@ LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'price.
 open(os.path.join(OUT, 'llms.txt'), 'w').write(
     f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
     '- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
-    ''.join(f'- [{LLMS_NAMES.get(u.replace(BASE, "") or "index.html", u)}]({u})：{DESC.get(u.replace(BASE, "") or "index.html", "")}\n' for u in PAGES))
+    ''.join(f'- [{LLMS_NAMES.get(u.replace(BASE, "") or "index.html") or ("コラム：" + COLUMNS[u.replace(BASE, "")]["title"].split("｜")[0] if u.replace(BASE, "") in COLUMNS else u)}]({u})：{DESC.get(u.replace(BASE, "") or "index.html", "")}\n' for u in PAGES))
