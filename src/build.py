@@ -14,7 +14,7 @@ tokens = subprocess.run([sys.executable, os.path.join(HERE, 'tokens_css.py'), os
 bundle = open(os.path.join(HERE, 'bundle.css')).read()
 site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
-for _f in ('ikai.webp', 'ogp.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
+for _f in ('ikai.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 open(os.path.join(OUT, 'site.css'), 'w').write('/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site)
 
 # ---------- 共通部品 ----------
@@ -133,7 +133,7 @@ ORG = {
     'url': BASE, 'email': 'info@exnet.biz', 'foundingDate': '2011-06',
     'description': DESC['index.html'],
     'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
-                'streetAddress': '麹町1-4-4 ZENITAKA ANNEX2F', 'addressCountry': 'JP'},
+                'streetAddress': '麹町1-4-4 ZENITAKA ANNEX 2F', 'addressCountry': 'JP'},
     'founder': {'@id': BASE + 'message.html#ikai'},
 }
 PERSON = {'@type': 'Person', '@id': BASE + 'message.html#ikai', 'name': '猪飼 智弘', 'alternateName': 'Tomohiro Ikai',
@@ -192,8 +192,8 @@ TITLES = {
 
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     full_title = 'エクスネット｜面談で売る高単価の商品・サービスを伸ばすマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
-    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith('thanks-')) +
-            '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="site.css">')
+    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith('thanks-') or fname == '404.html') +
+            '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
     if lp:
         inner = f'<div class="ex-root" id="top"><header class="lp-head"><span class="ex-header__logo"><a href="index.html" aria-label="エクスネット トップへ">{logo("lg-lp")}</a></span></header>\n<main>{body}</main>\n<footer class="lp-foot">© Exnet Co., Ltd.</footer></div>{TOP_JS}{extra_js}'
     else:
@@ -973,6 +973,18 @@ privacy = f"""
 """
 doc('privacy.html', 'プライバシーポリシー', privacy, 'company')
 
+# ---------- 404（旧サイトのURLや打ち間違いで来た方を、トップと主なページへ戻す） ----------
+notfound = f"""
+{phead([('ホーム', 'index.html'), ('ページが見つかりません', None)], 'NOT FOUND', 'ページが見つかりません', 'お探しのページは、移動したか削除された可能性があります。サイトを新しくしたため、以前のURLが変わっています。', False)}
+<section class="sec" style="padding-top:0"><div class="wrap wrap--narrow reading">
+<ol class="list-dash" style="list-style:none"><li><a class="ex-ul" href="index.html">トップページ</a></li><li><a class="ex-ul" href="service.html">サービス</a></li><li><a class="ex-ul" href="price.html">料金と契約</a></li><li><a class="ex-ul" href="company.html">会社情報</a></li><li><a class="ex-ul" href="column.html">コラム</a></li><li><a class="ex-ul" href="contact.html">無料相談</a></li></ol>
+</div></section>
+"""
+doc('404.html', 'ページが見つかりません', notfound)
+# 404 は深い階層のURLでも表示されるので、相対リンクがサイトのルートを指すようにする
+_p = os.path.join(OUT, '404.html'); _h = open(_p, encoding='utf-8').read()
+open(_p, 'w', encoding='utf-8').write(_h.replace('<head>', '<head><base href="/">', 1))
+
 # ====================================================================
 # コラム（悩みの言葉で検索する方の入口）
 # ====================================================================
@@ -1032,5 +1044,5 @@ LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'price.
               'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
 open(os.path.join(OUT, 'llms.txt'), 'w').write(
     f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
-    '- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX2F\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
+    '- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
     ''.join(f'- [{LLMS_NAMES.get(u.replace(BASE, "") or "index.html", u)}]({u})：{DESC.get(u.replace(BASE, "") or "index.html", "")}\n' for u in PAGES))
