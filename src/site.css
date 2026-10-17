@@ -633,3 +633,10 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .col-author__role { display: block; font-size: 14px; line-height: 24.5px; }
 .col-author p { margin: var(--space-8) 0 var(--space-16); font-size: 14px; line-height: 24.5px; }
 @media (max-width: 767px) { .col-author { flex-direction: column; padding: var(--space-20) var(--space-16); } }
+/* 下の申し込み帯：スマホで3つ縦に積むと間延びするため、sairu の文言付きCTA（上下64px・項目の間は40pxずつ）にそろえる */
+@media (max-width: 767px) {
+  .ex-fcta { padding-block: var(--space-64); }
+  .ex-fcta > div { padding-block: var(--space-40); }
+  .ex-fcta > div:first-child { padding-top: 0; }
+  .ex-fcta > div:last-child { padding-bottom: 0; }
+}

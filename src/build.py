@@ -839,7 +839,7 @@ def case_page(fname, crumb_t, cat, h1, pills, thead, tbody, seebox, secs, links)
 <div class="h-ov">プロジェクト概要</div>
 {ov_table(pills[1:] + list(zip(thead, tbody)))}
 <div class="seebox"><h3>この数字の見方について</h3><p>{seebox}</p></div>
-{''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
+{''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') and not p.startswith(('<b>', '<strong>')) else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
 <div class="end-links">{''.join(more(l, h) for l, h in links)}</div>
 </div></div></div>
 '''
@@ -1014,7 +1014,7 @@ def column(fname, title, date, lead, answer, secs, links, desc, faqs=()):
 <div class="ex-ccard__cat">コラム<span class="col-date">{date.replace('-', '.')}</span></div>
 <h1>{title}</h1>
 <div class="seebox col-answer"><h3>先に結論</h3><p>{answer}</p></div>
-{''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
+{''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') and not p.startswith(('<b>', '<strong>')) else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
 {('<h2>よくある質問</h2>' + faq(faqs)) if faqs else ''}
 {AUTHOR_BOX}
 <div class="end-links">{''.join(more(l, h) for l, h in links)}</div>
