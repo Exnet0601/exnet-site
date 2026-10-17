@@ -613,5 +613,5 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .fit--static { display: block; margin-top: var(--space-16); }
 .book__alt { margin-top: var(--space-16); font-size: 14px; line-height: 24.5px; }
 .book__alt a { color: var(--link); }
-.book__frame { display: block; width: 100%; height: 1500px; margin-top: var(--space-20); border: 0; background: var(--surface); }
-@media (max-width: 767px) { .book__frame { height: 1700px; } }
+/* 予約の枠は画面の高さに合わせ、中でスクロールさせる（UTAGEの確認画面は中身の入れ替えで、外からは高さを追えないため） */
+.book__frame { display: block; width: 100%; height: 100vh; height: 100svh; margin-top: var(--space-20); border: 0; background: var(--surface); }

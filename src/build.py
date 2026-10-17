@@ -839,8 +839,10 @@ contact = f'''<div class="lp">
 </div></div>'''
 REF_JS = '<script>(function(){var s=document.getElementById("c-src"),w=document.getElementById("c-ref-wrap");if(s&&w)s.addEventListener("change",function(){w.hidden=s.value!=="ご紹介"});})();</script>'
 BOOK_JS = '''<script>
-(function(){var f=document.querySelector('.book__frame');if(!f)return;var n=0;
-f.addEventListener('load',function(){n++;if(n<2)return;var r=f.getBoundingClientRect();if(r.top<0||r.top>window.innerHeight)f.scrollIntoView({block:'start'});});})();
+(function(){var f=document.querySelector('.book__frame');if(!f)return;
+function fit(){var r=f.getBoundingClientRect();if(Math.abs(r.top)>8)f.scrollIntoView({block:'start'});}
+window.addEventListener('blur',function(){setTimeout(function(){if(document.activeElement===f)fit();},0);});
+var n=0;f.addEventListener('load',function(){if(++n>1)fit();});})();
 </script>'''
 doc('contact.html', '無料相談', contact, lp=True, extra_js=BOOK_JS)
 
