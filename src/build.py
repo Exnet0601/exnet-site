@@ -838,7 +838,11 @@ contact = f'''<div class="lp">
 <p class="book__alt">カレンダーが表示されない場合は、<a href="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
 </div></div>'''
 REF_JS = '<script>(function(){var s=document.getElementById("c-src"),w=document.getElementById("c-ref-wrap");if(s&&w)s.addEventListener("change",function(){w.hidden=s.value!=="ご紹介"});})();</script>'
-doc('contact.html', '無料相談', contact, lp=True, extra_js='')
+BOOK_JS = '''<script>
+(function(){var f=document.querySelector('.book__frame');if(!f)return;var n=0;
+f.addEventListener('load',function(){n++;if(n<2)return;var r=f.getBoundingClientRect();if(r.top<0||r.top>window.innerHeight)f.scrollIntoView({block:'start'});});})();
+</script>'''
+doc('contact.html', '無料相談', contact, lp=True, extra_js=BOOK_JS)
 
 def thanks(fname, h1, body, links, skip):
     b = f'''{phead([('ホーム', 'index.html'), (h1, None)], 'THANK YOU', h1, body, False)}
