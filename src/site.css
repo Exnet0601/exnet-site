@@ -361,7 +361,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .fv2__who .ex-circle { width: 28px; height: 28px; }
 .fv { padding-top: 0; }
 @media (max-width: 767px) {
-  .fv2 { grid-template-columns: 1fr; gap: var(--space-40); padding-block: var(--space-40) var(--space-40); }
+  .fv2 { grid-template-columns: 1fr; gap: var(--space-40); padding-block: 0 var(--space-40); }   /* 上の余白は .fv の32px だけ（sairu のスマホFVと同じ） */
   .fv2__voice { font-size: 16px; line-height: 28px; }
   .fv2__title { font-size: 28px; line-height: 42px; }
   .fv2__lead { font-size: 14px; line-height: 24.5px; }
