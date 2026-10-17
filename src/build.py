@@ -835,6 +835,7 @@ contact = f'''<div class="lp">
 <p class="ex-form__note">ご都合のよい日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
 <p class="fit fit--static">弊社の支援は、面談で販売している単価30万円以上の商品・サービスを中心にしています。それより低い単価の方は、まず<a href="download.html">資料請求</a>から合いそうかどうかをご覧ください。</p>
 <iframe class="book__frame" src="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" title="無料相談の日程と申し込み" loading="lazy"></iframe>
+<p class="book__alt">カレンダーが表示されない場合は、<a href="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
 </div></div>'''
 REF_JS = '<script>(function(){var s=document.getElementById("c-src"),w=document.getElementById("c-ref-wrap");if(s&&w)s.addEventListener("change",function(){w.hidden=s.value!=="ご紹介"});})();</script>'
 doc('contact.html', '無料相談', contact, lp=True, extra_js='')
