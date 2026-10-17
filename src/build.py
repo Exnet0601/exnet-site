@@ -107,12 +107,12 @@ addEventListener('pageshow',function(e){if(e.persisted){moved=false;go();}});})(
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     head = f'<title>{title}｜株式会社エクスネット</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="site.css">'
     if fname == 'index.html':
-        head = '<title>エクスネット コーポレートサイト</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="site.css">'
+        head = '<title>株式会社エクスネット</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="site.css">'
     if lp:
         inner = f'<div class="ex-root" id="top"><header class="lp-head"><span class="ex-header__logo"><a href="index.html" aria-label="エクスネット トップへ">{logo("lg-lp")}</a></span></header>\n<main>{body}</main>\n<footer class="lp-foot">© Exnet Co., Ltd.</footer></div>{TOP_JS}{extra_js}'
     else:
         inner = f'<div class="ex-root" id="top">{header(cur)}\n<main>{body}</main>\n{foot_cta(fcta_skip)}\n{FOOTER}</div>{TOP_JS}{MENU_JS}{extra_js}'
-    if fname == 'index.html':   # 公開時に doctype などが付く本体ページ
+    if fname == 'index.html' and os.environ.get('SITE_ARTIFACT'):   # Artifact 公開用：doctype などは公開時に付く
         html = head + '\n' + inner
     else:
         html = f'<!doctype html>\n<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n{head}\n</head><body>\n{inner}\n</body></html>'
