@@ -23,11 +23,6 @@ jobs:
       - name: Build site
         run: python3 src/build.py
 
-      # 公開日までは、検索結果に載らないようにしておく（リポジトリの変数 SITE_LIVE を true にすると外れる）
-      - name: Keep the preview out of search results
-        if: vars.SITE_LIVE != 'true'
-        run: sed -i 's|<head>|<head><meta name="robots" content="noindex, nofollow">|' site/*.html
-
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
