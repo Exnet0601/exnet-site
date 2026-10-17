@@ -13,7 +13,8 @@ tokens = subprocess.run([sys.executable, os.path.join(HERE, 'tokens_css.py'), os
                         capture_output=True, text=True, check=True).stdout
 bundle = open(os.path.join(HERE, 'bundle.css')).read()
 site = open(os.path.join(HERE, 'site.css')).read()
-import shutil; shutil.copy(os.path.join(HERE, 'ikai.webp'), os.path.join(OUT, 'ikai.webp'))
+import shutil
+for _f in ('ikai.webp', 'ogp.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 open(os.path.join(OUT, 'site.css'), 'w').write('/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site)
 
 # ---------- 共通部品 ----------
@@ -149,7 +150,7 @@ def seo_head(fname, title, noindex):
             f'<meta property="og:title" content="{title}">', f'<meta property="og:description" content="{desc}">',
             f'<meta property="og:url" content="{url}">', f'<meta property="og:type" content="{"website" if fname == "index.html" else "article"}">',
             f'<meta property="og:site_name" content="{SITE_NAME}">', '<meta property="og:locale" content="ja_JP">',
-            '<meta name="twitter:card" content="summary">']
+            f'<meta property="og:image" content="{BASE}ogp.png">', '<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">', '<meta name="twitter:card" content="summary_large_image">']
     graph = []
     if fname == 'index.html':
         graph += [ORG, PERSON, {'@type': 'WebSite', '@id': BASE + '#site', 'url': BASE, 'name': SITE_NAME, 'inLanguage': 'ja', 'publisher': {'@id': BASE + '#org'}}]
