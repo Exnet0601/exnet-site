@@ -615,3 +615,14 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .book__alt a { color: var(--link); }
 /* 予約の枠は画面の高さに合わせ、中でスクロールさせる（UTAGEの確認画面は中身の入れ替えで、外からは高さを追えないため） */
 .book__frame { display: block; width: 100%; height: 100vh; height: 100svh; margin-top: var(--space-20); border: 0; background: var(--surface); }
+
+/* コラム */
+.col-date { margin-left: var(--space-16); font-family: var(--font-numeral); color: var(--muted); font-weight: 400; }
+.col-list .col-date { margin-left: 0; font-size: 14px; line-height: 24.5px; }
+.col-list { border-top: 1px solid var(--line); }
+.col-row { display: grid; grid-template-columns: 1fr auto; gap: var(--space-4) var(--space-24); align-items: center; padding: var(--space-30) 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+.col-row > :not(.ex-circle) { grid-column: 1; }
+.col-row .ex-circle { grid-column: 2; grid-row: 1 / span 3; }
+.col-row__t { font-size: 18px; line-height: 31.5px; font-weight: 700; color: var(--navy); }
+.col-row__l { font-size: 14px; line-height: 24.5px; }
+.col-answer { margin-top: var(--space-40); }

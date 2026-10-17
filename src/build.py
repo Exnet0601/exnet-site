@@ -40,12 +40,12 @@ def btn(label, href, kind='primary', extra=''): return f'<a class="ex-btn ex-btn
 
 NAV = [('service', 'サービス', 'service.html'), ('case', '事例', 'case.html'), ('price', '料金と契約', 'price.html'),
        ('approach', '考え方', 'approach.html'), ('company', '会社情報', 'company.html')]
-UTIL = [('お知らせ', 'company.html#news'), ('代表メッセージ', 'message.html')]
+UTIL = [('コラム', 'column.html'), ('お知らせ', 'company.html#news'), ('代表メッセージ', 'message.html')]
 
 def header(cur):
     nav = ''.join(f'<a class="ex-ul{" is-current" if k == cur else ""}" href="{h}">{l}</a>' for k, l, h in NAV)
     util = ''.join(f'<a class="ex-ul" href="{h}">{l}</a>' for l, h in UTIL)
-    menu = ''.join(f'<li><a href="{h}">{l}<span>›</span></a></li>' for _, l, h in NAV + [(0, '代表メッセージ', 'message.html'), (0, 'PMVV', 'mission.html')])
+    menu = ''.join(f'<li><a href="{h}">{l}<span>›</span></a></li>' for _, l, h in NAV + [(0, 'コラム', 'column.html'), (0, '代表メッセージ', 'message.html'), (0, 'PMVV', 'mission.html')])
     return f'''<div class="site-head">
 <header class="ex-header"><div class="wrap--header">
 <div class="ex-header__util">{util}</div>
@@ -76,7 +76,7 @@ FOOTER = f'''<footer class="foot"><div class="wrap wrap--foot">
 <div class="foot__in">
 <div><div class="foot__logo">{logo("lg-f")}</div><p class="foot__addr">株式会社エクスネット<br>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F<br>03-6262-1694</p></div>
 <div class="foot__map">
-<div><h4>サービス</h4><ul><li><a class="ex-ul" href="service.html">サービス</a></li><li><a class="ex-ul" href="case.html">事例</a></li><li><a class="ex-ul" href="price.html">料金と契約</a></li><li><a class="ex-ul" href="approach.html">考え方</a></li></ul></div>
+<div><h4>サービス</h4><ul><li><a class="ex-ul" href="service.html">サービス</a></li><li><a class="ex-ul" href="case.html">事例</a></li><li><a class="ex-ul" href="price.html">料金と契約</a></li><li><a class="ex-ul" href="approach.html">考え方</a></li><li><a class="ex-ul" href="column.html">コラム</a></li></ul></div>
 <div><h4>会社情報</h4><ul><li><a class="ex-ul" href="company.html">会社概要</a></li><li><a class="ex-ul" href="message.html">代表メッセージ</a></li><li><a class="ex-ul" href="mission.html">PMVV</a></li><li><a class="ex-ul" href="company.html#news">お知らせ</a></li></ul></div>
 <div><h4>お問い合わせ</h4><ul><li><a class="ex-ul" href="download.html">資料請求</a></li><li><a class="ex-ul" href="contact.html">無料相談</a></li></ul></div>
 </div></div>
@@ -111,6 +111,7 @@ BASE = 'https://exnet.biz/'
 SITE_NAME = '株式会社エクスネット'
 SEO = {'crumbs': None, 'faqs': []}
 PAGES = []   # サイトマップに載せるページ
+COLUMNS = {}  # コラム記事（column-*.html）。記事ごとに下で登録する
 DESC = {
     'index.html': '株式会社エクスネットは、面談で販売する高単価の商品・サービスを、商談までの流れの仕組み化とテクノロジーで伸ばすマーケティング会社です。2011年創業。広告を増やす前に、いまある商談から見直します。',
     'service.html': '面談で販売する高単価の商品・サービスを扱う事業者向けの伴走支援です。伴走型と伴走＋実務型の2つの入り方、支援の進め方、最初の2週間でお渡しするものをご紹介します。',
@@ -159,6 +160,11 @@ def seo_head(fname, title, noindex):
     if fname == 'service.html':
         graph.append({'@type': 'Service', 'name': '伴走支援（伴走型／伴走＋実務型）', 'serviceType': 'マーケティング支援',
                       'provider': {'@id': BASE + '#org'}, 'areaServed': 'JP', 'description': DESC['service.html'], 'url': url})
+    if fname in COLUMNS:
+        c = COLUMNS[fname]
+        graph.append({'@type': 'Article', 'headline': c['title'], 'description': desc, 'datePublished': c['date'], 'dateModified': c['date'],
+                      'author': {'@id': BASE + '#org'}, 'publisher': {'@id': BASE + '#org'}, 'image': BASE + 'ogp.png',
+                      'mainEntityOfPage': url, 'inLanguage': 'ja'})
     if SEO['crumbs']:
         graph.append({'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': i + 1, 'name': strip_tags(l), **({'item': BASE + ('' if h == 'index.html' else h)} if h else {'item': url})}
@@ -966,6 +972,64 @@ privacy = f"""
 """
 doc('privacy.html', 'プライバシーポリシー', privacy, 'company')
 
+# ====================================================================
+# コラム（悩みの言葉で検索する方の入口）
+# ====================================================================
+def column(fname, title, date, lead, answer, secs, links, desc):
+    """記事1本。answer は冒頭で問いに一文で答える箇所（AIの引用を受けやすい）"""
+    COLUMNS[fname] = {'title': title, 'date': date, 'lead': lead}
+    DESC[fname] = desc
+    body = f"""
+<div class="ex-article"><div class="ex-article__box" style="max-width:var(--container)"><div style="max-width:var(--container-article);margin:0 auto">
+{crumb([('ホーム', 'index.html'), ('コラム', 'column.html'), (title, None)])}
+<div class="ex-ccard__cat">コラム<span class="col-date">{date.replace('-', '.')}</span></div>
+<h1>{title}</h1>
+<div class="seebox col-answer"><h3>先に結論</h3><p>{answer}</p></div>
+{''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
+<p class="note mt-40">株式会社エクスネット</p>
+<div class="end-links">{''.join(more(l, h) for l, h in links)}</div>
+</div></div></div>
+"""
+    doc(fname, title, body, 'column')
+
+column('column-before-ads.html', '広告費を増やす前に、確かめたい3つの数字', '2026-10-17',
+  '面談で販売する高単価の商品・サービスで、広告費を増やす前に見ておきたい数字の話です。',
+  '面談で販売する高単価の商品・サービスでは、広告費を増やす前に、①予約した面談に来てくださる割合、②面談で決まる割合、③決まらなかった方へのその後のご連絡、の3つを確かめてください。どれかが低ければ、広告費を増やさなくても売上を動かせる余地がそこにあります。',
+  [('広告費を増やしても、売上が伸びないことがある', [
+     '売上が伸び悩んだとき、最初に思い浮かぶのは広告費を増やすことだと思います。リードが増えれば、面談も増え、売上も増えるように見えるからです。',
+     'ただ、面談で販売する高単価の商品・サービスでは、リードの数よりも、面談で決まるかどうかが売上を左右します。広告の反応はよいのに売れない。弊社は、これがいちばんもったいない状態だと考えています。決まる流れができる前に広告費を増やすと、増えたリードの多くが、決まらないまま流れていってしまいます。',
+     'そこで、広告費を増やす前に、次の3つの数字を確かめることをおすすめしています。']),
+   ('1つ目　予約した面談に、来てくださる割合', [
+     '面談の予約が入っても、当日に来てくださらなければ、その先はありません。ここは見落とされやすい数字です。',
+     '弊社がご一緒した高単価の教育サービスでは、ご一緒し始めたとき、予約した面談に来てくださる方は3人に1人ほど（31.3%）でした。6ヶ月の支援のあいだに、この割合は63.2%になり、2人に1人を超えました。',
+     '<div class="tbl-wrap"><table><thead><tr><th>例：月の予約が30件</th><th>来てくださる割合</th><th>実際の面談</th></tr></thead><tbody>'
+     '<tr><td>3人に1人の場合</td><td>約33%</td><td>約10件</td></tr>'
+     '<tr><td>2人に1人の場合</td><td>50%</td><td>15件</td></tr></tbody></table></div>',
+     '同じ30件の予約でも、面談は10件から15件に増えます。広告費は1円も増えていません。']),
+   ('2つ目　面談で決まる割合', [
+     '次に見るのは、面談のうち何件が決まったかです。弊社自身の高単価サービスでは、2025年度、1つの商品で面談95件からご成約13件でした。割合にすると約14%です。',
+     'この割合が低いときは、面談の中身か、面談に来る前にお客様が受け取っている情報のどちらかに、手を入れる余地があります。弊社が支援を始めるときは、最初の2週間で、現在のご商談（録画・トークスクリプト・資料のいずれか）を拝見し、改善点を3つまで書面でお渡ししています。',
+     '面談で決まる割合は、すでにある面談だけで上げられます。リードを増やす必要がなく、追加の費用もかかりません。']),
+   ('3つ目　決まらなかった方への、その後のご連絡', [
+     '面談で決まらなかった方や、資料だけ受け取って止まっている方に、その後どんなご連絡をしているか。ここが空いたままの会社は少なくありません。',
+     'これまで決まらなかったお客様や、眠っているリストへの働きかけは、広告より早く数字が出ることもあります。弊社が「最初の2〜3ヶ月は、広告を回さなくても構いません」とお伝えしているのは、このためです。']),
+   ('確かめ方', [
+     'まず、直近3ヶ月の数字を並べてみてください。予約の件数、実際に来てくださった件数、決まった件数、そして決まらなかった方にその後ご連絡した件数です。',
+     '<ol class="list-dash" style="list-style:none"><li>予約した面談に、来てくださった割合</li><li>面談で決まった割合</li><li>決まらなかった方への、その後のご連絡の有無と回数</li></ol>',
+     '3つのうち、いちばん低いところから手を付けます。広告費を増やすのは、そのあとで構いません。決まる流れができてから広告費を増やせば、増えたリードがそのまま売上につながります。'])],
+  [('考え方を見る', 'approach.html'), ('事例を見る', 'case.html'), ('無料相談', 'contact.html')],
+  '面談で販売する高単価の商品・サービスで、広告費を増やす前に確かめたい3つの数字（面談に来てくださる割合、面談で決まる割合、決まらなかった方へのその後のご連絡）と、その確かめ方をまとめました。')
+
+col_list = ''.join(
+    f'<a class="col-row" href="{f}"><span class="col-date">{c["date"].replace("-", ".")}</span><span class="col-row__t">{c["title"]}</span><span class="col-row__l">{c["lead"]}</span>{circle()}</a>'
+    for f, c in sorted(COLUMNS.items(), key=lambda kv: kv[1]['date'], reverse=True))
+DESC['column.html'] = '面談で販売する高単価の商品・サービスの売上を、商談と導線から伸ばすためのコラムです。成約率、面談に来てくださる割合、リストの活用など、日々の支援で分かったことを書いています。'
+column_index = f"""
+{hero([('ホーム', 'index.html'), ('コラム', None)], 'コラム', '面談で販売する高単価の商品・サービスの売上を、<br class="pc">商談と導線から伸ばすために、日々の支援で分かったことを書いています。', False)}
+<section class="sec"><div class="wrap wrap--article"><div class="col-list">{col_list}</div></div></section>
+"""
+doc('column.html', 'コラム｜高単価の商品・サービスの成約率と商談の話', column_index, 'column')
+
 
 print('built:', sorted(os.listdir(OUT)))
 
@@ -979,6 +1043,7 @@ open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\n\nSi
 LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'price.html': '料金と契約', 'approach.html': '考え方',
               'company.html': '会社情報', 'mission.html': 'PMVV', 'message.html': '代表メッセージ', 'case.html': '事例',
               'case-edu.html': '事例：高単価の教育サービス', 'case-exnet-btob.html': '事例：弊社自身の高単価サービス', 'case-exnet-form-dm.html': '事例：問い合わせフォーム営業',
+              'column.html': 'コラム', 'column-before-ads.html': 'コラム：広告費を増やす前に、確かめたい3つの数字',
               'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
 open(os.path.join(OUT, 'llms.txt'), 'w').write(
     f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
