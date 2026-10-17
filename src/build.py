@@ -190,10 +190,20 @@ TITLES = {
     'case-exnet-form-dm.html': '問い合わせフォーム営業の効果｜843通から面談11件・ご成約2件',
 }
 
+GA4_ID = 'G-6TWGWMNKEK'          # GA4 プロパティ「exnet.biz コーポレートサイト」
+CLARITY_ID = 'yz19bttupo'        # Clarity プロジェクト「exnet.biz コーポレートサイト」
+def analytics(fname):
+    lead = {'thanks-download.html': 'download', 'thanks-contact.html': 'contact'}.get(fname)
+    ev = f"gtag('event','generate_lead',{{form:'{lead}'}});" if lead else ''
+    return (f'\n<script async src="https://www.googletagmanager.com/gtag/js?id={GA4_ID}"></script>'
+            f"\n<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA4_ID}');{ev}</script>"
+            f'\n<script>(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","{CLARITY_ID}");</script>')
+
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     full_title = 'エクスネット｜面談で売る高単価の商品・サービスを伸ばすマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
     head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith('thanks-') or fname == '404.html') +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
+    if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
     if lp:
         inner = f'<div class="ex-root" id="top"><header class="lp-head"><span class="ex-header__logo"><a href="index.html" aria-label="エクスネット トップへ">{logo("lg-lp")}</a></span></header>\n<main>{body}</main>\n<footer class="lp-foot">© Exnet Co., Ltd.</footer></div>{TOP_JS}{extra_js}'
     else:
