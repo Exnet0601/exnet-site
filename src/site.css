@@ -626,3 +626,10 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .col-row__t { font-size: 18px; line-height: 31.5px; font-weight: 700; color: var(--navy); }
 .col-row__l { font-size: 14px; line-height: 24.5px; }
 .col-answer { margin-top: var(--space-40); }
+.col-author { display: flex; gap: var(--space-24); margin-top: var(--space-64); padding: var(--space-30); border: 1px solid var(--line); }
+.col-author img { flex: none; width: 88px; height: 88px; object-fit: cover; }
+.col-author b { display: block; font-size: 18px; line-height: 31.5px; color: var(--navy); }
+.col-author__label { display: block; font-size: 12px; line-height: 21px; color: var(--muted); }
+.col-author__role { display: block; font-size: 14px; line-height: 24.5px; }
+.col-author p { margin: var(--space-8) 0 var(--space-16); font-size: 14px; line-height: 24.5px; }
+@media (max-width: 767px) { .col-author { flex-direction: column; padding: var(--space-20) var(--space-16); } }
