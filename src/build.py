@@ -171,8 +171,19 @@ def seo_head(fname, title, noindex):
     if not noindex: PAGES.append(url)
     return '\n'.join(out)
 
+# 検索結果に出るタイトル。お客さんが検索する言葉（高単価・個別相談・成約率・成果報酬）を入れる
+TITLES = {
+    'service.html': '高単価の商品・サービスの成約率を上げる、商談から入る伴走支援',
+    'price.html': '料金と契約｜月額＋成果報酬型のマーケティング支援',
+    'approach.html': '考え方｜高単価の商品・サービスは、広告より先に個別相談・商談から',
+    'case.html': '事例｜高単価の商品・サービスで、面談と成約が増えた記録',
+    'case-edu.html': '面談に来てくださる割合が倍に｜高単価の教育サービスの事例',
+    'case-exnet-btob.html': '面談95件からご成約13件・売上1,602万円｜高単価サービスの事例',
+    'case-exnet-form-dm.html': '問い合わせフォーム営業の効果｜843通から面談11件・ご成約2件',
+}
+
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
-    full_title = 'エクスネット｜面談で売る高単価の商品・サービスを伸ばすマーケティング会社' if fname == 'index.html' else f'{title}｜{SITE_NAME}'
+    full_title = 'エクスネット｜面談で売る高単価の商品・サービスを伸ばすマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
     head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith('thanks-')) +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="site.css">')
     if lp:
@@ -364,7 +375,7 @@ svc_faq = [
  ('毎週の打ち合わせ以外に、チャットで相談できますか。', 'できます。'),
  ('どんな会社が向いていますか。', '面談で販売している、単価の高い商品・サービスをお持ちの会社です。すでに広告やLINEなどの導線があり、意思決定をされる方と直接やり取りできることを前提にしています。')]
 service = f'''
-{hero([('ホーム', 'index.html'), ('サービス', None)], '商談から入る、マーケティングの伴走支援',
+{hero([('ホーム', 'index.html'), ('サービス', None)], '個別相談・商談の成約率から上げる、<br class="pc">マーケティングの伴走支援',
       '広告を増やさなくても、いまある面談で決まる件数が増えれば、売上は変わります。<br class="pc">受け皿、リスト、広告の順に御社のご担当者様と一緒に進め、そのやり方を御社の中に残します。')}
 <section class="sec bg-alt"><div class="wrap">
 <nav class="ex-anchors" aria-label="ページ内リンク">
@@ -518,7 +529,7 @@ price = f'''
 </ul></div></section>
 
 <section class="sec" id="fee"><div class="wrap">
-{rule('成果報酬')}
+{rule('成果報酬は、増えた売上にだけ')}
 <p class="lead-c">毎月末日で締め、その月に増えた売上（対象売上）に応じて計算します。対象売上が大きくなるほど、率が下がります。</p>
 <div class="tbl-wrap tbl-wrap--article mt-40"><table class="tbl tbl--half">
 <thead><tr><th>その月の対象売上</th><th>率</th></tr></thead><tbody>
@@ -594,7 +605,7 @@ approach = f'''
 </div></div></div></div></section>
 
 <section class="sec"><div class="wrap">
-{rule('なぜ、商談から入るのか')}
+{rule('高単価の商品・サービスで、<br class="sp">なぜ商談から入るのか')}
 <div class="prose" style="max-width:var(--container-article);margin:0 auto">
 <p>理由は3つあります。</p>
 <p>1つ目は、止まらないからです。広告は、他社の規約ひとつで止まります。弊社自身、広告アカウントを2度止められました。面談で決まる件数を増やす仕事は、誰にも止められません。</p>
