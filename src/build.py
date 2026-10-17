@@ -104,10 +104,77 @@ if(window.ResizeObserver){var n=0,ro=new ResizeObserver(function(){if(++n>20||mo
 addEventListener('pageshow',function(e){if(e.persisted){moved=false;go();}});})();
 </script>"""
 
-def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
-    head = f'<title>{title}｜株式会社エクスネット</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="site.css">'
+# ---------- 検索・AI向けの情報（説明文、OGP、構造化データ、サイトマップ） ----------
+import json, re, datetime
+BASE = 'https://exnet.biz/'
+SITE_NAME = '株式会社エクスネット'
+SEO = {'crumbs': None, 'faqs': []}
+PAGES = []   # サイトマップに載せるページ
+DESC = {
+    'index.html': '株式会社エクスネットは、面談で販売する高単価の商品・サービスを、商談までの流れの仕組み化とテクノロジーで伸ばすマーケティング会社です。2011年創業。広告を増やす前に、いまある商談から見直します。',
+    'service.html': '面談で販売する高単価の商品・サービスを扱う事業者向けの伴走支援です。伴走型と伴走＋実務型の2つの入り方、支援の進め方、最初の2週間でお渡しするものをご紹介します。',
+    'price.html': 'エクスネットの伴走支援の料金と契約条件です。月額、増えた売上にだけいただく成果報酬、契約期間、広告代理店の手数料との違いをまとめています。',
+    'approach.html': '広告より先に商談を見る。エクスネットが、高単価の商品・サービスの売上を伸ばすときに、商談と導線のどこから手を付けるかという考え方をお伝えします。',
+    'company.html': '株式会社エクスネットの会社概要と沿革、代表のご紹介です。2011年に名古屋で創業し、現在は東京都千代田区麹町に本社を置いています。',
+    'mission.html': '株式会社エクスネットのパーパス、ミッション、ビジョン、バリュー（PMVV）です。',
+    'message.html': '株式会社エクスネット代表取締役 猪飼智弘のメッセージです。広告より先に商談を見ると決めた理由を、自分の事業での失敗からお話しします。',
+    'case.html': 'エクスネットの支援事例と、自社の事業で実際に使っている仕組みの記録です。商談に来た割合など、商談側の数字を中心に掲載しています。',
+    'case-edu.html': '高単価の教育サービスの事例です。予約した面談に来てくださる割合が31.3%から63.2%になるまでに、商談までの流れの何を変えたかをまとめています。',
+    'case-exnet-btob.html': 'エクスネット自身の高単価サービスの数字です。2025年度、1つの商品で面談95件からご成約13件、売上1,602万円になった流れを公開しています。',
+    'case-exnet-form-dm.html': 'エクスネット自身の営業の記録です。843通の問い合わせフォーム営業から、面談11件・ご成約2件につながった流れと数字を公開しています。',
+    'download.html': 'エクスネットのサービス資料のご請求ページです。進め方、2つの入り方、料金と契約の条件をまとめた資料を、メールですぐにお送りします。',
+    'contact.html': 'エクスネットの無料相談（オンライン45分）のお申し込みページです。カレンダーから日時を選ぶと、その場で予約が確定します。',
+    'privacy.html': '株式会社エクスネットのプライバシーポリシーです。',
+}
+ORG = {
+    '@type': 'Organization', '@id': BASE + '#org', 'name': SITE_NAME, 'alternateName': ['エクスネット', 'Exnet Co., Ltd.'],
+    'url': BASE, 'email': 'info@exnet.biz', 'foundingDate': '2011-06',
+    'description': DESC['index.html'],
+    'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
+                'streetAddress': '麹町1-4-4 ZENITAKA ANNEX2F', 'addressCountry': 'JP'},
+    'founder': {'@id': BASE + 'message.html#ikai'},
+}
+PERSON = {'@type': 'Person', '@id': BASE + 'message.html#ikai', 'name': '猪飼 智弘', 'alternateName': 'Tomohiro Ikai',
+          'jobTitle': '代表取締役', 'worksFor': {'@id': BASE + '#org'}, 'image': BASE + 'ikai.webp', 'url': BASE + 'message.html'}
+
+def strip_tags(t): return re.sub(r'<[^>]+>', '', t).strip()
+
+def seo_head(fname, title, noindex):
+    url = BASE + ('' if fname == 'index.html' else fname)
+    desc = DESC.get(fname, '')
+    out = []
+    if desc: out.append(f'<meta name="description" content="{desc}">')
+    if noindex: out.append('<meta name="robots" content="noindex">')
+    out += [f'<link rel="canonical" href="{url}">',
+            f'<meta property="og:title" content="{title}">', f'<meta property="og:description" content="{desc}">',
+            f'<meta property="og:url" content="{url}">', f'<meta property="og:type" content="{"website" if fname == "index.html" else "article"}">',
+            f'<meta property="og:site_name" content="{SITE_NAME}">', '<meta property="og:locale" content="ja_JP">',
+            '<meta name="twitter:card" content="summary">']
+    graph = []
     if fname == 'index.html':
-        head = '<title>株式会社エクスネット</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="site.css">'
+        graph += [ORG, PERSON, {'@type': 'WebSite', '@id': BASE + '#site', 'url': BASE, 'name': SITE_NAME, 'inLanguage': 'ja', 'publisher': {'@id': BASE + '#org'}}]
+    elif fname in ('company.html', 'message.html'):
+        graph += [ORG, PERSON]
+    if fname == 'service.html':
+        graph.append({'@type': 'Service', 'name': '伴走支援（伴走型／伴走＋実務型）', 'serviceType': 'マーケティング支援',
+                      'provider': {'@id': BASE + '#org'}, 'areaServed': 'JP', 'description': DESC['service.html'], 'url': url})
+    if SEO['crumbs']:
+        graph.append({'@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': i + 1, 'name': strip_tags(l), **({'item': BASE + ('' if h == 'index.html' else h)} if h else {'item': url})}
+            for i, (l, h) in enumerate(SEO['crumbs'])]})
+    if SEO['faqs']:
+        graph.append({'@type': 'FAQPage', 'mainEntity': [
+            {'@type': 'Question', 'name': strip_tags(q), 'acceptedAnswer': {'@type': 'Answer', 'text': strip_tags(a)}} for q, a in SEO['faqs']]})
+    if graph:
+        out.append('<script type="application/ld+json">' + json.dumps({'@context': 'https://schema.org', '@graph': graph}, ensure_ascii=False) + '</script>')
+    SEO['crumbs'], SEO['faqs'] = None, []
+    if not noindex: PAGES.append(url)
+    return '\n'.join(out)
+
+def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
+    full_title = 'エクスネット｜面談で売る高単価の商品・サービスを伸ばすマーケティング会社' if fname == 'index.html' else f'{title}｜{SITE_NAME}'
+    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith('thanks-')) +
+            '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="site.css">')
     if lp:
         inner = f'<div class="ex-root" id="top"><header class="lp-head"><span class="ex-header__logo"><a href="index.html" aria-label="エクスネット トップへ">{logo("lg-lp")}</a></span></header>\n<main>{body}</main>\n<footer class="lp-foot">© Exnet Co., Ltd.</footer></div>{TOP_JS}{extra_js}'
     else:
@@ -119,6 +186,7 @@ def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     open(os.path.join(OUT, fname), 'w').write(html)
 
 def crumb(items, navy=False):
+    SEO['crumbs'] = items
     li = ''.join(f'<li><a href="{h}">{l}</a></li>' if h else f'<li>{l}</li>' for l, h in items)
     return f'<ol class="ex-crumb{" ex-crumb--on-navy" if navy else ""}" aria-label="パンくずリスト">{li}</ol>'
 
@@ -144,6 +212,7 @@ def ov_table(rows):
     return '<table class="tbl-ov"><tbody>' + ''.join(out) + '</tbody></table>'
 
 def faq(items):
+    SEO['faqs'] += items
     return '<div class="ex-faq">' + ''.join(
         f'<div class="ex-faq__item"><div class="ex-faq__q"><span class="ex-faq__badge">Q</span><p>{q}</p></div>'
         f'<div class="ex-faq__a"><span class="ex-faq__badge">A</span><p>{a}</p></div></div>' for q, a in items) + '</div>'
@@ -887,3 +956,19 @@ doc('privacy.html', 'プライバシーポリシー', privacy, 'company')
 
 
 print('built:', sorted(os.listdir(OUT)))
+
+
+# ---------- サイトマップ・robots.txt・llms.txt ----------
+today = datetime.date.today().isoformat()
+open(os.path.join(OUT, 'sitemap.xml'), 'w').write(
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    ''.join(f'<url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n' for u in PAGES) + '</urlset>\n')
+open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\n\nSitemap: {BASE}sitemap.xml\n')
+LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'price.html': '料金と契約', 'approach.html': '考え方',
+              'company.html': '会社情報', 'mission.html': 'PMVV', 'message.html': '代表メッセージ', 'case.html': '事例',
+              'case-edu.html': '事例：高単価の教育サービス', 'case-exnet-btob.html': '事例：弊社自身の高単価サービス', 'case-exnet-form-dm.html': '事例：問い合わせフォーム営業',
+              'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
+open(os.path.join(OUT, 'llms.txt'), 'w').write(
+    f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
+    '- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX2F\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
+    ''.join(f'- [{LLMS_NAMES.get(u.replace(BASE, "") or "index.html", u)}]({u})：{DESC.get(u.replace(BASE, "") or "index.html", "")}\n' for u in PAGES))
