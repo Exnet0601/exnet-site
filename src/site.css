@@ -616,14 +616,9 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .fit--static { display: block; margin-top: var(--space-16); }
 .book__alt { margin-top: var(--space-16); font-size: 14px; line-height: 24.5px; }
 .book__alt a { color: var(--link); }
-/* 予約の枠は画面の高さに合わせ、中でスクロールさせる（UTAGEの確認画面は中身の入れ替えで、外からは高さを追えないため） */
-.book__frame { display: block; width: 100%; height: 100vh; height: 100svh; margin-top: var(--space-24); border: 0; background: var(--surface); }
-/* 無料相談：説明とカレンダーを一つの灰色の枠にまとめる。カレンダーは枠の左右いっぱいに広げ、枠を二重にしない。灰色は予約画面（UTAGE）の背景 #f0f0f0 に合わせる */
-.book { align-self: start; background: #f0f0f0; border: 1px solid var(--line); }
+/* 無料相談：説明・入力欄・日時の選択を一つの灰色の枠にまとめる。灰色は日時の選択（UTAGE）の背景 #f9f9f9 に合わせる */
+.book { align-self: start; background: var(--surface-alt); border: 1px solid var(--line); }
 .book .ex-form { background: none; border: 0; padding-bottom: 0; }
-/* 予約画面の見出し「相談のご予約」（約70px）は枠の外に押し出して隠し、「日程の選択」から見せる */
-.book__clip { margin-top: var(--space-16); overflow: hidden; }
-.book .book__frame { margin-top: -72px; height: calc(100vh + 72px); height: calc(100svh + 72px); }
 .book .book__alt { margin: 0; padding: var(--space-16) 26px var(--space-24); }
 @media (max-width: 767px) {
   .book { margin-inline: calc(-1 * var(--space-25)); border-inline: 0; }
@@ -658,11 +653,9 @@ svg.logo { display: block; width: 104px; height: 22px; }
 
 /* 無料相談（2段階版）：1画面目で入力し、2画面目でUTAGEの日時選択を枠いっぱいに表示する */
 .ex-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); }
-.book__cal { display: block; width: 100%; height: 900px; margin-top: var(--space-16); border: 0; background: var(--surface-alt); }
+.book__cal { display: block; width: 100%; height: 640px; margin-top: var(--space-16); border: 0; background: var(--surface-alt); }
 .book__cal[hidden] { display: none; }
 .book__who[hidden] { display: none; }
 .book__who { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-8); margin-top: var(--space-24); font-size: 14px; line-height: 24.5px; font-weight: 700; }
 .book__who .back { margin-top: 0; }
 .book__retry { margin-top: var(--space-16); font-size: 14px; line-height: 24.5px; color: var(--required); }
-.book[data-book] { background: var(--surface-alt); }
-.book__cal { height: 640px; }

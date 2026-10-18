@@ -125,7 +125,7 @@ DESC = {
     'case-exnet-btob.html': 'エクスネット自身の高単価サービスの数字です。2025年度、1つの商品で面談95件からご成約13件、売上1,602万円になった流れを公開しています。',
     'case-exnet-form-dm.html': 'エクスネット自身の営業の記録です。843通の問い合わせフォーム営業から、面談11件・ご成約2件につながった流れと数字を公開しています。',
     'download.html': 'エクスネットのサービス資料のご請求ページです。サイトでご紹介しているサービス内容を、図解入りの1冊にまとめたPDFを、メールですぐにお送りします。',
-    'contact.html': 'エクスネットの無料相談（オンライン45分）のお申し込みページです。カレンダーから日時を選ぶと、その場で予約が確定します。',
+    'contact.html': 'エクスネットの無料相談（オンライン45分）のお申し込みページです。お名前などをご入力のうえ日時を選ぶと、その場で予約が確定します。',
     'privacy.html': '株式会社エクスネットのプライバシーポリシーです。',
 }
 ORG = {
@@ -865,32 +865,20 @@ contact = f'''<div class="lp">
 <div class="lp__body"><h1>無料相談<br><small style="font-size:16px;font-weight:500">オンライン45分</small></h1>
 <p>45分で、いまのご商談と導線のどこから手を付けるとよいかが分かります。</p>
 <p>ご契約を前提にしたご相談ではありません。お話を伺ったうえで、弊社ではお力になれないと判断した場合は、正直にそうお伝えします。</p>
-<p>カレンダーから日時を選んでお申し込みください。その場で日程が決まります。</p>
+<p>お名前などをご入力のうえ、日時を選んでお申し込みください。その場で日程が決まります。</p>
 <h2>相談で伺うこと</h2>
 <ul class="list-dash"><li>いまの商品・サービスと単価</li><li>月の面談数と、決まる件数のおおよそ</li><li>いまの集客の経路と、LINEやメールのリストの状況</li></ul>
 <p class="note">事前にご用意いただけると助かるもの：直近のご商談の録画、トークスクリプト、提案資料のいずれか1つ。なくてもご相談いただけます。</p>
 <h2>別の窓口</h2><p style="margin-top:var(--space-8)">まずは資料で確かめたい方は</p>{more('資料請求へ', 'download.html')}
 <p class="note">その他のお問い合わせ（取材・協業など）：<a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></p>
 </div>
-<div class="book">
-<div class="ex-form"><p class="ex-form__note">ご都合のよい日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
-<p class="fit fit--static">弊社の支援が力を発揮するのは、販売単価30万円以上の商品・サービスをメインで扱われている事業者様です。当てはまるか迷われた方は、先に資料請求でお確かめいただくこともできます。<br><a href="download.html">資料請求はこちら</a></p></div>
-<div class="book__clip"><iframe class="book__frame" src="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" title="無料相談の日程と申し込み" loading="lazy"></iframe></div>
-<p class="book__alt">カレンダーが表示されない場合は、<a href="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
-</div></div>'''
+</div>'''
 REF_JS = '<script>(function(){var s=document.getElementById("c-src"),w=document.getElementById("c-ref-wrap");if(s&&w)s.addEventListener("change",function(){w.hidden=s.value!=="ご紹介"});})();</script>'
-BOOK_JS = '''<script>
-(function(){var f=document.querySelector('.book__frame');if(!f)return;
-var c=f.parentNode;function fit(){var r=c.getBoundingClientRect();if(Math.abs(r.top)>8)c.scrollIntoView({block:'start'});}
-window.addEventListener('blur',function(){setTimeout(function(){if(document.activeElement===f)fit();},0);});
-var n=0;f.addEventListener('load',function(){if(++n>1)fit();});})();
-</script>'''
-doc('contact.html', '無料相談', contact, lp=True, extra_js=BOOK_JS)
 
-# 予約の2段階版（UTAGEのファネルページに入力内容を受け渡す）。動作を確かめるまでは test-contact.html で公開する
+# 予約は2段階（1画面目の入力内容を、UTAGEのファネルページの予約フォームに受け渡す）。仕組みは design/utage/booking/README.md
 BOOK_SRC = 'https://ut.exnet.biz/p/sA61r06GNKyM'
 opts = lambda xs: ''.join(f'<option>{x}</option>' for x in xs)
-contact2 = contact.split('<div class="book">')[0] + f'''<div class="book" data-book>
+contact2 = contact[:-len("</div>")] + f'''<div class="book" data-book>
 <div class="ex-form"><p class="ex-form__note">お客様の情報をご入力いただき、次の画面で日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
 <p class="fit fit--static">弊社の支援が力を発揮するのは、販売単価30万円以上の商品・サービスをメインで扱われている事業者様です。当てはまるか迷われた方は、先に資料請求でお確かめいただくこともできます。<br><a href="download.html">資料請求はこちら</a></p>
 <div data-book-step>
@@ -908,7 +896,7 @@ contact2 = contact.split('<div class="book">')[0] + f'''<div class="book" data-b
 <p class="book__alt">日時の選択が表示されない場合は、<a href="{BOOK_SRC}" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
 </div></div>'''
 BOOK2_JS = open(os.path.join(os.path.dirname(__file__), 'book2.js')).read().replace('%SRC%', BOOK_SRC)
-doc('test-contact.html', '無料相談', contact2, lp=True, extra_js=BOOK2_JS)
+doc('contact.html', '無料相談', contact2, lp=True, extra_js=BOOK2_JS)
 
 def thanks(fname, h1, body, links, skip):
     b = f'''{phead([('ホーム', 'index.html'), (h1, None)], 'THANK YOU', h1, body, False)}
