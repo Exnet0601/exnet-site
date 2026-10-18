@@ -621,7 +621,9 @@ svg.logo { display: block; width: 104px; height: 22px; }
 /* 無料相談：説明とカレンダーを一つの灰色の枠にまとめる。カレンダーは枠の左右いっぱいに広げ、枠を二重にしない。灰色は予約画面（UTAGE）の背景 #f0f0f0 に合わせる */
 .book { align-self: start; background: #f0f0f0; border: 1px solid var(--line); }
 .book .ex-form { background: none; border: 0; padding-bottom: 0; }
-.book .book__frame { margin-top: var(--space-16); }
+/* 予約画面の見出し「相談のご予約」（約70px）は枠の外に押し出して隠し、「日程の選択」から見せる */
+.book__clip { margin-top: var(--space-16); overflow: hidden; }
+.book .book__frame { margin-top: -72px; height: calc(100vh + 72px); height: calc(100svh + 72px); }
 .book .book__alt { margin: 0; padding: var(--space-16) 26px var(--space-24); }
 @media (max-width: 767px) {
   .book { margin-inline: calc(-1 * var(--space-25)); border-inline: 0; }

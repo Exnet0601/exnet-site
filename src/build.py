@@ -875,13 +875,13 @@ contact = f'''<div class="lp">
 <div class="book">
 <div class="ex-form"><p class="ex-form__note">ご都合のよい日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
 <p class="fit fit--static">弊社の支援は、面談で販売している単価30万円以上の商品・サービスを中心にしています。それより低い単価の方は、まず<a href="download.html">資料請求</a>から合いそうかどうかをご覧ください。</p></div>
-<iframe class="book__frame" src="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" title="無料相談の日程と申し込み" loading="lazy"></iframe>
+<div class="book__clip"><iframe class="book__frame" src="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" title="無料相談の日程と申し込み" loading="lazy"></iframe></div>
 <p class="book__alt">カレンダーが表示されない場合は、<a href="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
 </div></div>'''
 REF_JS = '<script>(function(){var s=document.getElementById("c-src"),w=document.getElementById("c-ref-wrap");if(s&&w)s.addEventListener("change",function(){w.hidden=s.value!=="ご紹介"});})();</script>'
 BOOK_JS = '''<script>
 (function(){var f=document.querySelector('.book__frame');if(!f)return;
-function fit(){var r=f.getBoundingClientRect();if(Math.abs(r.top)>8)f.scrollIntoView({block:'start'});}
+var c=f.parentNode;function fit(){var r=c.getBoundingClientRect();if(Math.abs(r.top)>8)c.scrollIntoView({block:'start'});}
 window.addEventListener('blur',function(){setTimeout(function(){if(document.activeElement===f)fit();},0);});
 var n=0;f.addEventListener('load',function(){if(++n>1)fit();});})();
 </script>'''
