@@ -155,6 +155,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tbl tbody th { font-weight: 700; width: 170px; }
 .tbl .num { font-family: var(--font-numeral); font-variant-numeric: tabular-nums; font-weight: 500; color: var(--navy); white-space: nowrap; }
 .bg-alt .tbl thead th { background: var(--surface-tint); }
+.tbl--cmp { table-layout: fixed; }
+.tbl--cmp thead th:first-child, .tbl--cmp tbody th { width: 22%; }
 .list-dash { margin: var(--space-24) 0 0; padding: 0; list-style: none; font-size: 16px; line-height: 28px; }
 .list-dash li { padding-left: 1.2em; text-indent: -1.2em; }
 .list-dash li::before { content: "–　"; }
@@ -430,7 +432,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .tbl--stack tbody th { width: auto; padding-top: var(--space-16); font-size: 16px; line-height: 28px; }
   .tbl--stack td { padding-bottom: var(--space-16); font-size: 16px; line-height: 28px; }
   .tbl--stack { border-bottom: 1px solid var(--line); background: transparent; }
-  .tbl--cmp tbody th { white-space: normal; width: 30%; }
+  .tbl--cmp thead th:first-child, .tbl--cmp tbody th { white-space: normal; width: 30%; }
   .box { padding: var(--space-20) var(--space-16); }
   .two { grid-template-columns: 1fr; gap: var(--space-24); }
   .two > a { padding: var(--space-20) var(--space-16); }
