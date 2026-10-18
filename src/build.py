@@ -861,7 +861,7 @@ download = f'''<div class="lp">
 </form></div>'''
 doc('download.html', '資料請求', download, lp=True, extra_js=FORM_JS)
 
-contact = f'''<div class="lp">
+contact = f'''<div class="lp lp--book">
 <div class="lp__body"><h1>無料相談<br><small style="font-size:16px;font-weight:500">オンライン45分</small></h1>
 <p>45分で、いまのご商談と導線のどこから手を付けるとよいかが分かります。</p>
 <p>ご契約を前提にしたご相談ではありません。お話を伺ったうえで、弊社ではお力になれないと判断した場合は、正直にそうお伝えします。</p>
@@ -872,9 +872,9 @@ contact = f'''<div class="lp">
 <h2>別の窓口</h2><p style="margin-top:var(--space-8)">まずは資料で確かめたい方は</p>{more('資料請求へ', 'download.html')}
 <p class="note">その他のお問い合わせ（取材・協業など）：<a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></p>
 </div>
-<div class="ex-form book">
-<p class="ex-form__note">ご都合のよい日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
-<p class="fit fit--static">弊社の支援は、面談で販売している単価30万円以上の商品・サービスを中心にしています。それより低い単価の方は、まず<a href="download.html">資料請求</a>から合いそうかどうかをご覧ください。</p>
+<div class="book">
+<div class="ex-form"><p class="ex-form__note">ご都合のよい日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
+<p class="fit fit--static">弊社の支援は、面談で販売している単価30万円以上の商品・サービスを中心にしています。それより低い単価の方は、まず<a href="download.html">資料請求</a>から合いそうかどうかをご覧ください。</p></div>
 <iframe class="book__frame" src="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" title="無料相談の日程と申し込み" loading="lazy"></iframe>
 <p class="book__alt">カレンダーが表示されない場合は、<a href="https://ut.exnet.biz/event/TzlOA2hhp7ey/register" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
 </div></div>'''
