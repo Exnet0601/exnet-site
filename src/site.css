@@ -208,6 +208,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .reading h2.part:first-child { margin-top: 0; }
 .reading h2.part small { display: block; font-family: var(--font-numeral); font-size: 14px; line-height: 24.5px; font-weight: 500; color: var(--muted); letter-spacing: .1em; }
 .reading h3 { margin: var(--space-40) 0 0; padding-bottom: var(--space-16); border-bottom: 1px solid var(--line); color: var(--navy); font-size: 22px; line-height: 38.5px; font-weight: 700; }
+.reading h3:has(.h3-no) { display: flex; word-break: auto-phrase; }
+.reading h3 .h3-no { flex: none; margin-right: var(--space-16); font-family: var(--font-numeral); font-weight: 500; letter-spacing: .1em; color: var(--muted); }
 .reading p { margin: var(--space-24) 0 0; font-size: 18px; line-height: 30.6px; }
 .reading ol { margin: var(--space-24) 0 0; padding-left: 1.4em; font-size: 18px; line-height: 30.6px; }
 .reading ol li + li { margin-top: var(--space-16); }
