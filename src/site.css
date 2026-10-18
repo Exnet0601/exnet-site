@@ -633,6 +633,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .col-date { margin-left: var(--space-16); font-family: var(--font-numeral); color: var(--muted); font-weight: 400; }
 .col-list .col-date { margin-left: 0; font-size: 14px; line-height: 24.5px; }
 .col-list { border-top: 1px solid var(--line); }
+.col-list + .ex-more { margin-top: var(--space-40); }
 .col-row { display: grid; grid-template-columns: 1fr auto; gap: var(--space-4) var(--space-24); align-items: center; padding: var(--space-30) 0; border-bottom: 1px solid var(--line); color: var(--ink); }
 .col-row > :not(.ex-circle) { grid-column: 1; }
 .col-row .ex-circle { grid-column: 2; grid-row: 1 / span 3; }
