@@ -37,6 +37,10 @@ def logo(cid):
 TOC_JS = "<script>\n(function(){var t=document.querySelector('.side-toc');if(!t)return;\nfunction chk(){var r=t.getBoundingClientRect(),hit=false;document.querySelectorAll('.ex-hero, .ex-fcta').forEach(function(n){var b=n.getBoundingClientRect();if(b.bottom>r.top&&b.top<r.bottom)hit=true;});t.classList.toggle('is-hidden',hit);}\nchk();addEventListener('scroll',chk,{passive:true});addEventListener('resize',chk);})();\n</script>"
 def circle(): return f'<span class="ex-circle">{ARROW}</span>'
 def more(label, href): return f'<a class="ex-more" href="{href}">{label}{circle()}</a>'
+def rel_cols(fnames, h2=True):
+    """関連コラムへのリンク。サービス・料金・事例からコラムへ内部リンクを張る"""
+    items = ''.join(f'<li><a href="{f}">{json.load(open(os.path.join(HERE, "columns", f.replace(".html", ".json"))))["title"].split("｜")[0]}</a></li>' for f in fnames)
+    return (f'<h2>関連するコラム</h2>' if h2 else '') + f'<ul class="rel-cols">{items}</ul>'
 def btn(label, href, kind='primary', extra=''): return f'<a class="ex-btn ex-btn--{kind} {extra}" href="{href}">{label}<span class="ex-arrow">→</span></a>'
 
 NAV = [('service', 'サービス', 'service.html'), ('case', '事例', 'case.html'), ('price', '料金と契約', 'price.html'),
@@ -119,7 +123,7 @@ DESC = {
     'price.html': 'エクスネットの伴走支援の料金と契約条件です。月額、増えた売上にだけいただく成果報酬、契約期間、広告代理店の手数料との違いをまとめています。',
     'approach.html': '広告より先に商談を見る。エクスネットが、高単価の商品・サービスの売上を伸ばすときに、商談と導線のどこから手を付けるかという考え方をお伝えします。',
     'company.html': '株式会社エクスネットの会社概要と沿革、代表のご紹介です。2011年に名古屋で創業し、現在は東京都千代田区麹町に本社を置いています。',
-    'mission.html': '株式会社エクスネットのパーパス、ミッション、ビジョン、バリュー（PMVV）です。',
+    'mission.html': 'エクスネットが何を大事にし、どう判断する会社か。広告を増やす前にいまある商談から見直す理由と、仕事で守っている4つの価値観をまとめています。',
     'message.html': '株式会社エクスネット代表取締役 猪飼智弘のメッセージです。広告より先に商談を見ると決めた理由を、自分の事業での失敗からお話しします。',
     'case.html': 'エクスネットのお客様の事例と、弊社自身の営業の数字です。面談に来てくださった割合など、商談側の数字を中心に掲載しています。',
     'case-edu.html': '高単価の教育サービスの事例です。6ヶ月のご支援で、予約した面談に来てくださる割合が31.3%から63.2%になり、売上は1,206万円になりました。',
@@ -468,6 +472,10 @@ service = f'''
 <a href="contact.html"><h3>無料相談</h3><p>いまのご商談と導線を拝見し、どこから手を付けるとよいかをお伝えします（オンライン45分）。</p>{more('相談を申し込む', 'contact.html').replace('<a class="ex-more" href="contact.html">', '<span class="ex-more">').replace('</a>', '</span>')}</a>
 </div></div></section>
 
+<section class="sec"><div class="wrap wrap--article">
+{rule('関連するコラム')}
+{rel_cols(['column-before-ads.html', 'column-no-show.html', 'column-line-consult.html'], False)}
+</div></section>
 <aside class="side-toc" aria-label="このページの目次"><ol>
 <li><a href="#issues">よくある課題</a></li><li><a href="#steps">打ち手</a></li><li><a href="#ways">2つの入り方</a></li>
 <li><a href="#flow">進め方</a></li><li><a href="#faq">よくある質問</a></li></ol>
@@ -546,6 +554,10 @@ price = f'''
 <section class="sec" id="faq"><div class="wrap wrap--article">
 {rule('料金・契約についてよくある質問')}
 {faq(price_faq)}
+</div></section>
+<section class="sec"><div class="wrap wrap--article">
+{rule('関連するコラム')}
+{rel_cols(['column-ad-fee.html', 'column-outsourcing.html', 'column-cost-per-meeting.html'], False)}
 </div></section>
 '''
 doc('price.html', '料金と契約', price, 'price')
@@ -774,12 +786,13 @@ case1 = f'''
 <p>843通を送り、27件の資料請求、11件の面談、2件のご成約につながりました。1,000通に届く前にご成約が生まれたことで、この入り口が弊社の事業でも使えることが分かりました。</p>
 <h2>お客様の支援にどう生かしているか</h2>
 <p>このやり方は、お客様のハウスリストへの働きかけにも使っています。これまでに失注したお客様にも、その方の状況に合わせた言葉で、もう一度ご連絡します。</p>
+{rel_cols(['column-lost-deals.html', 'column-platform-risk.html'])}
 <div class="end-links">{more('考え方を見る', 'approach.html#systems')}{more('サービス', 'service.html')}{more('料金と契約', 'price.html')}</div>
 </div></div></div>
 '''
 doc('case-exnet-form-dm.html', '843通の問い合わせフォーム営業から', case1, 'case')
 
-def case_page(fname, crumb_t, cat, h1, pills, thead, tbody, seebox, secs, links):
+def case_page(fname, crumb_t, cat, h1, pills, thead, tbody, seebox, secs, links, cols=()):
     b = f'''
 <div class="ex-article"><div class="ex-article__box" style="max-width:var(--container)"><div style="max-width:var(--container-article);margin:0 auto">
 {crumb([('ホーム', 'index.html'), ('事例', 'case.html'), (crumb_t, None)])}
@@ -790,6 +803,7 @@ def case_page(fname, crumb_t, cat, h1, pills, thead, tbody, seebox, secs, links)
 {ov_table(pills[1:] + list(zip(thead, tbody)))}
 <div class="seebox"><h3>この数字の見方について</h3><p>{seebox}</p></div>
 {''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') and not p.startswith(('<b>', '<strong>')) else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
+{rel_cols(cols) if cols else ''}
 <div class="end-links">{''.join(more(l, h) for l, h in links)}</div>
 </div></div></div>
 '''
@@ -809,7 +823,7 @@ case_page('case-edu.html', '高単価の教育サービス', 'お客様の事例
      '<tr><td>月の広告費に対する売上（ROAS）</td><td>90%</td><td>466%</td></tr></tbody></table></div>',
      '数字が整ってきた後半の3ヶ月は、広告費に対する売上が328%、月の売上は平均259万円でした。6ヶ月の合計は、LINE登録954件、ご成約17件、売上1,206万円です。']),
    ('この事例から言えること', ['広告で集めた方が面談に来てくださらなければ、その分の広告費は何も生みません。来てくださる割合が2倍になれば、同じ広告費のままで、お話しできる方が2倍になります。広告を増やす前に、面談までの流れを見直す理由は、ここにあります。'])],
-  [('考え方を見る', 'approach.html'), ('サービス', 'service.html'), ('料金と契約', 'price.html')])
+  [('考え方を見る', 'approach.html'), ('サービス', 'service.html'), ('料金と契約', 'price.html')], ['column-no-show.html', 'column-line-consult.html'])
 
 case_page('case-exnet-btob.html', '弊社自身の高単価サービス', '弊社自身の取り組み',
   '弊社自身の高単価サービスで、面談95件からご成約13件、売上1,602万円',
@@ -820,7 +834,7 @@ case_page('case-exnet-btob.html', '弊社自身の高単価サービス', '弊�
   [('なぜ、自社の数字を載せるのか', ['お客様におすすめしていることは、まず自社の商品で確かめています。これは、そのうちの1つの商品の、1年分の数字です。']),
    ('どうなったか', ['面談のご予約は125件で、そのうち95件（76%）の方が実際に面談に来てくださいました。そこから13件のご成約につながり、売上は1,602万円でした。ご成約1件あたりの平均は約123万円です。広告費は約188万円で、売上は広告費の約8.5倍（ROAS 約854%）です。']),
    ('お客様の支援にどう生かしているか', ['面談の予約、実際の面談、ご成約の3つを、毎月同じ形で数えています。お客様の支援でも、この3つの数字を毎週の報告に載せ、どこで止まっているかを一緒に見ます。'])],
-  [('考え方を見る', 'approach.html'), ('サービス', 'service.html'), ('料金と契約', 'price.html')])
+  [('考え方を見る', 'approach.html'), ('サービス', 'service.html'), ('料金と契約', 'price.html')], ['column-cost-per-meeting.html', 'column-before-ads.html'])
 
 
 # ====================================================================
