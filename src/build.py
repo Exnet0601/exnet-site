@@ -676,10 +676,8 @@ mission = f'''
 <section class="sec" style="padding-top:0"><div class="wrap wrap--narrow reading">
 <h2 class="part"><small>PURPOSE</small>存在意義</h2><h3>「届ける力」で、社会を1ミリ前へ</h3>
 <p>社会を良くする価値は、必要な人に届いてこそ意味を持ちます。</p>
-<h2 class="part"><small>MISSION</small>使命</h2><h3>中小企業の可能性を引き出し、リスクを抑えながら成果を生み出す仕組みを共につくる</h3>
-<p>私たちは中小企業の可能性を引き出し、リスクを抑えながら成果を生み出す仕組みを共につくります。</p>
-<h2 class="part"><small>VISION</small>目指す姿</h2><h3>成果と想いを届けることにこだわり、選ばれ続けるブランドを目指す</h3>
-<p>私たちは、成果と想いを届けることにこだわり、選ばれ続けるブランドを目指します。</p>
+<h2 class="part"><small>MISSION</small>使命</h2><h3>私たちは中小企業の可能性を引き出し、リスクを抑えながら成果を生み出す仕組みを共につくります。</h3>
+<h2 class="part"><small>VISION</small>目指す姿</h2><h3>私たちは、成果と想いを届けることにこだわり、選ばれ続けるブランドを目指します。</h3>
 <h2 class="part"><small>VALUE</small>大切にしていること</h2>
 <ol><li>好奇心を原動力に成長する</li><li>物事を多角的に捉え、プラス面に着目し行動する</li><li>遠回りを恐れず、着実に前進する</li><li>相手の立場に立ち、価値をわかりやすく伝えることを大切にする</li></ol>
 <div class="end-links">{more('代表メッセージを読む', 'message.html')}{more('考え方を見る', 'approach.html')}</div>
