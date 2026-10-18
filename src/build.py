@@ -861,7 +861,7 @@ download = f'''<div class="lp">
 </form></div>'''
 doc('download.html', '資料請求', download, lp=True, extra_js=FORM_JS)
 
-contact = f'''<div class="lp lp--book">
+contact = f'''<div class="lp">
 <div class="lp__body"><h1>無料相談<br><small style="font-size:16px;font-weight:500">オンライン45分</small></h1>
 <p>45分で、いまのご商談と導線のどこから手を付けるとよいかが分かります。</p>
 <p>ご契約を前提にしたご相談ではありません。お話を伺ったうえで、弊社ではお力になれないと判断した場合は、正直にそうお伝えします。</p>
