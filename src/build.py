@@ -15,6 +15,7 @@ bundle = open(os.path.join(HERE, 'bundle.css')).read()
 site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
 for _f in ('ikai.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
+shutil.copytree(os.path.join(HERE, 'docs'), os.path.join(OUT, 'docs'), dirs_exist_ok=True)   # サービス資料のPDF
 open(os.path.join(OUT, 'site.css'), 'w').write('/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site)
 
 # ---------- 共通部品 ----------
@@ -206,7 +207,7 @@ def analytics(fname):
 
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     full_title = 'エクスネット｜面談で売る高単価の商品・サービスを伸ばすマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
-    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname == '404.html') +
+    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html')) +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
     if lp:
@@ -902,8 +903,30 @@ def thanks(fname, h1, body, links, skip):
     b = f'''{phead([('ホーム', 'index.html'), (h1, None)], 'THANK YOU', h1, body, False)}
 <section class="sec" style="padding-top:0"><div class="wrap wrap--narrow"><div class="end-links" style="margin-top:0">{''.join(more(l, h) for l, h in links)}</div></div></section>'''
     doc(fname, h1, b, fcta_skip=skip)
-thanks('thanks-download.html', '資料をお送りしました', 'ご入力いただいたメールアドレスに、資料をお送りしました。<br class="pc">届いていない場合は、迷惑メールのフォルダもご確認ください。',
-       [('考え方を読む', 'approach.html'), ('無料相談を申し込む', 'contact.html')], 'download')
+MATERIAL_PDF = 'docs/exnet-service-guide_2026-10-18.pdf'   # 資料を差し替えるときは、版の日付を変えたファイル名で置き、ここを直す
+b = f'''{phead([('ホーム', 'index.html'), ('資料請求', 'download.html'), ('資料をお送りしました', None)], 'THANK YOU', '資料をお送りしました', 'このまま下のボタンから、資料をご覧いただけます。<br class="pc">同じページのURLを、ご入力いただいたメールアドレスにもお送りしました。', False)}
+<section class="sec" style="padding-top:0"><div class="wrap wrap--narrow"><div class="ex-phead__cta" style="justify-content:flex-start;margin-top:0"><a class="ex-btn ex-btn--primary" href="material.html">資料を開く<span class="ex-arrow">→</span></a></div>
+<p class="note" style="margin-top:var(--space-16)">メールが届いていない場合は、迷惑メールのフォルダもご確認ください。</p>
+<div class="end-links">{more('考え方を読む', 'approach.html')}{more('無料相談を申し込む', 'contact.html')}</div></div></section>'''
+doc('thanks-download.html', '資料をお送りしました', b, fcta_skip='download')
+
+# 資料ページ：お礼ページと自動返信メールから来る。検索には出さない
+b = f'''{phead([('ホーム', 'index.html'), ('サービス資料', None)], 'SERVICE GUIDE', 'サービス資料', '弊社の進め方と、料金・契約の条件をまとめた資料です（PDF、11ページ）。', False)}
+<section class="sec" style="padding-top:0"><div class="wrap wrap--narrow">
+<div class="ex-phead__cta" style="justify-content:flex-start;margin-top:0"><a class="ex-btn ex-btn--primary" href="{MATERIAL_PDF}" target="_blank" rel="noopener" data-material>資料を開く（PDF）<span class="ex-arrow">→</span></a></div>
+<div class="material-note">
+<p>資料をご請求いただき、ありがとうございます。代表の猪飼です。</p>
+<p>この資料には、弊社の進め方と、料金・契約の条件をすべて載せています。社内で回覧していただけるよう、11ページにまとめました。</p>
+<p>読んでみて、御社の場合はどうなるのか気になったところがあれば、資料をお送りしたメールへのご返信か、無料相談で、遠慮なくお聞かせください。</p>
+<p class="material-note__sign">株式会社エクスネット　代表取締役　猪飼 智弘</p></div>
+<h2 class="material-h">資料に入っていること</h2>
+<ul class="list-dash"><li>商談から入る理由と、4つの打ち手の順番</li><li>伴走型と伴走＋実務型の違い</li><li>月額、成果報酬、契約期間の条件</li><li>最初の2週間でお渡しするもの</li></ul>
+<h2 class="material-h">いまのご商談を、直接見てほしい方は</h2>
+<p>無料相談（オンライン45分）で、いまのご商談と導線を拝見し、どこから手を付けるとよいかをお伝えします。</p>
+<div class="end-links" style="margin-top:var(--space-16)">{more('無料相談を申し込む', 'contact.html')}{more('料金と契約を見る', 'price.html')}</div>
+</div></section>'''
+MATERIAL_JS = "<script>(function(){var a=document.querySelector('[data-material]');if(a)a.addEventListener('click',function(){if(window.gtag)gtag('event','open_material',{file:a.getAttribute('href')});});})();</script>"
+doc('material.html', 'サービス資料', b, fcta_skip='download', extra_js=MATERIAL_JS)
 thanks('thanks-contact.html', 'お申し込みありがとうございます', 'ご予約の内容と、オンライン会議のURLをメールでお送りしました。ご商談の録画や資料があれば、当日までにお送りいただけると、より具体的なお話ができます。',
        [('料金と契約を見る', 'price.html'), ('代表メッセージを読む', 'message.html')], 'contact')
 
@@ -998,7 +1021,7 @@ today = datetime.date.today().isoformat()
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     ''.join(f'<url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n' for u in PAGES) + '</urlset>\n')
-open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\n\nSitemap: {BASE}sitemap.xml\n')
+open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nDisallow: /docs/\n\nSitemap: {BASE}sitemap.xml\n')
 LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'price.html': '料金と契約', 'approach.html': '考え方',
               'company.html': '会社情報', 'mission.html': 'PMVV', 'message.html': '代表メッセージ', 'case.html': '事例',
               'case-edu.html': '事例：高単価の教育サービス', 'case-exnet-btob.html': '事例：弊社自身の高単価サービス', 'case-exnet-form-dm.html': '事例：問い合わせフォーム営業',
