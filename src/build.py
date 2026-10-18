@@ -140,6 +140,8 @@ ORG = {
     'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
                 'streetAddress': '麹町1-4-4 ZENITAKA ANNEX 2F', 'addressCountry': 'JP'},
     'founder': {'@id': BASE + 'message.html#ikai'},
+    # 公式アカウント。AI検索が会社と同じものだと結びつけるための印。増えたらここに足す
+    'sameAs': ['https://note.com/exnet'],
 }
 PERSON = {'@type': 'Person', '@id': BASE + 'message.html#ikai', 'name': '猪飼 智弘', 'alternateName': 'Tomohiro Ikai',
           'jobTitle': '代表取締役', 'worksFor': {'@id': BASE + '#org'}, 'image': BASE + 'ikai.webp', 'url': BASE + 'message.html'}
