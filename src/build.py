@@ -1045,6 +1045,15 @@ open(os.path.join(OUT, 'sitemap.xml'), 'w').write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     # lastmod は日付が分かるコラムだけに付ける（ビルドのたびに全ページを今日にすると、検索エンジンが日付を信用しなくなる）
     ''.join(f'<url><loc>{u}</loc>' + (f'<lastmod>{COLUMNS[u.replace(BASE, "")]["date"]}</lastmod>' if u.replace(BASE, "") in COLUMNS else '') + '</url>\n' for u in PAGES) + '</urlset>\n')
+# 旧サイトのURL → 新しいページへの転送（GitHub Pagesは301を返せないので、正規URL＋即時リフレッシュで代わりにする）
+OLD_URLS = {'company/': 'company.html'}
+for _old, _new in OLD_URLS.items():
+    os.makedirs(os.path.join(OUT, _old), exist_ok=True)
+    open(os.path.join(OUT, _old, 'index.html'), 'w').write(
+        f'<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>移転しました</title>'
+        f'<link rel="canonical" href="{BASE}{_new}"><meta http-equiv="refresh" content="0; url={BASE}{_new}">'
+        f'<script>location.replace("{BASE}{_new}")</script></head>'
+        f'<body><p><a href="{BASE}{_new}">新しいページへ移動します</a></p></body></html>\n')
 # IndexNow（Bing・ChatGPT検索などに更新を知らせる）の鍵。デプロイ後に .github/workflows から送信する
 INDEXNOW_KEY = '45fcc86aa1ac446187856ad617221133'
 open(os.path.join(OUT, INDEXNOW_KEY + '.txt'), 'w').write(INDEXNOW_KEY)
