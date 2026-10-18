@@ -36,3 +36,15 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify IndexNow
+        run: |
+          sleep 30
+          URLS=$(curl -s https://exnet.biz/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' | jq -R . | jq -sc .)
+          curl -s -o /dev/null -w "%{http_code}\n" -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            -d "{\"host\":\"exnet.biz\",\"key\":\"45fcc86aa1ac446187856ad617221133\",\"keyLocation\":\"https://exnet.biz/45fcc86aa1ac446187856ad617221133.txt\",\"urlList\":$URLS}"

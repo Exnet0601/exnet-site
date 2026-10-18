@@ -1027,7 +1027,11 @@ print('built:', sorted(os.listdir(OUT)))
 today = datetime.date.today().isoformat()
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    ''.join(f'<url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n' for u in PAGES) + '</urlset>\n')
+    # lastmod は日付が分かるコラムだけに付ける（ビルドのたびに全ページを今日にすると、検索エンジンが日付を信用しなくなる）
+    ''.join(f'<url><loc>{u}</loc>' + (f'<lastmod>{COLUMNS[u.replace(BASE, "")]["date"]}</lastmod>' if u.replace(BASE, "") in COLUMNS else '') + '</url>\n' for u in PAGES) + '</urlset>\n')
+# IndexNow（Bing・ChatGPT検索などに更新を知らせる）の鍵。デプロイ後に .github/workflows から送信する
+INDEXNOW_KEY = '45fcc86aa1ac446187856ad617221133'
+open(os.path.join(OUT, INDEXNOW_KEY + '.txt'), 'w').write(INDEXNOW_KEY)
 open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nDisallow: /docs/\n\nSitemap: {BASE}sitemap.xml\n')
 LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'price.html': '料金と契約', 'approach.html': '考え方',
               'company.html': '会社情報', 'mission.html': 'PMVV', 'message.html': '代表メッセージ', 'case.html': '事例',
