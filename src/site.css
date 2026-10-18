@@ -207,7 +207,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .reading h2.part { margin: var(--space-80) 0 0; color: var(--navy); font-size: 28px; line-height: 49px; font-weight: 700; }
 .reading h2.part:first-child { margin-top: 0; }
 .reading h2.part small { display: block; font-family: var(--font-numeral); font-size: 14px; line-height: 24.5px; font-weight: 500; color: var(--muted); letter-spacing: .1em; }
-.reading h3 { margin: var(--space-40) 0 0; padding-bottom: var(--space-16); border-bottom: 1px solid var(--line); color: var(--navy); font-size: 22px; line-height: 38.5px; font-weight: 700; }
+.reading h3, .reading h2.as-h3 { margin: var(--space-40) 0 0; padding-bottom: var(--space-16); border-bottom: 1px solid var(--line); color: var(--navy); font-size: 22px; line-height: 38.5px; font-weight: 700; }
 .reading h3:has(.h3-no) { display: flex; word-break: auto-phrase; }
 .reading h3 .h3-no { flex: none; margin-right: var(--space-16); font-family: var(--font-numeral); font-weight: 500; letter-spacing: .1em; color: var(--muted); }
 .reading p { margin: var(--space-24) 0 0; font-size: 18px; line-height: 30.6px; }
@@ -235,6 +235,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .ex-article table thead th { background: var(--surface-alt); width: auto; }
 .ex-article .seebox { margin-top: var(--space-40); background: var(--surface-alt); padding: var(--space-30); }
 .ex-article .seebox h3 { margin: 0; font-size: 18px; line-height: 31.5px; }
+.ex-article .seebox .seebox__h { margin: 0; font-size: 18px; line-height: 31.5px; font-weight: 700; color: var(--navy); }
 .ex-article .seebox p { margin: var(--space-8) 0 0; font-size: 16px; line-height: 28px; }
 .ex-article h2 + p, .ex-article h2 + .tbl-wrap { margin-top: 0; }
 .ex-article .ex-crumb { margin-bottom: var(--space-40); }
@@ -449,7 +450,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .feat--rev .feat__media { order: 0; }
 
   .reading h2.part { margin-top: var(--space-64); font-size: 24px; line-height: 36px; }
-  .reading h3 { font-size: 20px; line-height: 35px; }
+  .reading h3, .reading h2.as-h3 { font-size: 20px; line-height: 35px; }
   .reading p, .reading ol { font-size: 16px; line-height: 27.2px; }
   .bio { grid-template-columns: 1fr; gap: var(--space-24); }
   .msg-top { grid-template-columns: 1fr; gap: var(--space-40); }
@@ -635,7 +636,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .col-row { display: grid; grid-template-columns: 1fr auto; gap: var(--space-4) var(--space-24); align-items: center; padding: var(--space-30) 0; border-bottom: 1px solid var(--line); color: var(--ink); }
 .col-row > :not(.ex-circle) { grid-column: 1; }
 .col-row .ex-circle { grid-column: 2; grid-row: 1 / span 3; }
-.col-row__t { font-size: 18px; line-height: 31.5px; font-weight: 700; color: var(--navy); }
+.col-row__t { margin: 0; font-size: 18px; line-height: 31.5px; font-weight: 700; color: var(--navy); }
 .col-row__l { font-size: 14px; line-height: 24.5px; }
 .col-answer { margin-top: var(--space-40); }
 .col-author { display: flex; gap: var(--space-24); margin-top: var(--space-64); padding: var(--space-30); border: 1px solid var(--line); }

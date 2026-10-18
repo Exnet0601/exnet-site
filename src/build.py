@@ -135,7 +135,9 @@ DESC = {
 }
 ORG = {
     '@type': 'Organization', '@id': BASE + '#org', 'name': SITE_NAME, 'alternateName': ['エクスネット', 'Exnet Co., Ltd.'],
-    'url': BASE, 'email': 'info@exnet.biz', 'foundingDate': '2011-06',
+    'url': BASE, 'email': 'info@exnet.biz', 'telephone': '+81-3-6262-1694', 'foundingDate': '2011-06',
+    'logo': BASE + 'apple-touch-icon.png',
+    'knowsAbout': ['高単価の商品・サービスの販売', '個別相談・面談の成約率', '面談の来場率（着座率）', '商談までの導線設計', 'LINE・メールの配信設計', 'Web広告の運用', 'マーケティングの伴走支援'],
     'description': DESC['index.html'],
     'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
                 'streetAddress': '麹町1-4-4 ZENITAKA ANNEX 2F', 'addressCountry': 'JP'},
@@ -170,7 +172,7 @@ def seo_head(fname, title, noindex):
     if fname in COLUMNS:
         c = COLUMNS[fname]
         graph += [ORG, PERSON]
-        graph.append({'@type': 'Article', 'headline': c['title'], 'description': desc, 'datePublished': c['date'], 'dateModified': c['date'],
+        graph.append({'@type': 'Article', 'headline': c['title'], 'description': desc, 'datePublished': c['date'], 'dateModified': c['updated'],
                       'author': {'@id': PERSON['@id']}, 'publisher': {'@id': BASE + '#org'}, 'image': BASE + 'ogp.png',
                       'mainEntityOfPage': url, 'inLanguage': 'ja'})
     if fname.startswith('case-'):   # 事例も記事として扱い、数字の出どころ（会社と代表）を結びつける
@@ -308,6 +310,8 @@ SYSTEMS = [('自動請求', '月次の請求と決済を自動で行う'), ('広
 # ====================================================================
 # トップ
 # ====================================================================
+_tc = sorted((json.load(open(_p, encoding='utf-8')) for _p in sorted(glob.glob(os.path.join(HERE, 'columns', '*.json')))), key=lambda c: c.get('date', '2026-10-17'), reverse=True)[:3]
+TOP_COLS = ''.join(f'<a class="col-row" href="{c["fname"]}"><span class="col-date">{c.get("date", "2026-10-17").replace("-", ".")}</span><h3 class="col-row__t">{c["title"]}</h3><span class="col-row__l">{c["lead"]}</span>{circle()}</a>' for c in _tc)
 top = f'''
 <section class="fv">
 <div class="fv2 wrap wrap--fv">
@@ -379,6 +383,12 @@ top = f'''
 {REP_BIO}
 {more('代表メッセージを読む', 'message.html')}</div>
 </div></div></section>
+
+<section class="sec bg-alt"><div class="wrap">
+<div class="ex-heading"><h2>コラム</h2></div>
+<div class="col-list">{TOP_COLS}</div>
+{more('コラム一覧を見る', 'column.html')}
+</div></section>
 
 <section class="sec"><div class="wrap">
 <div class="ex-heading"><h2>会社情報</h2></div>
@@ -741,7 +751,7 @@ message = f'''
 {phead([('ホーム', 'index.html'), ('会社情報', 'company.html'), ('代表メッセージ', None)], 'COMPANY', '代表メッセージ', '広告より先に商談を見る。私がそう決めたのは、自分の事業で失敗したからです。', False)}
 <section class="sec" style="padding-top:0"><div class="wrap wrap--narrow reading">
 {photo()}
-{''.join(f'<h3>{h}</h3>' + ''.join(f'<p>{p}</p>' for p in ps) for h, ps in msg)}
+{''.join(f'<h2 class="as-h3">{h}</h2>' + ''.join(f'<p>{p}</p>' for p in ps) for h, ps in msg)}
 <div class="sign">株式会社エクスネット<br>代表取締役／商談の伴走者<b>猪飼 智弘</b></div>
 <div class="end-links">{more('考え方を見る', 'approach.html')}{more('料金と契約を見る', 'price.html')}{more('PMVV', 'mission.html')}</div>
 </div></section>
@@ -779,7 +789,7 @@ case1 = f'''
 <div class="case-co">弊社自身（マーケティングの伴走支援）</div>
 <div class="h-ov">プロジェクト概要</div>
 {ov_table([('商品の単価', '約50万円'), ('導線', '個別メッセージ → 資料請求 → 面談 → ご成約'), ('送付数', '843通'), ('資料請求', '27件（3.2%）'), ('面談', '11件（1.3%）'), ('ご成約', '2件'), ('売上', '約100万円')])}
-<div class="seebox"><h3>この数字の見方について</h3><p>弊社自身の営業の数字で、お客様の事例ではありません。送付先は、弊社がお役に立てそうな会社に絞っています。面談のなかで、弊社の支援が合わないと判断した会社にはお断りしました。同じ数字がほかの業種や商品で出るとは限りません。</p></div>
+<div class="seebox"><div class="seebox__h">この数字の見方について</div><p>弊社自身の営業の数字で、お客様の事例ではありません。送付先は、弊社がお役に立てそうな会社に絞っています。面談のなかで、弊社の支援が合わないと判断した会社にはお断りしました。同じ数字がほかの業種や商品で出るとは限りません。</p></div>
 <h2>なぜ、自社で試したのか</h2>
 <p>弊社は、お客様に「広告だけに頼らない集客の入り口」をおすすめしています。おすすめする以上、まず自社で試して、数字を確かめることにしました。</p>
 <h2>何をしたか</h2>
@@ -803,7 +813,7 @@ def case_page(fname, crumb_t, cat, h1, pills, thead, tbody, seebox, secs, links,
 <div class="case-co">{pills[0]}</div>
 <div class="h-ov">プロジェクト概要</div>
 {ov_table(pills[1:] + list(zip(thead, tbody)))}
-<div class="seebox"><h3>この数字の見方について</h3><p>{seebox}</p></div>
+<div class="seebox"><div class="seebox__h">この数字の見方について</div><p>{seebox}</p></div>
 {''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') and not p.startswith(('<b>', '<strong>')) else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
 {rel_cols(cols) if cols else ''}
 <div class="end-links">{''.join(more(l, h) for l, h in links)}</div>
@@ -972,7 +982,7 @@ POLICY = [
  ('8. 開示・訂正・利用停止などのご請求', ['ご本人から、ご自身の個人情報の利用目的の通知、開示、訂正、追加、削除、利用停止、第三者への提供の停止を求められた場合は、ご本人であることを確かめたうえで、法令にもとづき速やかに対応します。ご請求は、下記の窓口までご連絡ください。'], None),
  ('9. このポリシーの変更', ['弊社は、法令の改正や事業の変化にあわせて、このポリシーを変更することがあります。変更後の内容は、このページに掲載した時点から効力を持ちます。'], None),
 ]
-pol_body = ''.join(f'<h3>{h}</h3>' + ''.join(f'<p>{t}</p>' for t in ps) + (f'<ol class="items">' + ''.join(f'<li>{i}</li>' for i in li) + '</ol>' if li else '') for h, ps, li in POLICY)
+pol_body = ''.join(f'<h2 class="as-h3">{h}</h2>' + ''.join(f'<p>{t}</p>' for t in ps) + (f'<ol class="items">' + ''.join(f'<li>{i}</li>' for i in li) + '</ol>' if li else '') for h, ps, li in POLICY)
 privacy = f"""
 {phead([('ホーム', 'index.html'), ('会社情報', 'company.html'), ('プライバシーポリシー', None)], 'PRIVACY POLICY', 'プライバシーポリシー', 'お預かりする個人情報の取り扱いについて、弊社の方針をお伝えします。', False)}
 <section class="sec" style="padding-top:0"><div class="wrap wrap--narrow reading policy">
@@ -1003,16 +1013,16 @@ AUTHOR_BOX = (f'<div class="col-author"><img src="ikai.webp" alt="猪飼 智弘"
               '<p>2011年に名古屋で創業。自社でも講座の販売や広告の運用を続けながら、面談で販売する高単価の商品・サービスの売上を、商談と導線から伸ばす伴走支援をしています。</p>'
               f'{more("代表メッセージ", "message.html")}</div></div>')
 
-def column(fname, title, date, lead, answer, secs, links, desc, faqs=()):
+def column(fname, title, date, lead, answer, secs, links, desc, faqs=(), updated=None):
     """記事1本。answer は冒頭で問いに一文で答える箇所（AIの引用を受けやすい）"""
-    COLUMNS[fname] = {'title': title, 'date': date, 'lead': lead}
+    COLUMNS[fname] = {'title': title, 'date': date, 'lead': lead, 'updated': updated or date}
     DESC[fname] = desc
     body = f"""
 <div class="ex-article"><div class="ex-article__box" style="max-width:var(--container)"><div style="max-width:var(--container-article);margin:0 auto">
 {crumb([('ホーム', 'index.html'), ('コラム', 'column.html'), (title, None)])}
-<div class="ex-ccard__cat">コラム<span class="col-date">{date.replace('-', '.')}</span></div>
+<div class="ex-ccard__cat">コラム<span class="col-date">{date.replace('-', '.')}{f"（更新 {updated.replace('-', '.')}）" if updated and updated != date else ''}</span></div>
 <h1>{title}</h1>
-<div class="seebox col-answer"><h3>先に結論</h3><p>{answer}</p></div>
+<div class="seebox col-answer"><div class="seebox__h">先に結論</div><p>{answer}</p></div>
 {''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') and not p.startswith(('<b>', '<strong>')) else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
 {('<h2>よくある質問</h2>' + faq(faqs)) if faqs else ''}
 {AUTHOR_BOX}
@@ -1023,10 +1033,10 @@ def column(fname, title, date, lead, answer, secs, links, desc, faqs=()):
 
 for _p in sorted(glob.glob(os.path.join(HERE, 'columns', '*.json'))):
     _c = json.load(open(_p, encoding='utf-8'))
-    column(_c['fname'], _c['title'], _c.get('date', '2026-10-17'), _c['lead'], _c['answer'], _c['secs'], _c['links'], _c['desc'], _c.get('faqs', []))
+    column(_c['fname'], _c['title'], _c.get('date', '2026-10-17'), _c['lead'], _c['answer'], _c['secs'], _c['links'], _c['desc'], _c.get('faqs', []), _c.get('updated'))
 
 col_list = ''.join(
-    f'<a class="col-row" href="{f}"><span class="col-date">{c["date"].replace("-", ".")}</span><span class="col-row__t">{c["title"]}</span><span class="col-row__l">{c["lead"]}</span>{circle()}</a>'
+    f'<a class="col-row" href="{f}"><span class="col-date">{c["date"].replace("-", ".")}</span><h2 class="col-row__t">{c["title"]}</h2><span class="col-row__l">{c["lead"]}</span>{circle()}</a>'
     for f, c in sorted(COLUMNS.items(), key=lambda kv: kv[1]['date'], reverse=True))
 DESC['column.html'] = '面談で販売する高単価の商品・サービスの売上を、商談と導線から伸ばすためのコラムです。成約率、面談に来てくださる割合、リストの活用など、日々の支援で分かったことを書いています。'
 column_index = f"""
@@ -1044,7 +1054,7 @@ today = datetime.date.today().isoformat()
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     # lastmod は日付が分かるコラムだけに付ける（ビルドのたびに全ページを今日にすると、検索エンジンが日付を信用しなくなる）
-    ''.join(f'<url><loc>{u}</loc>' + (f'<lastmod>{COLUMNS[u.replace(BASE, "")]["date"]}</lastmod>' if u.replace(BASE, "") in COLUMNS else '') + '</url>\n' for u in PAGES) + '</urlset>\n')
+    ''.join(f'<url><loc>{u}</loc>' + (f'<lastmod>{COLUMNS[u.replace(BASE, "")]["updated"]}</lastmod>' if u.replace(BASE, "") in COLUMNS else '') + '</url>\n' for u in PAGES) + '</urlset>\n')
 # 旧サイトのURL → 新しいページへの転送（GitHub Pagesは301を返せないので、正規URL＋即時リフレッシュで代わりにする）
 OLD_URLS = {'company/': 'company.html'}
 for _old, _new in OLD_URLS.items():
