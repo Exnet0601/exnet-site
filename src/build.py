@@ -206,7 +206,7 @@ def analytics(fname):
 
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     full_title = 'エクスネット｜面談で売る高単価の商品・サービスを伸ばすマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
-    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith('thanks-') or fname == '404.html') +
+    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname == '404.html') +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
     if lp:
@@ -886,6 +886,29 @@ window.addEventListener('blur',function(){setTimeout(function(){if(document.acti
 var n=0;f.addEventListener('load',function(){if(++n>1)fit();});})();
 </script>'''
 doc('contact.html', '無料相談', contact, lp=True, extra_js=BOOK_JS)
+
+# 予約の2段階版（UTAGEのファネルページに入力内容を受け渡す）。動作を確かめるまでは test-contact.html で公開する
+BOOK_SRC = 'https://ut.exnet.biz/p/sA61r06GNKyM'
+opts = lambda xs: ''.join(f'<option>{x}</option>' for x in xs)
+contact2 = contact.split('<div class="book">')[0] + f'''<div class="book" data-book>
+<div class="ex-form"><p class="ex-form__note">お客様の情報をご入力いただき、次の画面で日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
+<p class="fit fit--static">弊社の支援が力を発揮するのは、販売単価30万円以上の商品・サービスをメインで扱われている事業者様です。当てはまるか迷われた方は、先に資料請求でお確かめいただくこともできます。<br><a href="download.html">資料請求はこちら</a></p>
+<div data-book-step>
+<div class="ex-field-row"><label class="ex-field" for="b-sei">姓 <em>*</em><input id="b-sei" name="sei" autocomplete="family-name" required></label><label class="ex-field" for="b-mei">名 <em>*</em><input id="b-mei" name="mei" autocomplete="given-name" required></label></div>
+<label class="ex-field" for="b-mail">メールアドレス <em>*</em><input id="b-mail" type="email" name="mail" autocomplete="email" required></label>
+<label class="ex-field" for="b-tel">携帯番号 <em>*</em><input id="b-tel" type="tel" name="phone" autocomplete="tel" inputmode="tel" required></label>
+<label class="ex-field" for="b-co">会社名 <em>*</em><input id="b-co" name="event_item01" autocomplete="organization" required></label>
+<label class="ex-field" for="b-price">商品・サービスの単価 <em>*</em><select id="b-price" name="event_item02" required><option value="">選んでください</option>{opts(['30万円未満', '30万〜100万円', '100万円以上'])}</select></label>
+<label class="ex-field" for="b-topic">いちばんご相談したいこと <em>*</em><select id="b-topic" name="event_item03" required><option value="">選んでください</option>{opts(['商談で決まる件数', 'リストの活用', '広告', '全体を見てほしい'])}</select></label>
+<label class="agree" for="b-agree"><input id="b-agree" type="checkbox" required> <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意する <em style="color:var(--required);font-style:normal">*</em></span></label>
+<button type="button" class="ex-submit" data-book-next>日時の選択へ進む</button></div>
+<div class="book__who" data-book-who hidden><span data-book-name></span><button type="button" class="back" data-book-back>入力内容を修正する</button></div>
+<p class="book__retry" data-book-retry hidden>お手数ですが、下の欄にお名前などをもう一度ご入力ください。</p></div>
+<iframe class="book__cal" data-book-frame title="無料相談の日時の選択" hidden></iframe>
+<p class="book__alt">日時の選択が表示されない場合は、<a href="{BOOK_SRC}" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
+</div></div>'''
+BOOK2_JS = open(os.path.join(os.path.dirname(__file__), 'book2.js')).read().replace('%SRC%', BOOK_SRC)
+doc('test-contact.html', '無料相談', contact2, lp=True, extra_js=BOOK2_JS)
 
 def thanks(fname, h1, body, links, skip):
     b = f'''{phead([('ホーム', 'index.html'), (h1, None)], 'THANK YOU', h1, body, False)}

@@ -655,3 +655,12 @@ svg.logo { display: block; width: 104px; height: 22px; }
   .ex-fcta > div:first-child { padding-top: 0; }
   .ex-fcta > div:last-child { padding-bottom: 0; }
 }
+
+/* 無料相談（2段階版）：1画面目で入力し、2画面目でUTAGEの日時選択を枠いっぱいに表示する */
+.ex-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); }
+.book__cal { display: block; width: 100%; height: 900px; margin-top: var(--space-16); border: 0; background: var(--surface-alt); }
+.book__cal[hidden] { display: none; }
+.book__who[hidden] { display: none; }
+.book__who { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-8); margin-top: var(--space-24); font-size: 14px; line-height: 24.5px; font-weight: 700; }
+.book__who .back { margin-top: 0; }
+.book__retry { margin-top: var(--space-16); font-size: 14px; line-height: 24.5px; color: var(--required); }
