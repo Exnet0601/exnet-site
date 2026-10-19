@@ -938,7 +938,7 @@ def thanks(fname, h1, body, links, skip):
     doc(fname, h1, b, fcta_skip=skip)
 MATERIAL_PDF = 'docs/exnet-service-guide_2026-10-18.pdf'   # 資料を差し替えるときは、版の日付を変えたファイル名で置き、ここを直す
 b = f'''{phead([('ホーム', 'index.html'), ('資料請求', 'download.html'), ('資料をお送りしました', None)], 'THANK YOU', '資料をお送りしました', 'このまま下のボタンから、資料をご覧いただけます。<br class="pc">同じページのURLを、ご入力いただいたメールアドレスにもお送りしました。', False)}
-<section class="sec" style="padding-top:0"><div class="wrap wrap--narrow"><div class="ex-phead__cta" style="justify-content:flex-start;margin-top:0"><a class="ex-btn ex-btn--primary" href="material.html">資料を開く<span class="ex-arrow">→</span></a></div>
+<section class="sec" style="padding-top:0"><div class="wrap wrap--narrow"><div class="ex-phead__cta" style="justify-content:flex-start;margin-top:0"><a class="ex-btn ex-btn--primary" href="material.html?from=thanks">資料を開く<span class="ex-arrow">→</span></a></div>
 <p class="note" style="margin-top:var(--space-16)">メールが届いていない場合は、迷惑メールのフォルダもご確認ください。</p>
 <div class="end-links">{more('考え方を読む', 'approach.html')}{more('無料相談を申し込む', 'contact.html')}</div></div></section>'''
 doc('thanks-download.html', '資料をお送りしました', b, fcta_skip='download')
