@@ -236,6 +236,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .ex-article .seebox { margin-top: var(--space-40); background: var(--surface-alt); padding: var(--space-30); }
 .ex-article .seebox h3 { margin: 0; font-size: 18px; line-height: 31.5px; }
 .ex-article .seebox .seebox__h { margin: 0; font-size: 18px; line-height: 31.5px; font-weight: 700; color: var(--navy); }
+/* よくある質問：Q・Aの丸の中心と、質問・回答の1行目の中心をそろえる。コラムでは本文の段落の余白（40px）を引き継がない */
+.ex-article .ex-faq__q p, .ex-article .ex-faq__a p { font-size: 18px; line-height: 31.5px; }
+@media (max-width: 767px) { .ex-article .ex-faq__q p, .ex-article .ex-faq__a p { font-size: 16px; line-height: 28px; } }
+.ex-faq__q .ex-faq__badge { margin: 0; }
+.ex-faq__q p, .ex-faq__a p, .ex-article .ex-faq__q p, .ex-article .ex-faq__a p { margin: 4px 0 0; margin-top: calc((var(--qa-badge) - 1lh) / 2); }
 .ex-article .seebox p { margin: var(--space-8) 0 0; font-size: 16px; line-height: 28px; }
 .ex-article h2 + p, .ex-article h2 + .tbl-wrap { margin-top: 0; }
 .ex-article .ex-crumb { margin-bottom: var(--space-40); }
