@@ -41,10 +41,22 @@ jobs:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
+      # 本番のサイトマップはキャッシュで古いことがあるので、いまビルドしたものからURLを取る
+      - name: Build site
+        run: python3 src/build.py
+
       - name: Notify IndexNow
         run: |
+          URLS=$(grep -o '<loc>[^<]*' site/sitemap.xml | sed 's/<loc>//' | jq -R . | jq -sc .)
+          COUNT=$(echo "$URLS" | jq length)
+          echo "URLs: $COUNT"
+          if [ "$COUNT" -eq 0 ]; then echo "サイトマップにURLがありません"; exit 1; fi
           sleep 30
-          URLS=$(curl -s https://exnet.biz/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' | jq -R . | jq -sc .)
-          curl -s -o /dev/null -w "%{http_code}\n" -X POST https://api.indexnow.org/indexnow \
+          CODE=$(curl -s -o response.txt -w "%{http_code}" -X POST https://api.indexnow.org/indexnow \
             -H 'Content-Type: application/json; charset=utf-8' \
-            -d "{\"host\":\"exnet.biz\",\"key\":\"45fcc86aa1ac446187856ad617221133\",\"keyLocation\":\"https://exnet.biz/45fcc86aa1ac446187856ad617221133.txt\",\"urlList\":$URLS}"
+            -d "{\"host\":\"exnet.biz\",\"key\":\"45fcc86aa1ac446187856ad617221133\",\"keyLocation\":\"https://exnet.biz/45fcc86aa1ac446187856ad617221133.txt\",\"urlList\":$URLS}")
+          echo "IndexNow: $CODE"
+          cat response.txt
+          case "$CODE" in 2??) ;; *) echo "IndexNow が受け付けませんでした"; exit 1;; esac
