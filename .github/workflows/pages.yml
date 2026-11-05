@@ -36,6 +36,9 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # GitHub側の反映が遅い日に10分で打ち切られないよう、30分まで待つ（2026-11-05 本人決定）
+          timeout: 1800000
 
   indexnow:
     needs: deploy
