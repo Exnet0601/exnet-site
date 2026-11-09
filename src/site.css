@@ -587,9 +587,10 @@ svg.logo { display: block; width: 104px; height: 22px; }
   .entry p { margin-top: var(--space-4); }
   .entry .entry__head .ex-circle { width: 28px; height: 28px; }
 }
-/* ファーストビュー：コピーと代表カードを左右半分ずつにして、中央の空きをなくす */
+/* ファーストビュー：sairuのFV実測（1260px幅のうち、右のカードは左端から560px・幅700px、左とのすき間なし）に合わせ、
+   コピー4：代表カード5で並べる。1260pxのとき右のカードはちょうど700px */
 @media (min-width: 1100px) {
-  .fv2 { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-45); }
+  .fv2 { grid-template-columns: minmax(0, 4fr) minmax(0, 5fr); column-gap: 0; }
   .fv2__main, .fv2__who { grid-column: auto; }
   .fv2__who { padding: var(--space-36) var(--space-40); }
   .fv2__who .portrait { width: 120px; }
