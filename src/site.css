@@ -48,6 +48,8 @@ body { margin: 0; background: var(--surface); color: var(--ink); }
 .site-head { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--surface); }
 .ex-header__logo a, .ex-mhead__logo a { color: inherit; }
+/* グローバルナビの間隔はsairu実測に合わせる：ロゴ右端からナビまで90px（ヘッダーのgap 40px＋50px）、項目どうし25px */
+.ex-header__nav { margin-left: calc(var(--space-30) + var(--space-20)); gap: var(--space-25); }
 .ex-header__nav a { position: relative; padding-block: var(--space-8); }
 .ex-header__nav a.is-current::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--navy); }
 .ex-btn--header { text-decoration: none; }
