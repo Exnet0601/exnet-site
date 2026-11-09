@@ -118,12 +118,12 @@ SEO = {'crumbs': None, 'faqs': []}
 PAGES = []   # サイトマップに載せるページ
 COLUMNS = {}  # コラム記事（column-*.html）。記事ごとに下で登録する
 DESC = {
-    'index.html': '株式会社エクスネットは、面談で販売する高単価の商品・サービスを、商談までの流れの仕組み化とテクノロジーで伸ばすマーケティング会社です。2011年創業。広告の成果は、面談のあとで決まります。だから広告を増やす前に、いまある面談で決まる件数から見直します。',
-    'service.html': '面談で販売する高単価の商品・サービスを扱う事業者向けの伴走支援です。伴走型と伴走＋実務型の2つの入り方、支援の進め方、最初の2週間でお渡しするものをご紹介します。',
+    'index.html': '株式会社エクスネットは、講座・スクール・コンサルティング・士業など、個別相談・面談で高単価の商品・サービスを販売する事業者を支援するマーケティング会社です。広告を増やす前に、いまある面談で決まる件数から見直し、集客から成約までを伴走支援で整えます。2011年創業。',
+    'service.html': 'エクスネットの伴走支援は、講座・スクール・コンサルティング・士業など、個別相談・面談で高単価の商品・サービスを販売する事業者向けのサービスです。伴走型と伴走＋実務型の2つの入り方、支援の進め方、最初の2週間でお渡しするものをご紹介します。',
     'course.html': '講座・スクール・コンサルティングなど、個別相談で販売する高単価の商品の売上を、広告より先に、面談で決まる件数から見直す伴走支援です。ご相談に来られた26社のうち、面談の数か決まる件数を数字で答えられた会社は3社に1社でした。依頼先を選ぶときの5つの確認点にもお答えします。',
     'price.html': 'エクスネットの伴走支援の料金と契約条件です。月額、増えた売上にだけいただく成果報酬、契約期間、広告代理店の手数料との違いをまとめています。',
     'approach.html': '広告より先に商談を見る。エクスネットが、高単価の商品・サービスの売上を伸ばすときに、商談と導線のどこから手を付けるかという考え方をお伝えします。',
-    'company.html': '株式会社エクスネットの会社概要と沿革、代表のご紹介です。2011年に名古屋で創業し、現在は東京都千代田区麹町に本社を置いています。',
+    'company.html': '講座・スクール・コンサルティングを支援するマーケティング会社、株式会社エクスネットの会社概要と沿革、代表のご紹介です。2011年に名古屋で創業し、現在は東京都千代田区麹町に本社を置いています。',
     'mission.html': 'エクスネットが何を大事にし、どう判断する会社か。広告を増やす前にいまある商談から見直す理由と、仕事で守っている4つの価値観をまとめています。',
     'message.html': '株式会社エクスネット代表取締役 猪飼智弘のメッセージです。広告より先に商談を見ると決めた理由を、自分の事業での失敗からお話しします。',
     'case.html': 'エクスネットのお客様の事例と、弊社自身の営業の数字です。面談に来てくださった割合など、商談側の数字を中心に掲載しています。',
@@ -221,7 +221,7 @@ def analytics(fname):
             f'\n<script>(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","{CLARITY_ID}");</script>')
 
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
-    full_title = 'エクスネット｜面談で売る高単価の商品・サービスを伸ばすマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
+    full_title = 'エクスネット｜講座・スクール・コンサルティングを支援するマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
     head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html')) +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
@@ -325,7 +325,7 @@ top = f'''
 <div class="fv2__main">
 <p class="fv2__voice">株式会社エクスネット</p>
 <h1 class="fv2__title">価値ある挑戦を<br>必要な人に届けるために</h1>
-<p class="fv2__lead"><span>2011年創業</span><br><span>面談で販売する高単価の商品・サービスを、</span><br class="pc"><span>商談までの流れの仕組み化と</span><span>テクノロジーで伸ばす、マーケティング会社</span></p>
+<p class="fv2__lead"><span>2011年創業</span><br><span>講座・スクール・コンサルティングを</span><br class="pc"><span>支援するマーケティング会社</span></p>
 <div class="fv2__cta"><a class="ex-btn ex-btn--secondary ex-btn--section" href="download.html">資料請求<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--primary ex-btn--section" href="contact.html">無料相談（45分）<span class="ex-arrow">→</span></a></div>
 </div>
 <aside class="fv2__who" aria-label="伴走する人">
@@ -772,7 +772,7 @@ doc('approach.html', '考え方', approach, 'approach')
 # 会社情報
 # ====================================================================
 company = f'''
-{phead([('ホーム', 'index.html'), ('会社情報', None)], 'COMPANY', '会社情報', '株式会社エクスネットの会社概要と、代表のご紹介です。')}
+{phead([('ホーム', 'index.html'), ('会社情報', None)], 'COMPANY', '会社情報', '広告の数字だけでなく、面談で決まる件数を見る会社です。<br>株式会社エクスネットの会社概要と、代表をご紹介します。')}
 <section class="sec" style="padding-top:0"><div class="wrap">
 {rule('会社概要', True)}
 <dl class="ex-dl">
@@ -780,7 +780,7 @@ company = f'''
 <dt>設立</dt><dd>2011年6月1日</dd>
 <dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F</dd><dt>最寄り駅</dt><dd>東京メトロ半蔵門線 半蔵門駅から徒歩3分</dd>
 <dt>代表者</dt><dd>代表取締役　猪飼 智弘</dd>
-<dt>事業内容</dt><dd>マーケティングの伴走支援（商談の改善、LINE・UTAGEの導線設計、ハウスリストの活用、広告の運用）<br>自社システムの開発・運用</dd>
+<dt>事業内容</dt><dd>講座・スクール・コンサルティング・士業などを支援するマーケティング事業<br>マーケティングの伴走支援（商談の改善、LINE・UTAGEの導線設計、ハウスリストの活用、広告の運用）<br>自社システムの開発・運用</dd>
 <dt>電話番号</dt><dd>03-6262-1694</dd>
 <dt>メール</dt><dd><a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></dd>
 <dt>沿革</dt><dd><ul class="hist"><li><span>2011年6月</span><span>名古屋でウェブ制作会社として創業</span></li><li><span>2012年5月</span><span>自社講座の販売を開始</span></li><li><span>2016年4月</span><span>自社システムの開発を始める</span></li><li><span>2018年8月</span><span>集客の仕組みづくりを自社で開始</span></li><li><span>2020年7月</span><span>パートナー会社と物販講座の運営を始める</span></li><li><span>2023年8月</span><span>本社を東京都千代田区麹町へ移転</span></li><li><span>2026年</span><span>伴走支援（伴走＋実務型）の提供を開始</span></li></ul></dd>
