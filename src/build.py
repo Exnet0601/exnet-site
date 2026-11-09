@@ -79,7 +79,7 @@ FOOT_CTA = foot_cta()
 
 FOOTER = f'''<footer class="foot"><div class="wrap wrap--foot">
 <div class="foot__in">
-<div><div class="foot__logo">{logo("lg-f")}</div><p class="foot__addr">株式会社エクスネット<br>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F<br>03-6262-1694</p></div>
+<div><div class="foot__logo">{logo("lg-f")}</div><p class="foot__addr">株式会社エクスネット<br>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX<br>03-6262-1694</p></div>
 <div class="foot__map">
 <div><h4>サービス</h4><ul><li><a class="ex-ul" href="service.html">サービス</a></li><li><a class="ex-ul" href="course.html">講座・スクールの方へ</a></li><li><a class="ex-ul" href="case.html">事例</a></li><li><a class="ex-ul" href="price.html">料金と契約</a></li><li><a class="ex-ul" href="approach.html">考え方</a></li><li><a class="ex-ul" href="column.html">コラム</a></li></ul></div>
 <div><h4>会社情報</h4><ul><li><a class="ex-ul" href="company.html">会社概要</a></li><li><a class="ex-ul" href="message.html">代表メッセージ</a></li><li><a class="ex-ul" href="mission.html">PMVV</a></li><li><a class="ex-ul" href="company.html#news">お知らせ</a></li></ul></div>
@@ -141,7 +141,7 @@ ORG = {
     'knowsAbout': ['高単価の商品・サービスの販売', '講座・スクール・コンサルティングの販売導線', '個別相談・面談の成約率', '面談の来場率（着座率）', '商談までの導線設計', 'LINE・メールの配信設計', 'Web広告の運用', 'マーケティングの伴走支援'],
     'description': DESC['index.html'],
     'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
-                'streetAddress': '麹町1-4-4 ZENITAKA ANNEX 2F', 'addressCountry': 'JP'},
+                'streetAddress': '麹町1-4-4 ZENITAKA ANNEX', 'addressCountry': 'JP'},
     'founder': {'@id': BASE + 'message.html#ikai'},
 }
 PERSON = {'@type': 'Person', '@id': BASE + 'message.html#ikai', 'name': '猪飼 智弘', 'alternateName': 'Tomohiro Ikai',
@@ -778,7 +778,7 @@ company = f'''
 <dl class="ex-dl">
 <dt>会社名</dt><dd>株式会社エクスネット（Exnet Co., Ltd.）</dd>
 <dt>設立</dt><dd>2011年6月1日</dd>
-<dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F</dd><dt>最寄り駅</dt><dd>東京メトロ半蔵門線 半蔵門駅から徒歩3分</dd>
+<dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX</dd><dt>最寄り駅</dt><dd>東京メトロ半蔵門線 半蔵門駅から徒歩3分</dd>
 <dt>代表者</dt><dd>代表取締役　猪飼 智弘</dd>
 <dt>事業内容</dt><dd>講座・スクール・コンサルティング・士業などを支援するマーケティング事業<br>マーケティングの伴走支援（商談の改善、LINE・UTAGEの導線設計、ハウスリストの活用、広告の運用）<br>自社システムの開発・運用</dd>
 <dt>電話番号</dt><dd>03-6262-1694</dd>
@@ -1102,7 +1102,7 @@ privacy = f"""
 <section class="sec" style="padding-top:0"><div class="wrap wrap--narrow reading policy">
 {pol_body}
 <h3>10. お問い合わせの窓口</h3>
-<dl class="ex-dl"><dt>事業者</dt><dd>株式会社エクスネット</dd><dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F</dd><dt>代表者</dt><dd>代表取締役　猪飼 智弘</dd><dt>電話番号</dt><dd>03-6262-1694</dd><dt>メール</dt><dd><a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></dd></dl>
+<dl class="ex-dl"><dt>事業者</dt><dd>株式会社エクスネット</dd><dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX</dd><dt>代表者</dt><dd>代表取締役　猪飼 智弘</dd><dt>電話番号</dt><dd>03-6262-1694</dd><dt>メール</dt><dd><a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></dd></dl>
 </div></section>
 """
 doc('privacy.html', 'プライバシーポリシー', privacy, 'company')
@@ -1191,5 +1191,5 @@ LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'course
               'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
 open(os.path.join(OUT, 'llms.txt'), 'w').write(
     f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
-    '- 主なお客様：講座・スクール、コンサルティング、士業など、個別相談・面談で販売する高単価の商品・サービスの事業者\n- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
+    '- 主なお客様：講座・スクール、コンサルティング、士業など、個別相談・面談で販売する高単価の商品・サービスの事業者\n- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
     ''.join(f'- [{LLMS_NAMES.get(u.replace(BASE, "") or "index.html") or ("コラム：" + COLUMNS[u.replace(BASE, "")]["title"].split("｜")[0] if u.replace(BASE, "") in COLUMNS else u)}]({u})：{DESC.get(u.replace(BASE, "") or "index.html", "")}\n' for u in PAGES))
