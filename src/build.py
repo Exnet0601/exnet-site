@@ -81,7 +81,7 @@ FOOTER = f'''<footer class="foot"><div class="wrap wrap--foot">
 <div class="foot__in">
 <div><div class="foot__logo">{logo("lg-f")}</div><p class="foot__addr">株式会社エクスネット<br>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F<br>03-6262-1694</p></div>
 <div class="foot__map">
-<div><h4>サービス</h4><ul><li><a class="ex-ul" href="service.html">サービス</a></li><li><a class="ex-ul" href="case.html">事例</a></li><li><a class="ex-ul" href="price.html">料金と契約</a></li><li><a class="ex-ul" href="approach.html">考え方</a></li><li><a class="ex-ul" href="column.html">コラム</a></li></ul></div>
+<div><h4>サービス</h4><ul><li><a class="ex-ul" href="service.html">サービス</a></li><li><a class="ex-ul" href="course.html">講座・スクールの方へ</a></li><li><a class="ex-ul" href="case.html">事例</a></li><li><a class="ex-ul" href="price.html">料金と契約</a></li><li><a class="ex-ul" href="approach.html">考え方</a></li><li><a class="ex-ul" href="column.html">コラム</a></li></ul></div>
 <div><h4>会社情報</h4><ul><li><a class="ex-ul" href="company.html">会社概要</a></li><li><a class="ex-ul" href="message.html">代表メッセージ</a></li><li><a class="ex-ul" href="mission.html">PMVV</a></li><li><a class="ex-ul" href="company.html#news">お知らせ</a></li></ul></div>
 <div><h4>お問い合わせ</h4><ul><li><a class="ex-ul" href="download.html">資料請求</a></li><li><a class="ex-ul" href="contact.html">無料相談</a></li></ul></div>
 </div></div>
@@ -120,6 +120,7 @@ COLUMNS = {}  # コラム記事（column-*.html）。記事ごとに下で登録
 DESC = {
     'index.html': '株式会社エクスネットは、面談で販売する高単価の商品・サービスを、商談までの流れの仕組み化とテクノロジーで伸ばすマーケティング会社です。2011年創業。広告の成果は、面談のあとで決まります。だから広告を増やす前に、いまある面談で決まる件数から見直します。',
     'service.html': '面談で販売する高単価の商品・サービスを扱う事業者向けの伴走支援です。伴走型と伴走＋実務型の2つの入り方、支援の進め方、最初の2週間でお渡しするものをご紹介します。',
+    'course.html': '講座・スクール・コンサルティングなど、個別相談や説明会で販売する高単価の商品の、LINE登録からご成約までの導線を、個別相談の成約率から見直す伴走支援です。依頼先を選ぶときの5つの確認点に、弊社の場合でお答えします。',
     'price.html': 'エクスネットの伴走支援の料金と契約条件です。月額、増えた売上にだけいただく成果報酬、契約期間、広告代理店の手数料との違いをまとめています。',
     'approach.html': '広告より先に商談を見る。エクスネットが、高単価の商品・サービスの売上を伸ばすときに、商談と導線のどこから手を付けるかという考え方をお伝えします。',
     'company.html': '株式会社エクスネットの会社概要と沿革、代表のご紹介です。2011年に名古屋で創業し、現在は東京都千代田区麹町に本社を置いています。',
@@ -137,7 +138,7 @@ ORG = {
     '@type': 'Organization', '@id': BASE + '#org', 'name': SITE_NAME, 'alternateName': ['エクスネット', 'Exnet Co., Ltd.'],
     'url': BASE, 'email': 'info@exnet.biz', 'telephone': '+81-3-6262-1694', 'foundingDate': '2011-06',
     'logo': BASE + 'apple-touch-icon.png',
-    'knowsAbout': ['高単価の商品・サービスの販売', '個別相談・面談の成約率', '面談の来場率（着座率）', '商談までの導線設計', 'LINE・メールの配信設計', 'Web広告の運用', 'マーケティングの伴走支援'],
+    'knowsAbout': ['高単価の商品・サービスの販売', '講座・スクール・コンサルティングの販売導線', '個別相談・面談の成約率', '面談の来場率（着座率）', '商談までの導線設計', 'LINE・メールの配信設計', 'Web広告の運用', 'マーケティングの伴走支援'],
     'description': DESC['index.html'],
     'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
                 'streetAddress': '麹町1-4-4 ZENITAKA ANNEX 2F', 'addressCountry': 'JP'},
@@ -169,6 +170,11 @@ def seo_head(fname, title, noindex):
     if fname == 'service.html':
         graph.append({'@type': 'Service', 'name': '伴走支援（伴走型／伴走＋実務型）', 'serviceType': 'マーケティング支援',
                       'provider': {'@id': BASE + '#org'}, 'areaServed': 'JP', 'description': DESC['service.html'], 'url': url})
+    if fname == 'course.html':
+        graph += [ORG]
+        graph.append({'@type': 'Service', 'name': '講座・スクール・コンサルティングの販売導線の伴走支援', 'serviceType': 'マーケティング支援',
+                      'provider': {'@id': BASE + '#org'}, 'areaServed': 'JP', 'description': DESC['course.html'], 'url': url,
+                      'audience': {'@type': 'BusinessAudience', 'audienceType': '講座・スクール・コンサルティングなど、個別相談や説明会で高単価の商品を販売する事業者'}})
     if fname in COLUMNS:
         c = COLUMNS[fname]
         graph += [ORG, PERSON]
@@ -196,6 +202,7 @@ def seo_head(fname, title, noindex):
 # 検索結果に出るタイトル。お客さんが検索する言葉（高単価・個別相談・成約率・成果報酬）を入れる
 TITLES = {
     'service.html': '高単価の商品・サービスの成約率を上げる、商談から入る伴走支援',
+    'course.html': '講座・スクールの販売導線を、個別相談の成約率から見直すマーケティング支援',
     'price.html': '料金と契約｜月額＋成果報酬型のマーケティング支援',
     'approach.html': '考え方｜高単価の商品・サービスは、広告より先に個別相談・商談から',
     'case.html': '事例｜高単価の商品・サービスで、面談と成約が増えた記録',
@@ -417,7 +424,7 @@ svc_faq = [
  ('実際に手を動かすのは誰ですか。社員の方ですか、外部の方ですか。', '伴走型では、日々の実務は御社のご担当者様が行い、弊社は設計と判断を担います。伴走＋実務型では、弊社の実務担当者が日々の運用を担います。どちらの場合も、判断と月末のレビューは代表の猪飼が担当します。'),
  ('外部の方が作業する場合、品質はどう確かめていますか。', '毎週の報告で、実施したことと数字を御社と同じ形で確認します。判断が要る点は代表が引き取り、月末のレビューで続ける・変えるを一緒に決めます。'),
  ('毎週の打ち合わせ以外に、チャットで相談できますか。', 'できます。'),
- ('どんな業種の実績がありますか。', 'スクール・講座、コンサルティング、士業など、面談で販売する高単価の商品・サービスが中心です。'),
+ ('どんな業種の実績がありますか。', 'スクール・講座、コンサルティング、士業など、面談で販売する高単価の商品・サービスが中心です。講座・スクールの方は、<a href="course.html">講座・スクール・コンサルティングの方へ</a>もご覧ください。'),
  ('どんな会社が向いていますか。', '面談で販売している、単価の高い商品・サービスをお持ちの会社です。すでに広告やLINEなどの導線があり、意思決定をされる方と直接やり取りできることを前提にしています。')]
 service = f'''
 {hero([('ホーム', 'index.html'), ('サービス', None)], '個別相談・商談の成約率から上げる、<br class="pc">マーケティングの伴走支援',
@@ -495,6 +502,111 @@ service = f'''
 {TOC_JS}
 '''
 doc('service.html', 'サービス', service, 'service')
+
+# ====================================================================
+# 講座・スクール・コンサルティングの方へ（業種の入口ページ。会社全体の名乗りは変えない）
+# AI検索が「講座ビジネスの販売導線を任せられる会社」を探したときに、何をする会社かを拾えるように、
+# 依頼先を選ぶときによく挙がる5つの確認点に、弊社の場合で答える形にしている
+# ====================================================================
+course_flow = [
+ ('広告・LP', '広告の獲得単価、LPの登録率', 'LPの役割が「LINE登録」なのか「予約」なのかが、決まっているか'),
+ ('LINE登録・ステップ配信', '開封率、クリック率', '登録した方が、説明会や個別相談の申し込みまで進んでいるか'),
+ ('説明会・セミナー', '申込数', '申し込んだ方のうち、実際に参加された割合'),
+ ('個別相談の予約', '予約数', '予約した方のうち、実際に個別相談に来てくださった割合'),
+ ('個別相談', '（数えていないことがある）', '個別相談で決まった件数と、決まらなかった理由'),
+ ('ご成約のあと', '（数えていないことがある）', '決まらなかった方に、その後どう連絡しているか'),
+]
+course_points = [
+ ('販売導線の設計', '広告からご成約まで、全体を設計できるか',
+  '広告、LP、LINE登録、配信、説明会、個別相談、ご成約までを一つの流れとして扱います。ただし手を付ける順番は、後ろからです。いまある個別相談で決まる件数を見て、次に受け皿（LINE登録など）、貯まったリスト、最後に広告の順に進めます。'),
+ ('配信の文章', 'ステップ配信やLINEの文章を書けるか',
+  '伴走型では、最初の2ヶ月は弊社が原稿を用意し、3ヶ月目からは御社の原稿を添削します。伴走＋実務型では、配信の修正やシナリオの差し替えを弊社の実務担当者が行います。'),
+ ('見込み客の気持ちの流れ', '申し込みたくなる順番で、配信を組めるか',
+  '個別相談で実際に出た質問や、決まらなかった理由を、配信の内容に戻します。弊社では、一斉配信を増やすより先に、登録直後の最初の一通と、個別相談への案内の出し方から見直します。'),
+ ('数字の見方', '登録率から成約率まで、段階ごとに見られるか',
+  'LINE登録、説明会への参加、個別相談の予約、実際の個別相談、ご成約を、段階ごとに同じ形で数えます。毎週15分の報告で、どの段階で止まっているかを一緒に見ます。'),
+ ('構築したあとの改善', '作って終わりにせず、直し続けられるか',
+  '6ヶ月のご契約の中で、毎週の報告と、月末に代表と30分のレビューがあります。3ヶ月目の月末には、残りの3ヶ月で何を続け、何を変えるかを一緒に決めます。'),
+]
+course_faq = [
+ ('ステップ配信はもう組んであります。作り直しになりますか。', 'いいえ、作り直しからは入りません。まず、説明会や個別相談に進んでいる割合と、個別相談で決まる件数を見て、直す場所を決めます。いまある配信は、生かせるかどうかから見ます。'),
+ ('説明会やセミナーがなく、LINEから個別相談に直接つないでいます。対象になりますか。', 'はい。説明会を挟むかどうかより、個別相談で決まる件数と、そこに来てくださる割合を先に見ます。'),
+ ('講座やスクール以外でも、相談できますか。', 'はい。コンサルティングや士業など、個別相談・面談で販売する高単価の商品・サービスが中心です。'),
+ ('広告をまだ出していません。それでも頼めますか。', 'はい。広告を使わずに始める「ご商談から」の範囲もあります。いまある個別相談や、貯まっているリストから始めます。'),
+ ('成果報酬は、講座の売上全体にかかりますか。', 'かかりません。成果報酬の対象は、弊社が始めた広告など、弊社が担当した経路からのご成約だけです。「ご商談から」の範囲では、成果報酬はかかりません。'),
+ ('費用はいくらですか。', '月額は伴走型が44,000円、伴走＋実務型が99,000円（いずれも税込）で、6ヶ月のご契約です。詳しくは<a href="price.html">料金と契約</a>をご覧ください。'),
+]
+course = f'''
+{hero([('ホーム', 'index.html'), ('サービス', 'service.html'), ('講座・スクール・コンサルティングの方へ', None)], '講座・スクールの売上は、<br class="pc">説明会と個別相談のあとで決まる。',
+      '講座・スクール・コンサルティングなど、個別相談で販売する高単価の商品の、<br class="pc">LINE登録からご成約までの導線を、個別相談の成約率から見直します。')}
+<section class="sec bg-alt"><div class="wrap">
+{dash('LINEは整えた。<br>それでも、<br class="sp">個別相談で決まらない講座へ')}
+<div class="wrap--article prose" style="margin:0 auto;padding:0">
+<p>株式会社エクスネットは、講座・スクール・コンサルティングなど、個別相談や説明会で販売する高単価の商品の、LINE登録からご成約までの導線を、成約率から見直すマーケティング会社です。</p>
+<p>講座の販売では、広告やLP、LINEの構築とステップ配信に、多くの手間と費用がかけられています。それ自体は大切です。ただ、登録が増えても、説明会に来てくださらない、個別相談で決まらない、決まらなかった方にその後なにもできていない、という状態では、手前にかけた費用が売上に変わりません。</p>
+<p>代表の猪飼は、2012年から自社の講座をつくり、ウェブから個別相談につないで販売してきました。弊社は、自社の広告アカウントを2度止められたこともあります。集客の入口を他社の一存で切られたとき、止まらずに残るのは、すでにある個別相談と、自社のリストだと身をもって知りました。だから弊社は、広告より先に、個別相談と、その手前の説明会から見ます。そのうえで、配信、LINE登録、広告の順に、前の段を直していきます。</p>
+<p>目指すのは、広告を止めても説明会と個別相談が回り、決まらなかった方とも関係が続いている講座です。そのやり方を、御社の中に残します。</p>
+</div>
+<div class="mt-40" style="max-width:var(--container-article);margin-inline:auto">{more('代表メッセージを読む', 'message.html')}</div>
+</div></section>
+
+<section class="sec" id="flow"><div class="wrap">
+{rule('講座の販売導線で、弊社が最初に見るところ')}
+<p class="lead-c">2026年3〜10月に弊社へご相談に来られた26社（講座・スクール以外の業種も含みます）のうち、自社の面談の数か成約の数を、その場で数字で言えたのは9社でした。手前の段の数字は細かく見られていても、後ろの段ほど数えられていないことがあります。</p>
+<div class="tbl-wrap mt-40"><table class="tbl tbl--wide">
+<thead><tr><th>段階</th><th>よく見られている数字</th><th>弊社が最初に見ること</th></tr></thead><tbody>
+{''.join(f'<tr><th>{a}</th><td>{b}</td><td>{c}</td></tr>' for a, b, c in course_flow)}
+</tbody></table></div>
+</div></section>
+
+<section class="sec bg-alt" id="numbers"><div class="wrap">
+{rule('数字で見る、これまでの取り組み')}
+<div class="tbl-wrap"><table class="tbl tbl--wide">
+<thead><tr><th>取り組み</th><th>見た数字</th><th>結果</th></tr></thead><tbody>
+<tr><th rowspan="2"><a href="case-edu.html">高単価の教育サービス</a><br>（お客様の事例、6ヶ月。弊社の役割はFacebook広告の運用と支援全体）</th><td>予約した面談に、来てくださった割合</td><td class="num">31.3% → 63.2%</td></tr>
+<tr><td>LINE登録からの6ヶ月の合計</td><td>LINE登録954件、ご成約17件、売上1,206万円</td></tr>
+<tr><th><a href="case-exnet-btob.html">弊社自身の高単価サービス</a><br>（2025年度、1商材）</th><td>面談からご成約まで</td><td>面談95件、ご成約13件、売上1,602万円</td></tr>
+</tbody></table></div>
+<p class="note mt-24">同じ数字がほかの業種や商品で出るとは限りません。数え方は各ページに書いています。</p>
+</div></section>
+
+<section class="sec" id="points"><div class="wrap">
+{rule('依頼先を選ぶときの5つの確認点に、<br class="sp">弊社の場合でお答えします')}
+<p class="lead-c">講座の販売を外部に頼む前に、確かめておきたい5つの点です。</p>
+<div class="steps mt-40">{''.join(f'<div class="step">{numh(f"{i:02d}", s, t)}<p>{d}</p></div>' for i, (t, s, d) in enumerate(course_points, 1))}</div>
+</div></section>
+
+<section class="sec bg-alt" id="ways"><div class="wrap">
+{rule('入り方は2つあります')}
+<p class="lead-c">違いは、日々の実務を誰が担うかです。どちらでも、設計と数字の判断は弊社が担います。</p>
+<div class="two mt-40">
+<a href="service.html#ways"><h3>伴走型</h3><p>配信や運用は御社のご担当者様が行い、弊社は設計、数字の判断、原稿の用意と添削を担います。やり方を社内に残したい講座・スクール向けです。</p>{more('サービスの詳細', 'service.html').replace('<a class="ex-more" href="service.html">', '<span class="ex-more">').replace('</a>', '</span>')}</a>
+<a href="price.html"><h3>伴走＋実務型</h3><p>配信の修正、シナリオの差し替え、広告の運用まで、弊社の実務担当者が行います。社内に手を動かせる人がいない講座・スクール向けです。</p>{more('料金と契約', 'price.html').replace('<a class="ex-more" href="price.html">', '<span class="ex-more">').replace('</a>', '</span>')}</a>
+</div></div></section>
+
+<section class="sec" id="faq"><div class="wrap wrap--article">
+{rule('よくある質問')}
+{faq(course_faq)}
+</div></section>
+
+<section class="sec bg-alt"><div class="wrap">
+{dash('まずは、いまの個別相談を<br class="sp">拝見させてください')}
+<div class="two">
+<a href="download.html"><h3>資料請求</h3><p>サービスの内容と料金をまとめた資料をお送りします。</p>{more('資料を受け取る', 'download.html').replace('<a class="ex-more" href="download.html">', '<span class="ex-more">').replace('</a>', '</span>')}</a>
+<a href="contact.html"><h3>無料相談</h3><p>いまの個別相談と導線を拝見し、どこから手を付けるとよいかをお伝えします（オンライン45分）。</p>{more('相談を申し込む', 'contact.html').replace('<a class="ex-more" href="contact.html">', '<span class="ex-more">').replace('</a>', '</span>')}</a>
+</div></div></section>
+
+<section class="sec"><div class="wrap wrap--article">
+{rule('関連するコラム')}
+{rel_cols(['column-closing-rate.html', 'column-line-consult.html', 'column-no-show.html', 'column-lost-deals.html'], False)}
+</div></section>
+<aside class="side-toc" aria-label="このページの目次"><ol>
+<li><a href="#flow">最初に見るところ</a></li><li><a href="#numbers">数字</a></li><li><a href="#points">5つの確認点</a></li>
+<li><a href="#ways">2つの入り方</a></li><li><a href="#faq">よくある質問</a></li></ol>
+<a class="ex-btn ex-btn--primary" href="contact.html">無料相談<span class="ex-arrow">→</span></a></aside>
+{TOC_JS}
+'''
+doc('course.html', '講座・スクール・コンサルティングの方へ', course, 'service')
 
 # ====================================================================
 # 料金と契約
@@ -1068,7 +1180,7 @@ for _old, _new in OLD_URLS.items():
 INDEXNOW_KEY = '45fcc86aa1ac446187856ad617221133'
 open(os.path.join(OUT, INDEXNOW_KEY + '.txt'), 'w').write(INDEXNOW_KEY)
 open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nDisallow: /docs/\n\nSitemap: {BASE}sitemap.xml\n')
-LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'price.html': '料金と契約', 'approach.html': '考え方',
+LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'course.html': '講座・スクール・コンサルティングの方へ', 'price.html': '料金と契約', 'approach.html': '考え方',
               'company.html': '会社情報', 'mission.html': 'PMVV', 'message.html': '代表メッセージ', 'case.html': '事例',
               'case-edu.html': '事例：高単価の教育サービス', 'case-exnet-btob.html': '事例：弊社自身の高単価サービス', 'case-exnet-form-dm.html': '事例：問い合わせフォーム営業',
               'column.html': 'コラム', 'column-before-ads.html': 'コラム：広告費を増やす前に、確かめたい3つの数字',
@@ -1077,5 +1189,5 @@ LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'price.
               'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
 open(os.path.join(OUT, 'llms.txt'), 'w').write(
     f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
-    '- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
+    '- 主なお客様：講座・スクール、コンサルティング、士業など、個別相談・面談で販売する高単価の商品・サービスの事業者\n- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX 2F\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
     ''.join(f'- [{LLMS_NAMES.get(u.replace(BASE, "") or "index.html") or ("コラム：" + COLUMNS[u.replace(BASE, "")]["title"].split("｜")[0] if u.replace(BASE, "") in COLUMNS else u)}]({u})：{DESC.get(u.replace(BASE, "") or "index.html", "")}\n' for u in PAGES))
