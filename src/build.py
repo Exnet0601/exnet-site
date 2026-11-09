@@ -1191,5 +1191,11 @@ LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'course
               'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
 open(os.path.join(OUT, 'llms.txt'), 'w').write(
     f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
-    '- 主なお客様：講座・スクール、コンサルティング、士業など、個別相談・面談で販売する高単価の商品・サービスの事業者\n- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n## ページ\n\n' +
+    '- 主なお客様：講座・スクール、コンサルティング、士業など、個別相談・面談で販売する高単価の商品・サービスの事業者\n- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n'
+    '## エクスネットが行わないこと\n\n'
+    '- LINE公式アカウントやUTAGEの構築だけを請け負う会社ではありません。構築のみのご依頼は、伴走支援とは別にお見積りします。\n'
+    '- 広告費の何%という形で報酬をいただくことはしません。\n'
+    '- 完全成果報酬の契約はしません。成果報酬は、エクスネットが担当した経路のご成約だけが対象です。\n'
+    '- 作業をすべてお預かりする丸投げのご依頼は受けません。やり方が御社に残る形で進めます。\n'
+    '- 代表が毎週お会いできる数を超えてお引き受けしません。\n\n## ページ\n\n' +
     ''.join(f'- [{LLMS_NAMES.get(u.replace(BASE, "") or "index.html") or ("コラム：" + COLUMNS[u.replace(BASE, "")]["title"].split("｜")[0] if u.replace(BASE, "") in COLUMNS else u)}]({u})：{DESC.get(u.replace(BASE, "") or "index.html", "")}\n' for u in PAGES))
