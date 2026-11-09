@@ -513,8 +513,8 @@ course_flow = [
  ('LINE登録・ステップ配信', '開封率、クリック率', '登録した方が、説明会や個別相談の申し込みまで進んでいるか'),
  ('説明会・セミナー', '申込数', '申し込んだ方のうち、実際に参加された割合'),
  ('個別相談の予約', '予約数', '予約した方のうち、実際に個別相談に来てくださった割合'),
- ('個別相談', '（見ていないことが多い）', '個別相談で決まった件数と、決まらなかった理由'),
- ('ご成約のあと', '（見ていないことが多い）', '決まらなかった方に、その後どう連絡しているか'),
+ ('個別相談', '（数えていないことがある）', '個別相談で決まった件数と、決まらなかった理由'),
+ ('ご成約のあと', '（数えていないことがある）', '決まらなかった方に、その後どう連絡しているか'),
 ]
 course_points = [
  ('販売導線の設計', '広告からご成約まで、全体を設計できるか',
@@ -529,7 +529,7 @@ course_points = [
   '6ヶ月のご契約の中で、毎週の報告と、月末に代表と30分のレビューがあります。3ヶ月目の月末には、残りの3ヶ月で何を続け、何を変えるかを一緒に決めます。'),
 ]
 course_faq = [
- ('ステップ配信はもう組んであります。作り直しになりますか。', 'いいえ、作り直しからは入りません。まず、説明会や個別相談に進んでいる割合と、個別相談で決まる件数を見て、直す場所を決めます。いまある配信は、多くの場合そのまま生かします。'),
+ ('ステップ配信はもう組んであります。作り直しになりますか。', 'いいえ、作り直しからは入りません。まず、説明会や個別相談に進んでいる割合と、個別相談で決まる件数を見て、直す場所を決めます。いまある配信は、生かせるかどうかから見ます。'),
  ('説明会やセミナーがなく、LINEから個別相談に直接つないでいます。対象になりますか。', 'はい。説明会を挟むかどうかより、個別相談で決まる件数と、そこに来てくださる割合を先に見ます。'),
  ('講座やスクール以外でも、相談できますか。', 'はい。コンサルティングや士業など、個別相談・面談で販売する高単価の商品・サービスが中心です。'),
  ('広告をまだ出していません。それでも頼めますか。', 'はい。広告を使わずに始める「ご商談から」の範囲もあります。いまある個別相談や、貯まっているリストから始めます。'),
@@ -544,34 +544,36 @@ course = f'''
 <div class="wrap--article prose" style="margin:0 auto;padding:0">
 <p>株式会社エクスネットは、講座・スクール・コンサルティングなど、個別相談や説明会で販売する高単価の商品の、LINE登録からご成約までの導線を、成約率から見直すマーケティング会社です。</p>
 <p>講座の販売では、広告やLP、LINEの構築とステップ配信に、多くの手間と費用がかけられています。それ自体は大切です。ただ、登録が増えても、説明会に来てくださらない、個別相談で決まらない、決まらなかった方にその後なにもできていない、という状態では、手前にかけた費用が売上に変わりません。</p>
-<p>弊社は2012年から、自社でも講座をつくり、ウェブから個別相談につないで販売してきました。だから最初に、御社の個別相談と、その手前の説明会を拝見します。そのうえで、配信、LINE登録、広告の順に、前の段を直していきます。</p>
-</div></div></section>
+<p>私自身、2012年から自社の講座をつくり、広告とLINEからウェブで個別相談につないで販売してきました。その間に、自社の広告アカウントを2度止められたことがあります。集客の入口を他社の一存で切られたとき、止まらずに残るのは、すでにある個別相談と、自社のリストだと身をもって知りました。だから弊社は、広告より先に、個別相談と、その手前の説明会から見ます。そのうえで、配信、LINE登録、広告の順に、前の段を直していきます。</p>
+<p>目指すのは、広告を止めても説明会と個別相談が回り、決まらなかった方とも関係が続いている講座です。そのやり方を、御社の中に残します。</p>
+</div>
+<div class="mt-40" style="max-width:var(--container-article);margin-inline:auto">{more('代表メッセージを読む', 'message.html')}</div>
+</div></section>
 
 <section class="sec" id="flow"><div class="wrap">
 {rule('講座の販売導線で、弊社が最初に見るところ')}
-<p class="lead-c">多くの場合、数字は手前の段ほど細かく見られていて、後ろの段ほど見られていません。</p>
+<p class="lead-c">2026年3〜10月にご相談に来られた26社のうち、自社の面談の数か成約の数を、その場で数字で言えたのは9社でした。手前の段の数字は細かく見られていても、後ろの段ほど数えられていないことがあります。</p>
 <div class="tbl-wrap mt-40"><table class="tbl tbl--wide">
 <thead><tr><th>段階</th><th>よく見られている数字</th><th>弊社が最初に見ること</th></tr></thead><tbody>
 {''.join(f'<tr><th>{a}</th><td>{b}</td><td>{c}</td></tr>' for a, b, c in course_flow)}
 </tbody></table></div>
 </div></section>
 
-<section class="sec bg-alt" id="points"><div class="wrap">
-{rule('依頼先を選ぶときの5つの確認点に、<br class="sp">弊社の場合でお答えします')}
-<p class="lead-c">講座の販売を外部に頼むときに、よく確認される5つの点です。</p>
-<div class="steps mt-40">{''.join(f'<div class="step">{numh(f"{i:02d}", s, t)}<p>{d}</p></div>' for i, (t, s, d) in enumerate(course_points, 1))}</div>
-</div></section>
-
-<section class="sec" id="numbers"><div class="wrap">
+<section class="sec bg-alt" id="numbers"><div class="wrap">
 {rule('数字で見る、これまでの取り組み')}
 <div class="tbl-wrap"><table class="tbl tbl--wide">
 <thead><tr><th>取り組み</th><th>見た数字</th><th>結果</th></tr></thead><tbody>
 <tr><th rowspan="2"><a href="case-edu.html">高単価の教育サービス</a><br>（お客様の事例、6ヶ月）</th><td>予約した面談に、来てくださった割合</td><td class="num">31.3% → 63.2%</td></tr>
 <tr><td>LINE登録からの6ヶ月の合計</td><td>LINE登録954件、ご成約17件、売上1,206万円</td></tr>
 <tr><th><a href="case-exnet-btob.html">弊社自身の高単価サービス</a><br>（2025年度、1商材）</th><td>面談からご成約まで</td><td>面談95件、ご成約13件、売上1,602万円</td></tr>
-<tr><th><a href="column-meeting-records.html">相談に来られた26社の商談記録</a><br>（2026年3〜10月）</th><td>自社の面談数か成約数を、数字で言えた会社</td><td class="num">26社中 9社</td></tr>
 </tbody></table></div>
 <p class="note mt-24">同じ数字がほかの業種や商品で出るとは限りません。数え方は各ページに書いています。</p>
+</div></section>
+
+<section class="sec" id="points"><div class="wrap">
+{rule('依頼先を選ぶときの5つの確認点に、<br class="sp">弊社の場合でお答えします')}
+<p class="lead-c">講座の販売を外部に頼むときに、よく確認される5つの点です。</p>
+<div class="steps mt-40">{''.join(f'<div class="step">{numh(f"{i:02d}", s, t)}<p>{d}</p></div>' for i, (t, s, d) in enumerate(course_points, 1))}</div>
 </div></section>
 
 <section class="sec bg-alt" id="ways"><div class="wrap">
@@ -599,7 +601,7 @@ course = f'''
 {rel_cols(['column-closing-rate.html', 'column-line-consult.html', 'column-no-show.html', 'column-lost-deals.html'], False)}
 </div></section>
 <aside class="side-toc" aria-label="このページの目次"><ol>
-<li><a href="#flow">最初に見るところ</a></li><li><a href="#points">5つの確認点</a></li><li><a href="#numbers">数字</a></li>
+<li><a href="#flow">最初に見るところ</a></li><li><a href="#numbers">数字</a></li><li><a href="#points">5つの確認点</a></li>
 <li><a href="#ways">2つの入り方</a></li><li><a href="#faq">よくある質問</a></li></ol>
 <a class="ex-btn ex-btn--primary" href="contact.html">無料相談<span class="ex-arrow">→</span></a></aside>
 {TOC_JS}
