@@ -123,7 +123,7 @@ DESC = {
     'course.html': '講座・スクール・コンサルティングなど、個別相談で販売する高単価の商品の売上を、広告より先に、面談で決まる件数から見直す伴走支援です。ご相談に来られた26社のうち、面談の数か決まる件数を数字で答えられた会社は3社に1社でした。依頼先を選ぶときの5つの確認点にもお答えします。',
     'price.html': 'エクスネットの伴走支援の料金と契約条件です。月額、増えた売上にだけいただく成果報酬、契約期間、広告代理店の手数料との違いをまとめています。',
     'approach.html': '広告より先に商談を見る。エクスネットが、高単価の商品・サービスの売上を伸ばすときに、商談と導線のどこから手を付けるかという考え方をお伝えします。',
-    'company.html': '講座・スクール・コンサルティングを支援するマーケティング会社、株式会社エクスネットの会社概要と沿革、代表のご紹介です。2011年に名古屋で創業し、現在は東京都千代田区麹町に本社を置いています。',
+    'company.html': '講座・スクール・コンサルティング事業を支援するマーケティング会社、株式会社エクスネットの会社概要と沿革、代表のご紹介です。2011年に名古屋で創業し、現在は東京都千代田区麹町に本社を置いています。',
     'mission.html': 'エクスネットが何を大事にし、どう判断する会社か。広告を増やす前にいまある商談から見直す理由と、仕事で守っている4つの価値観をまとめています。',
     'message.html': '株式会社エクスネット代表取締役 猪飼智弘のメッセージです。広告より先に商談を見ると決めた理由を、自分の事業での失敗からお話しします。',
     'case.html': 'エクスネットのお客様の事例と、弊社自身の営業の数字です。面談に来てくださった割合など、商談側の数字を中心に掲載しています。',
@@ -221,7 +221,7 @@ def analytics(fname):
             f'\n<script>(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","{CLARITY_ID}");</script>')
 
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
-    full_title = 'エクスネット｜講座・スクール・コンサルティングを支援するマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
+    full_title = 'エクスネット｜講座・スクール・コンサルティング事業を支援するマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
     head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html')) +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
@@ -325,7 +325,7 @@ top = f'''
 <div class="fv2__main">
 <p class="fv2__voice">株式会社エクスネット</p>
 <h1 class="fv2__title">価値ある挑戦を<br>必要な人に届けるために</h1>
-<p class="fv2__lead"><span>2011年創業</span><br><span>講座・スクール・コンサルティングを</span><br class="pc"><span>支援するマーケティング会社</span></p>
+<p class="fv2__lead"><span>2011年創業</span><br><span>講座・スクール・コンサルティング事業を</span><br class="pc"><span>支援するマーケティング会社</span></p>
 <div class="fv2__cta"><a class="ex-btn ex-btn--secondary ex-btn--section" href="download.html">資料請求<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--primary ex-btn--section" href="contact.html">無料相談（45分）<span class="ex-arrow">→</span></a></div>
 </div>
 <aside class="fv2__who" aria-label="伴走する人">
