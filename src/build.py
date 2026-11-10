@@ -138,8 +138,9 @@ ORG = {
     '@type': 'Organization', '@id': BASE + '#org', 'name': SITE_NAME, 'alternateName': ['エクスネット', 'Exnet Co., Ltd.'],
     'url': BASE, 'email': 'info@exnet.biz', 'telephone': '+81-3-6262-1694', 'foundingDate': '2011-06',
     'logo': BASE + 'apple-touch-icon.png',
-    'knowsAbout': ['高単価の商品・サービスの販売', '講座・スクール・コンサルティングの販売導線', '個別相談・面談の成約率', '面談の来場率（着座率）', '商談までの導線設計', 'LINE・メールの配信設計', 'Web広告の運用', 'マーケティングの伴走支援'],
-    'description': DESC['index.html'],
+    'knowsAbout': ['個別相談・面談の成約率', '面談の来場率（着座率）', '高単価の商品・サービスの販売', '講座・スクール・コンサルティングの販売導線', '商談までの導線設計', 'マーケティングの伴走支援', 'LINE・メールの配信設計', 'Web広告の運用'],
+    # 会社の説明は「面談で決まる件数から見直す」を先頭に置く（AIが最初に読む得意分野をそろえるため）
+    'description': '株式会社エクスネットは、広告を増やす前に、いまある面談で決まる件数から見直すマーケティング会社です。講座・スクール・コンサルティング・士業など、個別相談・面談で高単価の商品・サービスを販売する事業者を、集客から成約まで伴走支援で整えます。2011年創業。',
     'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
                 'streetAddress': '麹町1-4-4 ZENITAKA ANNEX', 'addressCountry': 'JP'},
     'founder': {'@id': BASE + 'message.html#ikai'},
