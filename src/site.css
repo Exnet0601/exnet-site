@@ -466,6 +466,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .cards { grid-template-columns: 1fr; gap: var(--space-54); }
   .ex-article .h-ov { margin-top: var(--space-40); }
   .ex-article .seebox { padding: var(--space-20) var(--space-16); }
+  /* 記事内の表：見出し行と本文行を1つの表のまま組み、列幅をそろえる。画面幅に収めて折り返す */
+  .ex-article table { display: table; overflow: visible; }
+  .ex-article table tbody { display: table-row-group; min-width: 0; }
+  .ex-article th, .ex-article td { padding: var(--space-16) var(--space-10); }
   .ex-article .tbl-ov { display: table; border-bottom: 1px solid var(--line); }
   .ex-article .tbl-ov tbody { display: block; min-width: 0; }
   .ex-article .tbl-ov tr { display: block; border-top: 1px solid var(--line); }
