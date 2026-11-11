@@ -224,7 +224,7 @@ def analytics(fname):
 
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     full_title = 'エクスネット｜講座・スクール・コンサルティング事業を支援するマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
-    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html', 'sheet.html')) +
+    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html')) +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
     if lp:
@@ -301,6 +301,12 @@ def fig_change(before, after, unit, label):
             f'<div class="is-after"><b>{after}<small>{unit}</small></b><span>期間中</span></div></div><p class="fig__foot">{label}</p></figure>')
 FUN_BTOB = [('125', '件', '面談の予約'), ('95', '件', '面談'), ('13', '件', 'ご成約')]
 
+def toolbar(on_alt=False):
+    """商談歩留まり試算ツールへの案内（トップ・サービス・コラム）"""
+    return (f'<div class="ex-dlbar ex-dlbar--tool{" ex-dlbar--on-alt" if on_alt else ""}"><div><h3>いまの面談の取りこぼしを、<wbr>金額で見てみる</h3>'
+            '<p>予約・面談・ご成約の数と平均単価を入れると、段階ごとの歩留まりが出ます。登録は不要です。</p></div>'
+            '<a class="ex-btn ex-btn--secondary" href="sheet.html">商談歩留まり試算ツール<span class="ex-arrow">→</span></a></div>')
+
 def dlbar():
     return ('<div class="ex-dlbar"><div><h3>サービスの内容と料金を、資料でご覧いただけます</h3><p>進め方、2つの入り方、料金と契約の条件をまとめています。</p></div>'
             '<a class="ex-btn ex-btn--primary" href="download.html">資料をダウンロード<span class="ex-arrow">→</span></a></div>')
@@ -332,7 +338,7 @@ top = f'''
 <p class="fv4__name">株式会社エクスネット</p>
 <p class="fv4__lead"><span>2011年創業</span><br><span>講座・スクール・コンサルティング事業を</span><span>支援するマーケティング会社</span></p>
 <div class="fv4__cta"><a class="ex-btn ex-btn--secondary ex-btn--section" href="download.html">資料請求<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--primary ex-btn--section" href="contact.html">無料相談（45分）<span class="ex-arrow">→</span></a></div>
-<div class="fv4__more">{more('代表メッセージを読む', 'message.html')}</div>
+<div class="fv4__more">{more('商談歩留まり試算ツール', 'sheet.html')}{more('代表メッセージを読む', 'message.html')}</div>
 </div>
 </div>
 <div class="fv__band"><div class="wrap wrap--fv"><nav class="entry" aria-label="入口">
@@ -355,6 +361,7 @@ top = f'''
 </div>
 <p class="panel-note note">料金と契約の条件は、すべて公開しています。<a class="ex-ul" href="price.html">料金と契約を見る</a></p>
 <div class="btn-row">{btn('サービスを見る', 'service.html', 'primary', 'ex-btn--section')}</div>
+<div class="mt-64">{toolbar()}</div>
 </div></section>
 
 <section class="sec"><div class="wrap">
@@ -434,7 +441,8 @@ service = f'''
 {dash('集客の前に、<br>いまある商談を見直します')}
 <div class="wrap--article prose" style="margin:0 auto;padding:0">
 <p>すでに月に何件もの面談があるなら、広告を増やすより先に、その面談で決まる件数を増やすほうが売上は早く動きます。だから最初に、いまある商談を一緒に見直します。そのうえで受け皿をつくり、貯まったリストに働きかけ、最後に広告で面談の数そのものを増やします。</p>
-</div></div></section>
+</div>
+<div class="mt-64">{toolbar(True)}</div></div></section>
 
 <section class="sec" id="issues"><div class="wrap">
 {rule('こんなことは、ありませんか')}
@@ -611,7 +619,7 @@ course = f'''
 '''
 doc('course.html', '講座・スクール・コンサルティングの方へ', course, 'service')
 
-# ── 商談歩留まり試算ツール（11-11 試作。2社に試してもらうまで noindex、サイトマップ・llms.txt にも出さない） ──
+# ── 商談歩留まり試算ツール（11-11 公開。トップ・サービス・コラムから案内する） ──
 # 計算はすべてブラウザの中だけ。数字は送信も保存もしない（GA4 にはイベント名だけ送る）
 DESC['sheet.html'] = '面談の予約数、実施数、成約数と平均単価から、予約から成約までの各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要です。'
 TITLES['sheet.html'] = '商談歩留まり試算ツール｜予約から成約までの取りこぼしを、金額で把握する'
@@ -1305,6 +1313,7 @@ def column(fname, title, date, lead, answer, secs, links, desc, faqs=(), updated
 <div class="seebox col-answer"><div class="seebox__h">先に結論</div><p>{answer}</p></div>
 {''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') and not p.startswith(('<b>', '<strong>')) else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
 {('<h2>よくある質問</h2>' + faq(faqs)) if faqs else ''}
+<div class="mt-64">{toolbar()}</div>
 {AUTHOR_BOX}
 <div class="end-links">{''.join(more(l, h) for l, h in links)}</div>
 </div></div></div>
@@ -1351,7 +1360,7 @@ open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nDisa
 LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'course.html': '講座・スクール・コンサルティングの方へ', 'price.html': '料金と契約', 'approach.html': '考え方',
               'company.html': '会社情報', 'mission.html': 'PMVV', 'message.html': '代表メッセージ', 'case.html': '事例',
               'case-edu.html': '事例：高単価の教育サービス', 'case-exnet-btob.html': '事例：弊社自身の高単価サービス', 'case-exnet-form-dm.html': '事例：問い合わせフォーム営業',
-              'column.html': 'コラム', 'column-before-ads.html': 'コラム：広告費を増やす前に、確かめたい3つの数字',
+              'sheet.html': '商談歩留まり試算ツール', 'column.html': 'コラム', 'column-before-ads.html': 'コラム：広告費を増やす前に、確かめたい3つの数字',
               'column-ad-fee.html': 'コラム：広告代理店の手数料と成果報酬の違い', 'column-lost-deals.html': 'コラム：決まらなかったお客様へのご連絡', 'column-platform-risk.html': 'コラム：広告やLINEが止まったときの備え', 'column-outsourcing.html': 'コラム：マーケティングの丸投げがうまくいかない理由',
               'column-no-show.html': 'コラム：予約した面談に来てもらえないとき', 'column-line-consult.html': 'コラム：LINEから個別相談の申し込みが来ないとき', 'column-cost-per-meeting.html': 'コラム：広告を面談1件あたりの広告費で見る',
               'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
