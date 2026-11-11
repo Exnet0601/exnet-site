@@ -611,10 +611,10 @@ course = f'''
 '''
 doc('course.html', '講座・スクール・コンサルティングの方へ', course, 'service')
 
-# ── 商談の歩留まり試算ツール（11-11 試作。2社に試してもらうまで noindex、サイトマップ・llms.txt にも出さない） ──
+# ── 商談歩留まり試算ツール（11-11 試作。2社に試してもらうまで noindex、サイトマップ・llms.txt にも出さない） ──
 # 計算はすべてブラウザの中だけ。数字は送信も保存もしない（GA4 にはイベント名だけ送る）
 DESC['sheet.html'] = '面談の予約数、実施数、成約数と平均単価から、予約から成約までの各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要です。'
-TITLES['sheet.html'] = '商談の歩留まり試算ツール｜予約から成約までの取りこぼしを、金額で把握する'
+TITLES['sheet.html'] = '商談歩留まり試算ツール｜予約から成約までの取りこぼしを、金額で把握する'
 SHEET_FIELDS = [  # id, ラベル, 数え方, 例（弊社2025年度・事例ページと同じ数字）, 必須
  ('s-book', '面談の予約数', '予約カレンダーに入った件数', '125', True),
  ('s-meet', '実際に面談した数', 'Zoomの履歴や、接客の記録', '95', True),
@@ -636,12 +636,12 @@ def sheet_q(n, name, q):
             f'<label><input type="radio" name="{name}" value="yes"> はい</label><label><input type="radio" name="{name}" value="no"> いいえ</label></fieldset>')
 
 sheet = f'''
-<section class="ex-phead sheet-hero"><div class="wrap--header">{crumb([('ホーム', 'index.html'), ('商談の歩留まり試算ツール', None)])}</div>
+<section class="ex-phead sheet-hero"><div class="wrap--header">{crumb([('ホーム', 'index.html'), ('商談歩留まり試算ツール', None)])}</div>
 <div class="ex-phead__body sheet-hero__body">
 <p class="sheet-hero__eyebrow">予約から成約までの取りこぼしを、金額で把握する</p>
-<h1 class="sheet-hero__name">商談の歩留まり<wbr>試算ツール</h1>
+<h1 class="sheet-hero__name">商談歩留まり<wbr>試算ツール</h1>
 <figure class="sheet-mock" role="img" aria-label="試算画面のイメージ。予約125件、面談95件、成約13件の棒グラフと、取りこぼし30件・82件、面談の実施率76.0%、成約率13.7%、成約率が1ポイント上がると約117万円増えることを示す">
-<div class="sheet-mock__top"><i></i><i></i><i></i><span>商談の歩留まり試算ツール</span><em>サンプル</em></div>
+<div class="sheet-mock__top"><i></i><i></i><i></i><span>商談歩留まり試算ツール</span><em>サンプル</em></div>
 <div class="sheet-mock__body">
 <div class="sheet-mock__chart"><p class="sheet-mock__h">段階別の件数</p>
 <svg viewBox="0 0 420 250" aria-hidden="true">
@@ -760,7 +760,7 @@ var r={noshow:noshow.toLocaleString('ja-JP'),lost:lost.toLocaleString('ja-JP'),p
 Object.keys(r).forEach(function(k){all('[data-r="'+k+'"]').forEach(function(n){n.textContent=r[k]})});
 $('[data-r-row="ad"]').hidden=!ad;
 $('[data-r="firstLink"]').innerHTML='<a class="ex-more" href="'+fs[1]+'">'+fs[2]+'<span class="ex-circle" aria-hidden="true"></span></a>';
-last=['商談の歩留まり試算ツールの結果','入れた数字：予約 '+b+'件／面談 '+m+'件／ご成約 '+w+'件／平均単価 '+Math.round(p).toLocaleString('ja-JP')+'円'+(ad?'／広告費 '+Math.round(ad).toLocaleString('ja-JP')+'円':''),
+last=['商談歩留まり試算ツールの結果','入れた数字：予約 '+b+'件／面談 '+m+'件／ご成約 '+w+'件／平均単価 '+Math.round(p).toLocaleString('ja-JP')+'円'+(ad?'／広告費 '+Math.round(ad).toLocaleString('ja-JP')+'円':''),
 '・面談の実施率：'+r.showRate,'・面談の成約率：'+r.winRate,'・売上：'+r.sales,'・面談1件が生む売上：'+r.perMeet,(ad?'・面談1件あたりの広告費：'+r.adPer:null),
 '・面談に至らなかった予約：'+r.noshow+'件（1件あたりの売上機会 '+r.perMeet+'）','・成約に至らなかった面談：'+r.lost+'件（成約率が1ポイント上がると '+r.up+'）','最初に試す1つ：'+fs[0],'https://exnet.biz/sheet.html'].filter(Boolean).join('\\n');
 var res=$('[data-sheet-result]');res.hidden=false;$('[data-sheet-copied]').textContent='';res.scrollIntoView({behavior:'smooth',block:'start'});ev('sheet_calc');});
@@ -771,7 +771,7 @@ all('[data-sheet-to-contact]').forEach(function(a){a.addEventListener('click',fu
 })();
 </script>'''
 SHEET_JS = SHEET_JS.replace('<span class="ex-circle" aria-hidden="true"></span>', circle())
-doc('sheet.html', '商談の歩留まり試算ツール', sheet, extra_js=SHEET_JS)
+doc('sheet.html', '商談歩留まり試算ツール', sheet, extra_js=SHEET_JS)
 
 # ====================================================================
 # 料金と契約
@@ -1179,7 +1179,7 @@ contact = f'''<div class="lp">
 <p>お名前などをご入力のうえ、日時を選んでお申し込みください。その場で日程が決まります。</p>
 <h2>45分の流れ</h2>
 <ul class="list-dash"><li>0〜10分：予約・面談・ご成約の数字を一緒に確かめます</li><li>10〜30分：取りこぼしの多い段階の中身を見ます（予約後の連絡文、面談の流れなど）</li><li>30〜40分：最初に試すことを1つと、来月の数え方を決めます</li><li>40〜45分：弊社の支援が合うかどうかをお伝えします</li></ul>
-<p class="note">数字は、<a class="ex-ul" href="sheet.html">商談の歩留まり試算ツール</a>で先に出しておくこともできます。</p>
+<p class="note">数字は、<a class="ex-ul" href="sheet.html">商談歩留まり試算ツール</a>で先に出しておくこともできます。</p>
 <p class="note">事前にご用意いただけると助かるもの：直近のご商談の録画、トークスクリプト、提案資料のいずれか1つ。なくてもご相談いただけます。</p>
 <h2>別の窓口</h2><p style="margin-top:var(--space-8)">まずは資料で確かめたい方は</p>{more('資料請求へ', 'download.html')}
 <p class="note">その他のお問い合わせ（取材・協業など）：<a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></p>
