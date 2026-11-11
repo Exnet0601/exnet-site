@@ -640,16 +640,12 @@ sheet = f'''
 <div class="ex-phead__body sheet-hero__body">
 <p class="sheet-hero__eyebrow">予約から成約までの取りこぼしを、金額で把握する</p>
 <h1 class="sheet-hero__name">商談の歩留まり試算</h1>
-<figure class="sheet-vis" role="img" aria-label="試算結果の例。予約125件、面談95件、成約13件。面談に至らなかった予約30件は1件あたり約16.9万円、成約に至らなかった面談82件は1件あたり約123万円の売上機会">
-<div class="sheet-vis__bar"><span>試算結果</span><span>例：弊社 2025年度</span></div>
-<ol class="sheet-vis__flow">
-<li><span>予約</span><b>125<small>件</small></b></li>
-<li class="sheet-vis__drop"><b>−30<small>件</small></b><span>1件 約16.9万円</span></li>
-<li><span>面談</span><b>95<small>件</small></b></li>
-<li class="sheet-vis__drop"><b>−82<small>件</small></b><span>1件 約123万円</span></li>
-<li class="is-end"><span>成約</span><b>13<small>件</small></b></li>
-</ol>
-<div class="sheet-vis__rates"><span>面談の実施率 <b>76.0%</b></span><span>面談の成約率 <b>13.7%</b></span></div>
+<figure class="sheet-dg" role="img" aria-label="試算の仕組み。予約数から面談数、面談数から成約数へと段階ごとに減る。面談に至らなかった予約の件数に面談1件が生む売上を掛け、成約に至らなかった面談の件数に平均単価を掛けて、取りこぼしを金額にする">
+<div class="sheet-dg__row"><div class="sheet-dg__stage" style="--w:100%"><span>予約数</span></div><div class="sheet-dg__note"></div></div>
+<div class="sheet-dg__row sheet-dg__row--gap"><div class="sheet-dg__step"><span>実施率</span></div><div class="sheet-dg__note"><b>取りこぼし①</b><span>面談に至らなかった予約</span><em>（予約数 − 面談数）× 面談1件が生む売上</em></div></div>
+<div class="sheet-dg__row"><div class="sheet-dg__stage" style="--w:76%"><span>面談数</span></div><div class="sheet-dg__note"></div></div>
+<div class="sheet-dg__row sheet-dg__row--gap"><div class="sheet-dg__step"><span>成約率</span></div><div class="sheet-dg__note"><b>取りこぼし②</b><span>成約に至らなかった面談</span><em>（面談数 − 成約数）× 平均単価</em></div></div>
+<div class="sheet-dg__row"><div class="sheet-dg__stage sheet-dg__stage--end" style="--w:40%"><span>成約数</span></div><div class="sheet-dg__note sheet-dg__note--sum"><b>売上</b><em>成約数 × 平均単価</em></div></div>
 </figure>
 <p class="sheet-hero__lead">面談の予約数、実施数、成約数と平均単価から、各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要。入力した数値は、送信も保存もされません。</p>
 <div class="ex-phead__cta"><a class="ex-btn ex-btn--primary" href="#input">試算する<span class="ex-arrow">→</span></a></div>
