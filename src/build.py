@@ -90,8 +90,7 @@ FOOTER = f'''<footer class="foot"><div class="wrap wrap--foot">
 <div><h4>お問い合わせ</h4><ul><li><a class="ex-ul" href="download.html">資料請求</a></li><li><a class="ex-ul" href="contact.html">無料相談</a></li></ul></div>
 </div></div>
 <div class="foot__legal"><a class="ex-ul" href="privacy.html">プライバシーポリシー</a><span>© Exnet Co., Ltd.</span></div>
-</div></footer>
-<a class="to-top" href="#top" aria-label="ページの先頭へ">{ARROW}</a>'''
+</div></footer>'''
 
 MENU_JS = '''<script>
 (function(){var m=document.getElementById('mmenu'),o=document.getElementById('menu-open'),c=document.getElementById('menu-close');
