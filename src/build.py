@@ -338,7 +338,7 @@ top = f'''
 <p class="fv4__name">株式会社エクスネット</p>
 <p class="fv4__lead"><span>2011年創業</span><br><span>講座・スクール・コンサルティング事業を</span><span>支援するマーケティング会社</span></p>
 <div class="fv4__cta"><a class="ex-btn ex-btn--secondary ex-btn--section" href="download.html">資料請求<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--primary ex-btn--section" href="contact.html">無料相談（45分）<span class="ex-arrow">→</span></a></div>
-<div class="fv4__more">{more('商談歩留まり試算ツール', 'sheet.html')}{more('代表メッセージを読む', 'message.html')}</div>
+<div class="fv4__more">{more('商談歩留まり試算ツール', 'sheet.html')}</div>
 </div>
 </div>
 <div class="fv__band"><div class="wrap wrap--fv"><nav class="entry" aria-label="入口">
