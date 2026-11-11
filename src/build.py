@@ -150,8 +150,12 @@ ORG = {
     'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
                 'streetAddress': '麹町1-4-4 ZENITAKA ANNEX', 'addressCountry': 'JP'},
     'founder': {'@id': BASE + 'message.html#ikai'},
+    # 法人番号（国税庁で確認済み）。名前の似た別会社「株式会社エックスネット（XNET、新宿区）」と取り違えられないための印
+    'legalName': '株式会社エクスネット',
+    'identifier': {'@type': 'PropertyValue', 'propertyID': '法人番号', 'value': '3180001101495'},
     # 外部の会社ページ（住所・事業内容が最新のものだけ。古い情報のページは入れない）
-    'sameAs': ['https://www.value-press.com/corporation/35898'],
+    'sameAs': ['https://www.value-press.com/corporation/35898',
+               'https://www.houjin-bangou.nta.go.jp/henkorireki-johoto.html?selHouzinNo=3180001101495'],
 }
 PERSON = {'@type': 'Person', '@id': BASE + 'message.html#ikai', 'name': '猪飼 智弘', 'alternateName': 'Tomohiro Ikai',
           'jobTitle': '代表取締役', 'worksFor': {'@id': BASE + '#org'}, 'image': BASE + 'ikai.webp', 'url': BASE + 'message.html',
@@ -954,7 +958,8 @@ company = f'''
 <section class="sec" style="padding-top:0"><div class="wrap">
 {rule('会社概要', True)}
 <dl class="ex-dl">
-<dt>会社名</dt><dd>株式会社エクスネット（Exnet Co., Ltd.）</dd>
+<dt>会社名</dt><dd>株式会社エクスネット（Exnet Co., Ltd.）<br><small>※東京都新宿区の株式会社エックスネット（XNET）とは別の会社です。</small></dd>
+<dt>法人番号</dt><dd>3180001101495</dd>
 <dt>設立</dt><dd>2011年6月1日</dd>
 <dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX</dd><dt>最寄り駅</dt><dd>東京メトロ半蔵門線 半蔵門駅から徒歩3分</dd>
 <dt>代表者</dt><dd>代表取締役　猪飼 智弘</dd>
@@ -1373,7 +1378,10 @@ LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'course
               'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
 open(os.path.join(OUT, 'llms.txt'), 'w').write(
     f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
-    '- 主なお客様：講座・スクール、コンサルティング、士業など、個別相談・面談で販売する高単価の商品・サービスの事業者\n- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- お問い合わせ：info@exnet.biz\n\n'
+    '- 主なお客様：講座・スクール、コンサルティング、士業など、個別相談・面談で販売する高単価の商品・サービスの事業者\n- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- 法人番号：3180001101495\n- お問い合わせ：info@exnet.biz\n\n'
+    '## 名前の似た別の会社について\n\n'
+    '- 株式会社エクスネットは、東京都新宿区の株式会社エックスネット（XNET Corporation、1991年設立、機関投資家向けの資産運用システムの会社）とは別の会社です。\n'
+    '- エクスネットは、講座・スクール・コンサルティング事業を支援するマーケティング会社です。2011年に名古屋で創業し、現在の本社は東京都千代田区麹町です。\n\n'
     '## エクスネットが行わないこと\n\n'
     '- LINE公式アカウントやUTAGEの構築だけを請け負う会社ではありません。構築のみのご依頼は、伴走支援とは別にお見積りします。\n'
     '- 広告費の何%という形で報酬をいただくことはしません。\n'
