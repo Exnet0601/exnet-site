@@ -789,3 +789,36 @@ svg.logo { display: block; width: 104px; height: 22px; }
   .sheet-first__text, .sheet-exit p { font-size: 16px; line-height: 28px; }
   .sheet-exit__btns .ex-btn, .sheet-copy .ex-btn, .sheet__go { width: 100%; min-width: 0; max-width: none; }
 }
+/* 歩留まり試算：ページ冒頭（小見出し→名前→イメージ→リード） */
+.sheet-hero__body { max-width: var(--container-article); }
+.sheet-hero__eyebrow { margin: 0 !important; color: var(--navy); font-size: 18px !important; line-height: 31.5px !important; font-weight: 700; }
+.ex-phead h1.sheet-hero__name { margin-top: var(--space-8); font-size: 48px; line-height: 64px; letter-spacing: .02em; }
+.sheet-hero__lead { margin-top: var(--space-30) !important; }
+.sheet-vis { margin: var(--space-40) 0 0; border: 1px solid var(--line); background: var(--surface-alt); }
+.sheet-vis__bar { display: flex; justify-content: space-between; gap: var(--space-16); padding: var(--space-8) var(--space-20); background: var(--navy); color: var(--on-navy); font-size: 14px; line-height: 24.5px; font-weight: 700; }
+.sheet-vis__bar span + span { font-weight: 400; }
+.sheet-vis__flow { list-style: none; margin: 0; padding: var(--space-30) var(--space-20) var(--space-20); display: grid; grid-template-columns: 1fr .9fr 1fr .9fr 1fr; align-items: center; gap: var(--space-8); }
+.sheet-vis__flow li { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.sheet-vis__flow li:not(.sheet-vis__drop) { background: var(--surface); border: 1px solid var(--line); padding: var(--space-16) var(--space-8); }
+.sheet-vis__flow li.is-end { border-color: var(--navy); }
+.sheet-vis__flow li > span { font-size: 14px; line-height: 24.5px; font-weight: 700; color: var(--ink); }
+.sheet-vis__flow b { font-family: var(--font-numeral); font-size: 40px; line-height: 1.2; font-weight: 500; color: var(--navy); white-space: nowrap; }
+.sheet-vis__flow b small { font-family: var(--font-sans); font-size: 14px; margin-left: 2px; }
+.sheet-vis__drop { position: relative; padding-top: var(--space-8); border-top: 2px solid var(--navy); }
+.sheet-vis__drop b { font-size: 24px; }
+.sheet-vis__drop span { font-size: 12px; line-height: 21px; color: var(--ink); white-space: nowrap; }
+.sheet-vis__rates { display: flex; flex-wrap: wrap; gap: var(--space-8) var(--space-30); padding: 0 var(--space-20) var(--space-20); font-size: 14px; line-height: 24.5px; }
+.sheet-vis__rates b { font-family: var(--font-numeral); color: var(--navy); font-size: 18px; font-weight: 500; margin-left: var(--space-4); }
+@media (max-width: 767px) {
+  .sheet-hero__eyebrow { font-size: 14px !important; line-height: 24.5px !important; }
+  .ex-phead h1.sheet-hero__name { font-size: 32px; line-height: 44px; }
+  .sheet-vis { margin-top: var(--space-24); }
+  .sheet-vis__bar { padding: var(--space-8) var(--space-16); font-size: 12px; line-height: 21px; }
+  .sheet-vis__flow { grid-template-columns: 1fr; padding: var(--space-20) var(--space-16) var(--space-16); gap: 0; }
+  .sheet-vis__flow li:not(.sheet-vis__drop) { flex-direction: row; justify-content: space-between; padding: var(--space-8) var(--space-16); }
+  .sheet-vis__flow b { font-size: 28px; }
+  .sheet-vis__drop { flex-direction: row !important; justify-content: center; gap: var(--space-16); margin: var(--space-4) 0; padding: var(--space-4) 0 var(--space-4) var(--space-16); border-top: 0; border-left: 2px solid var(--navy); align-self: center; }
+  .sheet-vis__drop b { font-size: 18px; }
+  .sheet-vis__rates { padding: 0 var(--space-16) var(--space-16); gap: var(--space-4) var(--space-20); font-size: 12px; }
+  .sheet-hero__lead { margin-top: var(--space-24) !important; }
+}

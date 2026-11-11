@@ -636,8 +636,24 @@ def sheet_q(n, name, q):
             f'<label><input type="radio" name="{name}" value="yes"> はい</label><label><input type="radio" name="{name}" value="no"> いいえ</label></fieldset>')
 
 sheet = f'''
-{phead([('ホーム', 'index.html'), ('商談の歩留まり試算', None)], '商談の歩留まり試算', '予約から成約までの取りこぼしを、<br class="pc">金額で把握する',
-       '面談の予約数、実施数、成約数と平均単価から、各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要です。入力した数値は、送信も保存もされません。', False)}
+<section class="ex-phead sheet-hero"><div class="wrap--header">{crumb([('ホーム', 'index.html'), ('商談の歩留まり試算', None)])}</div>
+<div class="ex-phead__body sheet-hero__body">
+<p class="sheet-hero__eyebrow">予約から成約までの取りこぼしを、金額で把握する</p>
+<h1 class="sheet-hero__name">商談の歩留まり試算</h1>
+<figure class="sheet-vis" role="img" aria-label="試算結果の例。予約125件、面談95件、成約13件。面談に至らなかった予約30件は1件あたり約16.9万円、成約に至らなかった面談82件は1件あたり約123万円の売上機会">
+<div class="sheet-vis__bar"><span>試算結果</span><span>例：弊社 2025年度</span></div>
+<ol class="sheet-vis__flow">
+<li><span>予約</span><b>125<small>件</small></b></li>
+<li class="sheet-vis__drop"><b>−30<small>件</small></b><span>1件 約16.9万円</span></li>
+<li><span>面談</span><b>95<small>件</small></b></li>
+<li class="sheet-vis__drop"><b>−82<small>件</small></b><span>1件 約123万円</span></li>
+<li class="is-end"><span>成約</span><b>13<small>件</small></b></li>
+</ol>
+<div class="sheet-vis__rates"><span>面談の実施率 <b>76.0%</b></span><span>面談の成約率 <b>13.7%</b></span></div>
+</figure>
+<p class="sheet-hero__lead">面談の予約数、実施数、成約数と平均単価から、各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要。入力した数値は、送信も保存もされません。</p>
+<div class="ex-phead__cta"><a class="ex-btn ex-btn--primary" href="#input">試算する<span class="ex-arrow">→</span></a></div>
+</div></section>
 
 <section class="sec" id="input"><div class="wrap wrap--article">
 <form class="sheet" data-sheet novalidate>
