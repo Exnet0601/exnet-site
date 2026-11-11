@@ -611,10 +611,10 @@ course = f'''
 '''
 doc('course.html', '講座・スクール・コンサルティングの方へ', course, 'service')
 
-# ── 面談の3つの数字シート（11-11 試作。2社に試してもらうまで noindex、サイトマップ・llms.txt にも出さない） ──
+# ── 商談の歩留まり試算（11-11 試作。2社に試してもらうまで noindex、サイトマップ・llms.txt にも出さない） ──
 # 計算はすべてブラウザの中だけ。数字は送信も保存もしない（GA4 にはイベント名だけ送る）
-DESC['sheet.html'] = '面談の予約数、実際に面談した数、ご成約数、平均単価を入れると、どこで何人がこぼれ、その1人がいくらの売上にあたるかが分かります。登録は要りません。'
-TITLES['sheet.html'] = '面談の3つの数字シート｜予約・面談・ご成約から、こぼれている人数を数える'
+DESC['sheet.html'] = '面談の予約数、実施数、成約数と平均単価から、予約から成約までの各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要です。'
+TITLES['sheet.html'] = '商談の歩留まり試算｜予約から成約までの取りこぼしを、金額で把握する'
 SHEET_FIELDS = [  # id, ラベル, 数え方, 例（弊社2025年度・事例ページと同じ数字）, 必須
  ('s-book', '面談の予約数', '予約カレンダーに入った件数', '125', True),
  ('s-meet', '実際に面談した数', 'Zoomの履歴や、接客の記録', '95', True),
@@ -636,8 +636,8 @@ def sheet_q(n, name, q):
             f'<label><input type="radio" name="{name}" value="yes"> はい</label><label><input type="radio" name="{name}" value="no"> いいえ</label></fieldset>')
 
 sheet = f'''
-{phead([('ホーム', 'index.html'), ('面談の3つの数字シート', None)], '面談の3つの数字シート', '面談のどこで、人がこぼれているか。<br class="pc">3つの数字で数えます',
-       '予約・面談・ご成約の数と平均単価を入れると、どこで何人がこぼれ、その1人がいくらの売上にあたるかが分かります。登録は要りません。入れた数字は送信も保存もしません。', False)}
+{phead([('ホーム', 'index.html'), ('商談の歩留まり試算', None)], '商談の歩留まり試算', '予約から成約までの取りこぼしを、<br class="pc">金額で把握する',
+       '面談の予約数、実施数、成約数と平均単価から、各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要です。入力した数値は、送信も保存もされません。', False)}
 
 <section class="sec" id="input"><div class="wrap wrap--article">
 <form class="sheet" data-sheet novalidate>
@@ -665,12 +665,12 @@ sheet = f'''
 <section class="sec bg-alt" id="result" data-sheet-result hidden><div class="wrap wrap--article">
 <h2 class="sheet__h">結果</h2>
 <div class="sheet-loss mt-24">
-<div class="sheet-loss__box"><p class="sheet-loss__label">予約したのに、<br class="sp">来なかった人</p><p class="sheet-loss__num"><b data-r="noshow"></b>人</p><p class="sheet-loss__w">1人来ていたら <b data-r="perMeet"></b> の売上</p></div>
-<div class="sheet-loss__box"><p class="sheet-loss__label">面談したが、<br class="sp">決まらなかった人</p><p class="sheet-loss__num"><b data-r="lost"></b>人</p><p class="sheet-loss__w">1人決まっていたら <b data-r="price"></b> の売上</p></div>
+<div class="sheet-loss__box"><p class="sheet-loss__label">面談に至らなかった予約</p><p class="sheet-loss__num"><b data-r="noshow"></b>件</p><p class="sheet-loss__w">1件あたり <b data-r="perMeet"></b> の売上機会</p></div>
+<div class="sheet-loss__box"><p class="sheet-loss__label">成約に至らなかった面談</p><p class="sheet-loss__num"><b data-r="lost"></b>件</p><p class="sheet-loss__w">1件あたり <b data-r="price"></b> の売上機会</p></div>
 </div>
 <div class="tbl-wrap mt-40"><table class="tbl sheet-tbl"><tbody>
-<tr><th>来てくださった割合</th><td data-r="showRate"></td><td class="sheet-tbl__f">面談数 ÷ 予約数</td></tr>
-<tr><th>面談で決まった割合</th><td data-r="winRate"></td><td class="sheet-tbl__f">ご成約数 ÷ 面談数</td></tr>
+<tr><th>面談の実施率</th><td data-r="showRate"></td><td class="sheet-tbl__f">面談数 ÷ 予約数</td></tr>
+<tr><th>面談の成約率</th><td data-r="winRate"></td><td class="sheet-tbl__f">ご成約数 ÷ 面談数</td></tr>
 <tr><th>売上</th><td data-r="sales"></td><td class="sheet-tbl__f">ご成約数 × 平均単価</td></tr>
 <tr><th>面談1件が生む売上</th><td data-r="perMeet"></td><td class="sheet-tbl__f">売上 ÷ 面談数</td></tr>
 <tr data-r-row="ad"><th>面談1件あたりの広告費</th><td data-r="adPer"></td><td class="sheet-tbl__f">広告費 ÷ 面談数</td></tr>
@@ -687,7 +687,7 @@ sheet = f'''
 
 <section class="sec"><div class="wrap wrap--article">
 {rule('数字の読み方の例')}
-<div class="prose mt-40"><p>お客様の事例では、予約した面談に来てくださる割合が、31.3%から63.2%になりました。予約の数が同じでも、実際にお話しできる方がおよそ2倍になる変化です。広告を増やす前に、すでにある予約の中で、こぼれている人から見ていきます。</p></div>
+<div class="prose mt-40"><p>お客様の事例では、予約した面談に来てくださる割合が、31.3%から63.2%になりました。予約の数が同じでも、実際にお話しできる方がおよそ2倍になる変化です。広告を増やす前に、すでにある予約の中の取りこぼしから見ていきます。</p></div>
 <div class="mt-24">{more('事例を読む', 'case-edu.html')}</div>
 </div></section>
 
@@ -736,9 +736,9 @@ var r={noshow:noshow.toLocaleString('ja-JP'),lost:lost.toLocaleString('ja-JP'),p
 Object.keys(r).forEach(function(k){all('[data-r="'+k+'"]').forEach(function(n){n.textContent=r[k]})});
 $('[data-r-row="ad"]').hidden=!ad;
 $('[data-r="firstLink"]').innerHTML='<a class="ex-more" href="'+fs[1]+'">'+fs[2]+'<span class="ex-circle" aria-hidden="true"></span></a>';
-last=['面談の3つの数字シートの結果','入れた数字：予約 '+b+'件／面談 '+m+'件／ご成約 '+w+'件／平均単価 '+Math.round(p).toLocaleString('ja-JP')+'円'+(ad?'／広告費 '+Math.round(ad).toLocaleString('ja-JP')+'円':''),
-'・来てくださった割合：'+r.showRate,'・面談で決まった割合：'+r.winRate,'・売上：'+r.sales,'・面談1件が生む売上：'+r.perMeet,(ad?'・面談1件あたりの広告費：'+r.adPer:null),
-'・予約したのに来なかった人：'+r.noshow+'人（1人来ていたら '+r.perMeet+'）','・面談したが決まらなかった人：'+r.lost+'人（1人決まっていたら '+r.price+'）','最初に試す1つ：'+fs[0],'https://exnet.biz/sheet.html'].filter(Boolean).join('\\n');
+last=['商談の歩留まり試算の結果','入れた数字：予約 '+b+'件／面談 '+m+'件／ご成約 '+w+'件／平均単価 '+Math.round(p).toLocaleString('ja-JP')+'円'+(ad?'／広告費 '+Math.round(ad).toLocaleString('ja-JP')+'円':''),
+'・面談の実施率：'+r.showRate,'・面談の成約率：'+r.winRate,'・売上：'+r.sales,'・面談1件が生む売上：'+r.perMeet,(ad?'・面談1件あたりの広告費：'+r.adPer:null),
+'・面談に至らなかった予約：'+r.noshow+'件（1件あたりの売上機会 '+r.perMeet+'）','・成約に至らなかった面談：'+r.lost+'件（1件あたりの売上機会 '+r.price+'）','最初に試す1つ：'+fs[0],'https://exnet.biz/sheet.html'].filter(Boolean).join('\\n');
 var res=$('[data-sheet-result]');res.hidden=false;$('[data-sheet-copied]').textContent='';res.scrollIntoView({behavior:'smooth',block:'start'});ev('sheet_calc');});
 $('[data-sheet-copy]').addEventListener('click',function(){var d=$('[data-sheet-copied]');function done(){d.textContent='コピーしました';ev('sheet_copy')}
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(last).then(done,fb)}else fb();
@@ -747,7 +747,7 @@ all('[data-sheet-to-contact]').forEach(function(a){a.addEventListener('click',fu
 })();
 </script>'''
 SHEET_JS = SHEET_JS.replace('<span class="ex-circle" aria-hidden="true"></span>', circle())
-doc('sheet.html', '面談の3つの数字シート', sheet, extra_js=SHEET_JS)
+doc('sheet.html', '商談の歩留まり試算', sheet, extra_js=SHEET_JS)
 
 # ====================================================================
 # 料金と契約
@@ -1150,12 +1150,12 @@ doc('download.html', '資料請求', download, lp=True, extra_js=FORM_JS)
 
 contact = f'''<div class="lp">
 <div class="lp__body"><h1>無料相談<br><small style="font-size:16px;font-weight:500">オンライン45分</small></h1>
-<p>45分で、予約・面談・ご成約の3つの数字を一緒に数え、いちばん人がこぼれている1か所と、最初に試すことを1つお伝えします。数字が手元になくても大丈夫です。</p>
+<p>45分で、予約・面談・ご成約の3つの数字を一緒に数え、いちばん取りこぼしの大きい1か所と、最初に試すことを1つお伝えします。数字が手元になくても大丈夫です。</p>
 <p>ご契約を前提にしたご相談ではありません。お話を伺ったうえで、弊社ではお力になれないと判断した場合は、正直にそうお伝えします。</p>
 <p>お名前などをご入力のうえ、日時を選んでお申し込みください。その場で日程が決まります。</p>
 <h2>45分の流れ</h2>
-<ul class="list-dash"><li>0〜10分：予約・面談・ご成約の数字を一緒に確かめます</li><li>10〜30分：こぼれた人が多いほうの中身を見ます（予約後の連絡文、面談の流れなど）</li><li>30〜40分：最初に試すことを1つと、来月の数え方を決めます</li><li>40〜45分：弊社の支援が合うかどうかをお伝えします</li></ul>
-<p class="note">数字は、<a class="ex-ul" href="sheet.html">面談の3つの数字シート</a>で先に出しておくこともできます。</p>
+<ul class="list-dash"><li>0〜10分：予約・面談・ご成約の数字を一緒に確かめます</li><li>10〜30分：取りこぼしの多い段階の中身を見ます（予約後の連絡文、面談の流れなど）</li><li>30〜40分：最初に試すことを1つと、来月の数え方を決めます</li><li>40〜45分：弊社の支援が合うかどうかをお伝えします</li></ul>
+<p class="note">数字は、<a class="ex-ul" href="sheet.html">商談の歩留まり試算</a>で先に出しておくこともできます。</p>
 <p class="note">事前にご用意いただけると助かるもの：直近のご商談の録画、トークスクリプト、提案資料のいずれか1つ。なくてもご相談いただけます。</p>
 <h2>別の窓口</h2><p style="margin-top:var(--space-8)">まずは資料で確かめたい方は</p>{more('資料請求へ', 'download.html')}
 <p class="note">その他のお問い合わせ（取材・協業など）：<a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></p>
@@ -1168,7 +1168,7 @@ BOOK_SRC = 'https://ut.exnet.biz/p/sA61r06GNKyM'
 opts = lambda xs: ''.join(f'<option>{x}</option>' for x in xs)
 contact2 = contact[:-len("</div>")] + f'''<div class="book" data-book>
 <div class="ex-form"><p class="ex-form__note">お客様の情報をご入力いただき、次の画面で日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
-<p class="fit fit--static" data-from-sheet hidden>数字のシートからお越しいただき、ありがとうございます。「いちばんご相談したいこと」は「商談で決まる件数」にしてあります。コピーした結果は、当日の画面で一緒に見ますので、お手元にご用意ください。</p>
+<p class="fit fit--static" data-from-sheet hidden>歩留まり試算からお越しいただき、ありがとうございます。「いちばんご相談したいこと」は「商談で決まる件数」にしてあります。コピーした結果は、当日の画面で一緒に見ますので、お手元にご用意ください。</p>
 <p class="fit fit--static">弊社の支援が力を発揮するのは、販売単価30万円以上の商品・サービスをメインで扱われている事業者様です。当てはまるか迷われた方は、先に資料請求でお確かめいただくこともできます。<br><a href="download.html">資料請求はこちら</a></p>
 <div data-book-step>
 <div class="ex-field-row"><label class="ex-field" for="b-sei">姓 <em>*</em><input id="b-sei" name="sei" autocomplete="family-name" required></label><label class="ex-field" for="b-mei">名 <em>*</em><input id="b-mei" name="mei" autocomplete="given-name" required></label></div>
