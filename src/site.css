@@ -815,6 +815,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .sheet-mock__kpis b { display: block; font-family: var(--font-numeral); font-size: 30px; line-height: 1.25; font-weight: 500; color: var(--navy); }
 .sheet-mock__kpis b small { font-family: var(--font-sans); font-size: 13px; font-weight: 700; margin: 0 2px; }
 @media (max-width: 767px) {
+  .ex-phead.sheet-hero { padding-top: 58px; }   /* コラム・事例の記事ページと同じく、見出しの上端をヘッダーの下約58pxに */
   .sheet-hero__eyebrow { font-size: 14px !important; line-height: 24.5px !important; }
   .ex-phead h1.sheet-hero__name { font-size: 32px; line-height: 44px; }
   .sheet-mock { margin-top: var(--space-24); }
