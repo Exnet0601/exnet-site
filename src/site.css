@@ -811,7 +811,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .sm-gl { fill: var(--navy); font-size: 12px; font-weight: 700; text-anchor: middle; }
 .sm-lb { fill: var(--ink); font-size: 15px; font-weight: 700; text-anchor: middle; }
 .sheet-mock__kpis { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-10); align-content: center; }
-.sheet-mock__kpis li { border: 1px solid var(--line); border-left: 3px solid var(--navy); padding: var(--space-10) var(--space-16); }
+.sheet-mock__kpis li { background: var(--surface-alt); padding: var(--space-10) var(--space-16); }
 .sheet-mock__kpis span { display: block; font-size: 12px; line-height: 20px; color: var(--muted); font-weight: 700; }
 .sheet-mock__kpis b { display: block; font-family: var(--font-numeral); font-size: 30px; line-height: 1.25; font-weight: 500; color: var(--navy); }
 .sheet-mock__kpis b small { font-family: var(--font-sans); font-size: 13px; font-weight: 700; margin: 0 2px; }
@@ -821,7 +821,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
   .sheet-mock { margin-top: var(--space-24); }
   .sheet-mock__body { grid-template-columns: 1fr; gap: var(--space-16); padding: var(--space-16); }
   .sheet-mock__kpis { grid-template-columns: repeat(3, 1fr); gap: var(--space-8); }
-  .sheet-mock__kpis li { padding: var(--space-8); border-left-width: 2px; }
+  .sheet-mock__kpis li { padding: var(--space-8); }
   .sheet-mock__kpis span { font-size: 10px; line-height: 15px; }
   .sheet-mock__kpis b { font-size: 20px; }
   .sheet-mock__kpis b small { font-size: 10px; }
