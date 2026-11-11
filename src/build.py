@@ -224,7 +224,7 @@ def analytics(fname):
 
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     full_title = 'エクスネット｜講座・スクール・コンサルティング事業を支援するマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
-    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html')) +
+    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html', 'sheet.html')) +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
     if lp:
@@ -610,6 +610,144 @@ course = f'''
 {TOC_JS}
 '''
 doc('course.html', '講座・スクール・コンサルティングの方へ', course, 'service')
+
+# ── 面談の3つの数字シート（11-11 試作。2社に試してもらうまで noindex、サイトマップ・llms.txt にも出さない） ──
+# 計算はすべてブラウザの中だけ。数字は送信も保存もしない（GA4 にはイベント名だけ送る）
+DESC['sheet.html'] = '面談の予約数、実際に面談した数、ご成約数、平均単価を入れると、どこで何人がこぼれ、その1人がいくらの売上にあたるかが分かります。登録は要りません。'
+TITLES['sheet.html'] = '面談の3つの数字シート｜予約・面談・ご成約から、こぼれている人数を数える'
+SHEET_FIELDS = [  # id, ラベル, 数え方, 例（弊社2025年度・事例ページと同じ数字）, 必須
+ ('s-book', '面談の予約数', '予約カレンダーに入った件数', '125', True),
+ ('s-meet', '実際に面談した数', 'Zoomの履歴や、接客の記録', '95', True),
+ ('s-won', 'ご成約数', '入金・ご契約の件数', '13', True),
+ ('s-price', '平均単価（円・税込）', '売上 ÷ ご成約数でも構いません', '1232308', True),
+ ('s-ad', '広告費（円）', '入れると、面談1件あたりの広告費が出ます', '1880000', False),
+]
+SHEET_QS = [
+ ('q1', '予約の後、面談の前日か当日に、こちらから連絡していますか。'),
+ ('q2', 'この1ヶ月で、決まらなかった面談の録画かメモを見返しましたか。'),
+ ('q3', '決まらなかった方に、その後もう一度、個別に連絡していますか。'),
+]
+def sheet_field(i, label, hint, ex, req):
+    em = ' <em>*</em>' if req else ' <small>（任意）</small>'
+    return (f'<label class="ex-field" for="{i}">{label}{em}<input id="{i}" type="text" inputmode="numeric" autocomplete="off" data-ex="{ex}"{" required" if req else ""}>'
+            f'<span class="sheet__hint">{hint}</span></label>')
+def sheet_q(n, name, q):
+    return (f'<fieldset class="sheet-q" data-q="{name}"><legend><span>問い{n}</span>{q}</legend>'
+            f'<label><input type="radio" name="{name}" value="yes"> はい</label><label><input type="radio" name="{name}" value="no"> いいえ</label></fieldset>')
+
+sheet = f'''
+{phead([('ホーム', 'index.html'), ('面談の3つの数字シート', None)], '面談の3つの数字シート', '面談のどこで、人がこぼれているか。<br class="pc">3つの数字で数えます',
+       '予約・面談・ご成約の数と平均単価を入れると、どこで何人がこぼれ、その1人がいくらの売上にあたるかが分かります。登録は要りません。入れた数字は送信も保存もしません。', False)}
+
+<section class="sec" id="input"><div class="wrap wrap--article">
+<form class="sheet" data-sheet novalidate>
+<div class="sheet__head"><h2 class="sheet__h">1. 数字を入れる</h2>
+<div class="sheet__tools"><button type="button" class="sheet__tool" data-sheet-ex>例を入れてみる</button><button type="button" class="sheet__tool" data-sheet-none>まだ数えていない</button></div></div>
+<p class="sheet__p">直近1ヶ月の数字を入れてください。分かれば、直近3ヶ月の合計のほうが、ぶれが小さくなります。</p>
+<p class="sheet__ex" data-sheet-exnote hidden>弊社自身の2025年度（1商材）の数字を入れました。<a href="case-exnet-btob.html">事例ページ</a>と同じ数字です。</p>
+<div class="sheet__grid">{''.join(sheet_field(*f) for f in SHEET_FIELDS)}</div>
+<h2 class="sheet__h mt-40">2. 3つの問いに答える</h2>
+{''.join(sheet_q(n, name, q) for n, (name, q) in enumerate(SHEET_QS, 1))}
+<button type="submit" class="ex-btn ex-btn--primary sheet__go">計算する<span class="ex-arrow">→</span></button>
+</form>
+
+<div class="sheet-none box mt-40" data-sheet-nobox hidden>
+<h2 class="sheet__h">来月1ヶ月、この3つだけ数えてみてください</h2>
+<ol class="sheet-none__list">
+<li><b>面談の予約数</b>：予約カレンダーに入った件数</li>
+<li><b>実際に面談した数</b>：Zoomの履歴や、接客の記録</li>
+<li><b>ご成約数</b>：入金・ご契約の件数</li></ol>
+<p>数がそろったら、このページでもう一度入れてみてください。数字が手元になくても、無料相談の45分で一緒に数えることもできます。</p>
+<div class="end-links mt-24">{more('無料相談の内容を見る', 'contact.html?from=sheet')}</div>
+</div>
+</div></section>
+
+<section class="sec bg-alt" id="result" data-sheet-result hidden><div class="wrap wrap--article">
+<h2 class="sheet__h">結果</h2>
+<div class="sheet-loss mt-24">
+<div class="sheet-loss__box"><p class="sheet-loss__label">予約したのに、<br class="sp">来なかった人</p><p class="sheet-loss__num"><b data-r="noshow"></b>人</p><p class="sheet-loss__w">1人来ていたら <b data-r="perMeet"></b> の売上</p></div>
+<div class="sheet-loss__box"><p class="sheet-loss__label">面談したが、<br class="sp">決まらなかった人</p><p class="sheet-loss__num"><b data-r="lost"></b>人</p><p class="sheet-loss__w">1人決まっていたら <b data-r="price"></b> の売上</p></div>
+</div>
+<div class="tbl-wrap mt-40"><table class="tbl sheet-tbl"><tbody>
+<tr><th>来てくださった割合</th><td data-r="showRate"></td><td class="sheet-tbl__f">面談数 ÷ 予約数</td></tr>
+<tr><th>面談で決まった割合</th><td data-r="winRate"></td><td class="sheet-tbl__f">ご成約数 ÷ 面談数</td></tr>
+<tr><th>売上</th><td data-r="sales"></td><td class="sheet-tbl__f">ご成約数 × 平均単価</td></tr>
+<tr><th>面談1件が生む売上</th><td data-r="perMeet"></td><td class="sheet-tbl__f">売上 ÷ 面談数</td></tr>
+<tr data-r-row="ad"><th>面談1件あたりの広告費</th><td data-r="adPer"></td><td class="sheet-tbl__f">広告費 ÷ 面談数</td></tr>
+</tbody></table></div>
+<div class="sheet-first mt-40"><p class="sheet-first__label">最初に試す1つ</p><p class="sheet-first__text" data-r="first"></p><div data-r="firstLink"></div></div>
+<div class="sheet-copy mt-24"><button type="button" class="ex-btn ex-btn--secondary" data-sheet-copy>結果をコピー</button><span class="sheet-copy__done" data-sheet-copied role="status"></span></div>
+<p class="sheet__p">コピーした文章は、社内の方や、ご紹介くださった方にそのまま渡せます。</p>
+<div class="sheet-exit mt-40">
+<p>数字は出たけれど、次に何を試すか迷ったら、45分で一緒に見ます。この結果をお持ちください。</p>
+<div class="sheet-exit__btns"><a class="ex-btn ex-btn--primary" href="contact.html?from=sheet" data-sheet-to-contact>この結果で相談する<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--secondary" href="download.html">資料を受け取る<span class="ex-arrow">→</span></a></div>
+</div>
+<p class="note mt-24">表示する数字は入力した値からの計算で、成果をお約束するものではありません。</p>
+</div></section>
+
+<section class="sec"><div class="wrap wrap--article">
+{rule('数字の読み方の例')}
+<div class="prose mt-40"><p>お客様の事例では、予約した面談に来てくださる割合が、31.3%から63.2%になりました。予約の数が同じでも、実際にお話しできる方がおよそ2倍になる変化です。広告を増やす前に、すでにある予約の中で、こぼれている人から見ていきます。</p></div>
+<div class="mt-24">{more('事例を読む', 'case-edu.html')}</div>
+</div></section>
+
+<section class="sec bg-alt"><div class="wrap">
+{rule('代表から一言')}
+<div class="rep" style="margin-top:var(--space-40)">
+{photo(False)}
+<div><div class="rep__roman">TOMOHIRO IKAI</div><p class="rep__name">猪飼 智弘</p><div class="rep__title">株式会社エクスネット 代表取締役</div>
+<p class="rep__word">弊社は、自社の面談も毎月この3つで数えています。広告を止められたとき、手元に残ったのは、すでにある面談と、その数字でした。ですので、まず数えるところから一緒に始めたいと思っています。</p>
+{more('代表メッセージを読む', 'message.html')}</div></div>
+</div></section>
+
+<section class="sec"><div class="wrap wrap--article">
+{rule('関連するコラム')}
+{rel_cols(['column-no-show.html', 'column-closing-rate.html', 'column-lost-deals.html'], False)}
+</div></section>
+'''
+SHEET_JS = '''<script>
+(function(){var f=document.querySelector('[data-sheet]');if(!f)return;
+function $(s){return document.querySelector(s)}function all(s){return document.querySelectorAll(s)}
+function ev(n){try{if(window.gtag)gtag('event',n)}catch(e){}}
+function num(id){var v=$('#'+id).value.replace(/[,，円\\s]/g,'').replace(/[０-９]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248)});return v===''?null:Number(v)}
+function yen(v){if(v>=10000){var m=v/10000;return '約'+(m>=100?Math.round(m).toLocaleString('ja-JP'):(Math.round(m*10)/10).toLocaleString('ja-JP'))+'万円'}return Math.round(v).toLocaleString('ja-JP')+'円'}
+function pct(v){return (Math.round(v*1000)/10).toFixed(1)+'%'}
+var FIRST={q1:['次の予約から、前日に一言だけ個別に連絡してみてください。面談で何が分かるかも一行添えます。','column-no-show.html','予約した方が来てくださらない理由を読む'],
+q2:['直近で決まらなかった3件を見返し、断られた理由を1行ずつ書いてみてください。','column-closing-rate.html','面談で決まる割合の見方を読む'],
+q3:['先月決まらなかった方に、1通だけ個別に連絡してみてください。売り込みではなく、その後を伺う一通です。','column-lost-deals.html','決まらなかった方との、その後を読む'],
+all:['手は打てています。次は、決まった方と決まらなかった方の違いを見る段階です。','contact.html?from=sheet','無料相談で一緒に見る']};
+var last='';
+function err(el,msg){var s=document.createElement('span');s.className='field-err';s.textContent=msg;el.appendChild(s)}
+$('[data-sheet-ex]').addEventListener('click',function(){all('[data-ex]').forEach(function(i){i.value=Number(i.getAttribute('data-ex')).toLocaleString('ja-JP')});$('[data-sheet-exnote]').hidden=false;$('[data-sheet-nobox]').hidden=true;});
+$('[data-sheet-none]').addEventListener('click',function(){var b=$('[data-sheet-nobox]');b.hidden=false;b.scrollIntoView({behavior:'smooth',block:'start'});ev('sheet_not_counted');});
+f.addEventListener('submit',function(e){e.preventDefault();f.querySelectorAll('.field-err').forEach(function(x){x.remove()});
+var ok=true,b=num('s-book'),m=num('s-meet'),w=num('s-won'),p=num('s-price'),ad=num('s-ad');
+[['s-book',b],['s-meet',m],['s-won',w],['s-price',p]].forEach(function(a){if(a[1]===null||isNaN(a[1])||a[1]<0){ok=false;err($('#'+a[0]).closest('label'),'数字を入れてください')}});
+if(ad!==null&&(isNaN(ad)||ad<0)){ok=false;err($('#s-ad').closest('label'),'数字で入れるか、空のままにしてください')}
+if(ok&&m>b){ok=false;err($('#s-meet').closest('label'),'予約数より多くなっています')}
+if(ok&&w>m){ok=false;err($('#s-won').closest('label'),'面談した数より多くなっています')}
+if(ok&&m===0){ok=false;err($('#s-meet').closest('label'),'1以上を入れてください')}
+var ans={};all('.sheet-q').forEach(function(q){var c=q.querySelector('input:checked');if(!c){ok=false;err(q,'はい・いいえを選んでください')}else ans[q.getAttribute('data-q')]=c.value});
+if(!ok){var x=f.querySelector('.field-err');if(x)x.parentNode.scrollIntoView({block:'center'});return}
+var noshow=b-m,lost=m-w,sales=w*p,per=sales/m;
+var cand=[];if(ans.q1==='no')cand.push(['q1',noshow,0]);if(ans.q2==='no')cand.push(['q2',lost,1]);if(ans.q3==='no')cand.push(['q3',lost,2]);
+cand.sort(function(a,c){return c[1]-a[1]||a[2]-c[2]});var key=cand.length?cand[0][0]:'all',fs=FIRST[key];
+var r={noshow:noshow.toLocaleString('ja-JP'),lost:lost.toLocaleString('ja-JP'),perMeet:yen(per),price:yen(p),showRate:b?pct(m/b):'—',winRate:pct(w/m),sales:yen(sales),adPer:ad?yen(ad/m):'',first:fs[0]};
+Object.keys(r).forEach(function(k){all('[data-r="'+k+'"]').forEach(function(n){n.textContent=r[k]})});
+$('[data-r-row="ad"]').hidden=!ad;
+$('[data-r="firstLink"]').innerHTML='<a class="ex-more" href="'+fs[1]+'">'+fs[2]+'<span class="ex-circle" aria-hidden="true"></span></a>';
+last=['面談の3つの数字シートの結果','入れた数字：予約 '+b+'件／面談 '+m+'件／ご成約 '+w+'件／平均単価 '+Math.round(p).toLocaleString('ja-JP')+'円'+(ad?'／広告費 '+Math.round(ad).toLocaleString('ja-JP')+'円':''),
+'・来てくださった割合：'+r.showRate,'・面談で決まった割合：'+r.winRate,'・売上：'+r.sales,'・面談1件が生む売上：'+r.perMeet,(ad?'・面談1件あたりの広告費：'+r.adPer:null),
+'・予約したのに来なかった人：'+r.noshow+'人（1人来ていたら '+r.perMeet+'）','・面談したが決まらなかった人：'+r.lost+'人（1人決まっていたら '+r.price+'）','最初に試す1つ：'+fs[0],'https://exnet.biz/sheet.html'].filter(Boolean).join('\\n');
+var res=$('[data-sheet-result]');res.hidden=false;$('[data-sheet-copied]').textContent='';res.scrollIntoView({behavior:'smooth',block:'start'});ev('sheet_calc');});
+$('[data-sheet-copy]').addEventListener('click',function(){var d=$('[data-sheet-copied]');function done(){d.textContent='コピーしました';ev('sheet_copy')}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(last).then(done,fb)}else fb();
+function fb(){var t=document.createElement('textarea');t.value=last;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){d.textContent='コピーできませんでした。お手数ですが選択してコピーしてください'}t.remove()}});
+all('[data-sheet-to-contact]').forEach(function(a){a.addEventListener('click',function(){ev('sheet_to_contact')})});
+})();
+</script>'''
+SHEET_JS = SHEET_JS.replace('<span class="ex-circle" aria-hidden="true"></span>', circle())
+doc('sheet.html', '面談の3つの数字シート', sheet, extra_js=SHEET_JS)
 
 # ====================================================================
 # 料金と契約
@@ -1012,11 +1150,12 @@ doc('download.html', '資料請求', download, lp=True, extra_js=FORM_JS)
 
 contact = f'''<div class="lp">
 <div class="lp__body"><h1>無料相談<br><small style="font-size:16px;font-weight:500">オンライン45分</small></h1>
-<p>45分で、いまのご商談と導線のどこから手を付けるとよいかが分かります。</p>
+<p>45分で、予約・面談・ご成約の3つの数字を一緒に数え、いちばん人がこぼれている1か所と、最初に試すことを1つお伝えします。数字が手元になくても大丈夫です。</p>
 <p>ご契約を前提にしたご相談ではありません。お話を伺ったうえで、弊社ではお力になれないと判断した場合は、正直にそうお伝えします。</p>
 <p>お名前などをご入力のうえ、日時を選んでお申し込みください。その場で日程が決まります。</p>
-<h2>相談で伺うこと</h2>
-<ul class="list-dash"><li>いまの商品・サービスと単価</li><li>月の面談数と、決まる件数のおおよそ</li><li>いまの集客の経路と、LINEやメールのリストの状況</li></ul>
+<h2>45分の流れ</h2>
+<ul class="list-dash"><li>0〜10分：予約・面談・ご成約の数字を一緒に確かめます</li><li>10〜30分：こぼれた人が多いほうの中身を見ます（予約後の連絡文、面談の流れなど）</li><li>30〜40分：最初に試すことを1つと、来月の数え方を決めます</li><li>40〜45分：弊社の支援が合うかどうかをお伝えします</li></ul>
+<p class="note">数字は、<a class="ex-ul" href="sheet.html">面談の3つの数字シート</a>で先に出しておくこともできます。</p>
 <p class="note">事前にご用意いただけると助かるもの：直近のご商談の録画、トークスクリプト、提案資料のいずれか1つ。なくてもご相談いただけます。</p>
 <h2>別の窓口</h2><p style="margin-top:var(--space-8)">まずは資料で確かめたい方は</p>{more('資料請求へ', 'download.html')}
 <p class="note">その他のお問い合わせ（取材・協業など）：<a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></p>
@@ -1029,6 +1168,7 @@ BOOK_SRC = 'https://ut.exnet.biz/p/sA61r06GNKyM'
 opts = lambda xs: ''.join(f'<option>{x}</option>' for x in xs)
 contact2 = contact[:-len("</div>")] + f'''<div class="book" data-book>
 <div class="ex-form"><p class="ex-form__note">お客様の情報をご入力いただき、次の画面で日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
+<p class="fit fit--static" data-from-sheet hidden>数字のシートからお越しいただき、ありがとうございます。「いちばんご相談したいこと」は「商談で決まる件数」にしてあります。コピーした結果は、当日の画面で一緒に見ますので、お手元にご用意ください。</p>
 <p class="fit fit--static">弊社の支援が力を発揮するのは、販売単価30万円以上の商品・サービスをメインで扱われている事業者様です。当てはまるか迷われた方は、先に資料請求でお確かめいただくこともできます。<br><a href="download.html">資料請求はこちら</a></p>
 <div data-book-step>
 <div class="ex-field-row"><label class="ex-field" for="b-sei">姓 <em>*</em><input id="b-sei" name="sei" autocomplete="family-name" required></label><label class="ex-field" for="b-mei">名 <em>*</em><input id="b-mei" name="mei" autocomplete="given-name" required></label></div>
@@ -1045,7 +1185,8 @@ contact2 = contact[:-len("</div>")] + f'''<div class="book" data-book>
 <p class="book__alt">日時の選択が表示されない場合は、<a href="{BOOK_SRC}" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
 </div></div>'''
 BOOK2_JS = open(os.path.join(os.path.dirname(__file__), 'book2.js')).read().replace('%SRC%', BOOK_SRC)
-doc('contact.html', '無料相談', contact2, lp=True, extra_js=BOOK2_JS)
+FROM_SHEET_JS = '<script>(function(){if(!/[?&]from=sheet\\b/.test(location.search))return;var t=document.getElementById("b-topic"),n=document.querySelector("[data-from-sheet]");if(t)t.value="商談で決まる件数";if(n)n.hidden=false;})();</script>'
+doc('contact.html', '無料相談', contact2, lp=True, extra_js=BOOK2_JS + FROM_SHEET_JS)
 
 def thanks(fname, h1, body, links, skip):
     b = f'''{phead([('ホーム', 'index.html'), (h1, None)], 'THANK YOU', h1, body, False)}
