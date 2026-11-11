@@ -470,6 +470,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .ex-article table { display: table; overflow: visible; }
   .ex-article table tbody { display: table-row-group; min-width: 0; }
   .ex-article th, .ex-article td { padding: var(--space-16) var(--space-10); }
+  /* どの列も最低4文字分の幅を持たせ、短い列が1文字ずつの縦書きのように潰れるのを防ぐ（iPhoneのSafari系は td の min-width を効かせないため、幅のある空の要素で支える） */
+  .ex-article table:not(.tbl-ov) th::before, .ex-article table:not(.tbl-ov) td::before { content: ""; display: block; width: 4em; }
   .ex-article .tbl-ov { display: table; border-bottom: 1px solid var(--line); }
   .ex-article .tbl-ov tbody { display: block; min-width: 0; }
   .ex-article .tbl-ov tr { display: block; border-top: 1px solid var(--line); }
