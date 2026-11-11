@@ -804,7 +804,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .sheet-mock__chart svg { display: block; width: 100%; height: auto; font-family: var(--font-sans); }
 .sm-grid line { stroke: var(--line); stroke-width: 1; }
 .sm-bar { fill: var(--navy); }
-.sm-ghost { fill: var(--surface-alt); stroke: var(--navy); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.sm-ghost { fill: var(--surface-alt); stroke: var(--navy); stroke-width: .7; stroke-dasharray: 2 2; }
 .sm-base { stroke: var(--ink); stroke-width: 1.2; }
 .sm-v { fill: var(--on-navy); font-family: var(--font-numeral); font-size: 19px; font-weight: 500; text-anchor: middle; }
 .sm-gv { fill: var(--navy); font-family: var(--font-numeral); font-size: 19px; font-weight: 500; text-anchor: middle; }
