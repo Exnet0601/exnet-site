@@ -14,7 +14,7 @@ tokens = subprocess.run([sys.executable, os.path.join(HERE, 'tokens_css.py'), os
 bundle = open(os.path.join(HERE, 'bundle.css')).read()
 site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
-for _f in ('ikai.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
+for _f in ('ikai.webp', 'fv-board.webp', 'fv-seminar.webp', 'fv-smile.webp', 'fv-talk2.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 shutil.copytree(os.path.join(HERE, 'docs'), os.path.join(OUT, 'docs'), dirs_exist_ok=True)   # サービス資料のPDF
 open(os.path.join(OUT, 'site.css'), 'w').write('/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site)
 
@@ -323,18 +323,17 @@ _tc = sorted((json.load(open(_p, encoding='utf-8')) for _p in sorted(glob.glob(o
 TOP_COLS = ''.join(f'<a class="col-row" href="{c["fname"]}"><span class="col-date">{c.get("date", "2026-10-17").replace("-", ".")}</span><h3 class="col-row__t">{c["title"]}</h3><span class="col-row__l">{c["lead"]}</span>{circle()}</a>' for c in _tc)
 top = f'''
 <section class="fv">
-<div class="fv2 wrap wrap--fv">
-<div class="fv2__main">
-<p class="fv2__voice">株式会社エクスネット</p>
-<h1 class="fv2__title">価値ある挑戦を<br>必要な人に届けるために</h1>
-<p class="fv2__lead"><span>2011年創業</span><br><span>講座・スクール・コンサルティング事業を</span><br class="pc"><span>支援するマーケティング会社</span></p>
-<div class="fv2__cta"><a class="ex-btn ex-btn--secondary ex-btn--section" href="download.html">資料請求<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--primary ex-btn--section" href="contact.html">無料相談（45分）<span class="ex-arrow">→</span></a></div>
+<div class="fv4 wrap wrap--fv">
+<div class="fv4__photo">
+<div class="fv4__pics" aria-hidden="true"><img class="fv4__p1" src="fv-seminar.webp" alt="" width="1100" height="600"><img class="fv4__p3" src="fv-board.webp" alt="" width="680" height="453"><img class="fv4__p4" src="fv-smile.webp" alt="" width="640" height="640"><img class="fv4__p5" src="fv-talk2.webp" alt="" width="640" height="820"></div>
+<h1 class="fv4__title">価値ある挑戦を<br>必要な人に届けるために</h1>
 </div>
-<aside class="fv2__who" aria-label="伴走する人">
-<div class="fv2__who-head">{photo(False)}<div><div class="rep__roman">TOMOHIRO IKAI</div><div class="rep__title">代表取締役／商談の伴走者</div><p class="rep__name">猪飼 智弘</p></div></div>
-<p class="fv2__word">「私自身、講座や<span>コンサルティングを、</span><span>ウェブから</span><span>商談につなげて</span><span>売ってきました。</span><span>だから最初に、</span><span>御社の商談と、</span><span>そこに至る流れを</span><span>拝見します。」</span></p>
-{more('代表メッセージを読む', 'message.html')}
-</aside>
+<div class="fv4__card">
+<p class="fv4__name">株式会社エクスネット</p>
+<p class="fv4__lead"><span>2011年創業</span><br><span>講座・スクール・コンサルティング事業を</span><span>支援するマーケティング会社</span></p>
+<div class="fv4__cta"><a class="ex-btn ex-btn--secondary ex-btn--section" href="download.html">資料請求<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--primary ex-btn--section" href="contact.html">無料相談（45分）<span class="ex-arrow">→</span></a></div>
+<div class="fv4__more">{more('代表メッセージを読む', 'message.html')}</div>
+</div>
 </div>
 <div class="fv__band"><div class="wrap wrap--fv"><nav class="entry" aria-label="入口">
 <a href="service.html"><div class="entry__head"><h2>サービス</h2>{circle()}</div><p>商談の改善から入り、受け皿、リスト、広告の順に進めます</p></a>
