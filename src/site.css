@@ -794,20 +794,36 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .sheet-hero__eyebrow { margin: 0 !important; color: var(--navy); font-size: 18px !important; line-height: 31.5px !important; font-weight: 700; }
 .ex-phead h1.sheet-hero__name { margin-top: var(--space-8); font-size: 48px; line-height: 64px; letter-spacing: .02em; }
 .sheet-hero__lead { margin-top: var(--space-30) !important; }
-.sheet-fig { margin: var(--space-40) 0 0; padding: var(--space-30) var(--space-40) var(--space-24); border: 1px solid var(--line); background: var(--surface-alt); }
-.sheet-fig svg { display: block; width: 100%; max-width: 620px; height: auto; margin: 0 auto; font-family: var(--font-sans); }
-.sf-bar { fill: var(--navy); }
-.sf-ghost { fill: var(--surface); stroke: var(--navy); stroke-width: 1.5; stroke-dasharray: 5 4; }
-.sf-guide { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 2 4; }
-.sf-base { stroke: var(--ink); stroke-width: 1.5; }
-.sf-ar { fill: none; stroke: var(--muted); stroke-width: 1.5; }
-.sf-gt { fill: var(--navy); font-size: 15px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; }
-.sf-lb { fill: var(--navy); font-size: 20px; font-weight: 700; text-anchor: middle; }
-.sf-rt { fill: var(--muted); font-size: 14px; text-anchor: middle; }
+.sheet-mock { margin: var(--space-40) 0 0; border: 1px solid var(--line-strong); background: var(--surface); border-radius: var(--radius-sm); overflow: hidden; }
+.sheet-mock__top { display: flex; align-items: center; gap: 6px; padding: var(--space-10) var(--space-16); border-bottom: 1px solid var(--line); background: var(--surface-alt); font-size: 13px; line-height: 20px; font-weight: 700; color: var(--navy); }
+.sheet-mock__top i { width: 9px; height: 9px; border-radius: var(--radius-full); border: 1px solid var(--line-strong); }
+.sheet-mock__top span { margin-left: var(--space-10); }
+.sheet-mock__top em { margin-left: auto; font-style: normal; font-weight: 400; font-size: 12px; color: var(--muted); border: 1px solid var(--line); padding: 0 var(--space-8); border-radius: var(--radius-full); background: var(--surface); }
+.sheet-mock__body { display: grid; grid-template-columns: 1.65fr 1fr; gap: var(--space-24); padding: var(--space-24); }
+.sheet-mock__h { margin: 0 0 var(--space-8) !important; font-size: 13px !important; line-height: 20px !important; font-weight: 700; color: var(--muted); }
+.sheet-mock__chart svg { display: block; width: 100%; height: auto; font-family: var(--font-sans); }
+.sm-grid line { stroke: var(--line); stroke-width: 1; }
+.sm-bar { fill: var(--navy); }
+.sm-ghost { fill: var(--surface-alt); stroke: var(--navy); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.sm-base { stroke: var(--ink); stroke-width: 1.2; }
+.sm-v { fill: var(--on-navy); font-family: var(--font-numeral); font-size: 19px; font-weight: 500; text-anchor: middle; }
+.sm-gv { fill: var(--navy); font-family: var(--font-numeral); font-size: 19px; font-weight: 500; text-anchor: middle; }
+.sm-gl { fill: var(--navy); font-size: 12px; font-weight: 700; text-anchor: middle; }
+.sm-lb { fill: var(--ink); font-size: 15px; font-weight: 700; text-anchor: middle; }
+.sheet-mock__kpis { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-10); align-content: center; }
+.sheet-mock__kpis li { border: 1px solid var(--line); border-left: 3px solid var(--navy); padding: var(--space-10) var(--space-16); }
+.sheet-mock__kpis span { display: block; font-size: 12px; line-height: 20px; color: var(--muted); font-weight: 700; }
+.sheet-mock__kpis b { display: block; font-family: var(--font-numeral); font-size: 30px; line-height: 1.25; font-weight: 500; color: var(--navy); }
+.sheet-mock__kpis b small { font-family: var(--font-sans); font-size: 13px; font-weight: 700; margin: 0 2px; }
 @media (max-width: 767px) {
   .sheet-hero__eyebrow { font-size: 14px !important; line-height: 24.5px !important; }
   .ex-phead h1.sheet-hero__name { font-size: 32px; line-height: 44px; }
-  .sheet-fig { margin-top: var(--space-24); padding: var(--space-20) var(--space-10) var(--space-16); }
-  .sf-gt { font-size: 21px; } .sf-lb { font-size: 26px; } .sf-rt { font-size: 20px; }
+  .sheet-mock { margin-top: var(--space-24); }
+  .sheet-mock__body { grid-template-columns: 1fr; gap: var(--space-16); padding: var(--space-16); }
+  .sheet-mock__kpis { grid-template-columns: repeat(3, 1fr); gap: var(--space-8); }
+  .sheet-mock__kpis li { padding: var(--space-8); border-left-width: 2px; }
+  .sheet-mock__kpis span { font-size: 10px; line-height: 15px; }
+  .sheet-mock__kpis b { font-size: 20px; }
+  .sheet-mock__kpis b small { font-size: 10px; }
   .sheet-hero__lead { margin-top: var(--space-24) !important; }
 }
