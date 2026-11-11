@@ -81,7 +81,7 @@ FOOTER = f'''<footer class="foot"><div class="wrap wrap--foot">
 <div class="foot__in">
 <div><div class="foot__logo">{logo("lg-f")}</div><p class="foot__addr">株式会社エクスネット<br>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX<br>03-6262-1694</p></div>
 <div class="foot__map">
-<div><h4>サービス</h4><ul><li><a class="ex-ul" href="service.html">サービス</a></li><li><a class="ex-ul" href="course.html">講座・スクールの方へ</a></li><li><a class="ex-ul" href="case.html">事例</a></li><li><a class="ex-ul" href="price.html">料金と契約</a></li><li><a class="ex-ul" href="approach.html">考え方</a></li><li><a class="ex-ul" href="column.html">コラム</a></li><li><a class="ex-ul" href="sheet.html">商談歩留まり試算ツール</a></li></ul></div>
+<div><h4>サービス</h4><ul><li><a class="ex-ul" href="service.html">サービス</a></li><li><a class="ex-ul" href="course.html">講座・スクールの方へ</a></li><li><a class="ex-ul" href="case.html">事例</a></li><li><a class="ex-ul" href="price.html">料金と契約</a></li><li><a class="ex-ul" href="approach.html">考え方</a></li><li><a class="ex-ul" href="column.html">コラム</a></li><li><a class="ex-ul" href="sheet.html">試算ツール</a></li></ul></div>
 <div><h4>会社情報</h4><ul><li><a class="ex-ul" href="company.html">会社概要</a></li><li><a class="ex-ul" href="message.html">代表メッセージ</a></li><li><a class="ex-ul" href="mission.html">PMVV</a></li><li><a class="ex-ul" href="company.html#news">お知らせ</a></li></ul></div>
 <div><h4>お問い合わせ</h4><ul><li><a class="ex-ul" href="download.html">資料請求</a></li><li><a class="ex-ul" href="contact.html">無料相談</a></li></ul></div>
 </div></div>
