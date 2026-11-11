@@ -529,6 +529,13 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .ex-btn { white-space: nowrap; }
 .ex-dlbar .ex-btn { flex: none; }
 .ex-dlbar > div { min-width: 0; }
+.ex-dlbar--on-alt { background: var(--surface); }
+.ex-dlbar--tool h3 { word-break: keep-all; }
+.ex-article .ex-dlbar h3 { margin: 0; font-size: 24px; line-height: 36px; }
+.ex-article .ex-dlbar p { margin: 10px 0 0; font-size: 16px; line-height: 32px; }
+.ex-article .ex-dlbar a.ex-btn { color: var(--navy); }
+.ex-article .ex-dlbar a.ex-btn:hover { color: var(--on-navy); }
+@media (max-width: 767px) { .ex-dlbar--tool h3, .ex-article .ex-dlbar--tool h3 { font-size: 20px; line-height: 32px; } .ex-article .ex-dlbar p { font-size: 14px; line-height: 28px; } }
 /* 768〜1099px（タブレット・小さいノートPC）：固定幅の部品を縮める */
 @media (min-width: 768px) and (max-width: 1099px) {
   .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); justify-content: stretch; gap: var(--space-64) var(--space-24); }
@@ -703,7 +710,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .fv4__lead { margin: var(--space-8) 0 0; font-size: 16px; line-height: 32px; }
 .fv4__lead span { display: inline-block; }
 .fv4__cta { display: flex; flex-wrap: wrap; gap: var(--space-16); margin-top: var(--space-24); }
-.fv4__more { display: flex; justify-content: flex-end; margin-top: var(--space-16); }
+.fv4__more { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-8) var(--space-24); margin-top: var(--space-16); }
 .fv4__more .ex-more { font-size: 14px; line-height: 24.5px; }
 .fv4__more .ex-circle { width: 28px; height: 28px; }
 @media (min-width: 768px) { .fv4 + .fv__band { padding-top: 0; } }
