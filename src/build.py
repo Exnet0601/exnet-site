@@ -325,7 +325,7 @@ top = f'''
 <section class="fv">
 <div class="fv4 wrap wrap--fv">
 <div class="fv4__photo">
-<div class="fv4__pics" aria-hidden="true"><img class="fv4__p1" src="fv-seminar.webp" alt="" width="1100" height="600"><img class="fv4__p2" src="fv-talk.webp" alt="" width="900" height="601"><img class="fv4__p3" src="fv-board.webp" alt="" width="680" height="453"><img class="fv4__p4" src="fv-smile.webp" alt="" width="640" height="820"><img class="fv4__p5" src="fv-talk2.webp" alt="" width="640" height="820"></div>
+<div class="fv4__pics" aria-hidden="true"><img class="fv4__p1" src="fv-seminar.webp" alt="" width="1100" height="600"><img class="fv4__p2" src="fv-talk.webp" alt="" width="900" height="601"><img class="fv4__p3" src="fv-board.webp" alt="" width="680" height="453"><img class="fv4__p4" src="fv-smile.webp" alt="" width="640" height="640"><img class="fv4__p5" src="fv-talk2.webp" alt="" width="640" height="820"></div>
 <h1 class="fv4__title">価値ある挑戦を<br>必要な人に届けるために</h1>
 </div>
 <div class="fv4__card">
