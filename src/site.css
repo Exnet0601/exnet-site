@@ -792,7 +792,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 /* 歩留まり試算：ページ冒頭（小見出し→名前→イメージ→リード） */
 .sheet-hero__body { max-width: var(--container-article); }
 .sheet-hero__eyebrow { margin: 0 !important; color: var(--navy); font-size: 18px !important; line-height: 31.5px !important; font-weight: 700; }
-.ex-phead h1.sheet-hero__name { margin-top: var(--space-8); font-size: 48px; line-height: 64px; letter-spacing: .02em; }
+.ex-phead h1.sheet-hero__name { margin-top: var(--space-8); font-size: 48px; line-height: 64px; letter-spacing: .02em; word-break: keep-all; overflow-wrap: anywhere; }
 .sheet-hero__lead { margin-top: var(--space-30) !important; }
 .sheet-mock { margin: var(--space-40) 0 0; border: 1px solid var(--line-strong); background: var(--surface); border-radius: var(--radius-sm); overflow: hidden; }
 .sheet-mock__top { display: flex; align-items: center; gap: 6px; padding: var(--space-10) var(--space-16); border-bottom: 1px solid var(--line); background: var(--surface-alt); font-size: 13px; line-height: 20px; font-weight: 700; color: var(--navy); }
