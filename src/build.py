@@ -640,13 +640,17 @@ sheet = f'''
 <div class="ex-phead__body sheet-hero__body">
 <p class="sheet-hero__eyebrow">予約から成約までの取りこぼしを、金額で把握する</p>
 <h1 class="sheet-hero__name">商談の歩留まり試算</h1>
-<figure class="sheet-dg" role="img" aria-label="試算の仕組み。予約数から面談数、面談数から成約数へと段階ごとに減る。面談に至らなかった予約の件数に面談1件が生む売上を掛け、成約に至らなかった面談の件数に平均単価を掛けて、取りこぼしを金額にする">
-<div class="sheet-dg__row"><div class="sheet-dg__stage" style="--w:100%"><span>予約数</span></div><div class="sheet-dg__note"></div></div>
-<div class="sheet-dg__row sheet-dg__row--gap"><div class="sheet-dg__step"><span>実施率</span></div><div class="sheet-dg__note"><b>取りこぼし①</b><span>面談に至らなかった予約</span><em>（予約数 − 面談数）× 面談1件が生む売上</em></div></div>
-<div class="sheet-dg__row"><div class="sheet-dg__stage" style="--w:76%"><span>面談数</span></div><div class="sheet-dg__note"></div></div>
-<div class="sheet-dg__row sheet-dg__row--gap"><div class="sheet-dg__step"><span>成約率</span></div><div class="sheet-dg__note"><b>取りこぼし②</b><span>成約に至らなかった面談</span><em>（面談数 − 成約数）× 平均単価</em></div></div>
-<div class="sheet-dg__row"><div class="sheet-dg__stage sheet-dg__stage--end" style="--w:40%"><span>成約数</span></div><div class="sheet-dg__note sheet-dg__note--sum"><b>売上</b><em>成約数 × 平均単価</em></div></div>
-</figure>
+<figure class="sheet-fig"><svg viewBox="0 0 560 330" role="img" aria-label="予約から面談、面談から成約へと進むたびに件数が減り、減った分を取りこぼしとして金額に換算する図">
+<defs><pattern id="sf-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" class="sf-bg"/><line x1="0" y1="0" x2="0" y2="7" class="sf-hl"/></pattern></defs>
+<rect x="116" y="30" width="116" height="152" class="sf-keep"/><rect x="328" y="30" width="116" height="60" class="sf-keep"/>
+<path d="M116,182 C170,182 196,200 196,262 L148,262 C148,240 140,230 116,230 Z" class="sf-lost"/><path d="M134,262 L210,262 L172,292 Z" class="sf-tip"/>
+<path d="M328,90 C395,90 430,120 430,240 L338,240 C338,200 336,182 328,182 Z" class="sf-lost"/><path d="M322,240 L446,240 L384,282 Z" class="sf-tip"/>
+<rect x="20" y="30" width="96" height="200" class="sf-col"/><rect x="232" y="30" width="96" height="152" class="sf-col"/><rect x="444" y="30" width="96" height="60" class="sf-col"/>
+<text x="68" y="137" class="sf-t">予約</text><text x="280" y="113" class="sf-t">面談</text><text x="492" y="67" class="sf-t">成約</text>
+<circle cx="172" cy="236" r="15" class="sf-yen"/><text x="172" y="243" class="sf-y">¥</text>
+<circle cx="384" cy="196" r="22" class="sf-yen"/><text x="384" y="205" class="sf-y sf-y--lg">¥</text>
+<text x="172" y="318" class="sf-cap">取りこぼし</text><text x="384" y="318" class="sf-cap">取りこぼし</text>
+</svg></figure>
 <p class="sheet-hero__lead">面談の予約数、実施数、成約数と平均単価から、各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要。入力した数値は、送信も保存もされません。</p>
 <div class="ex-phead__cta"><a class="ex-btn ex-btn--primary" href="#input">試算する<span class="ex-arrow">→</span></a></div>
 </div></section>

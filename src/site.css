@@ -794,28 +794,19 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .sheet-hero__eyebrow { margin: 0 !important; color: var(--navy); font-size: 18px !important; line-height: 31.5px !important; font-weight: 700; }
 .ex-phead h1.sheet-hero__name { margin-top: var(--space-8); font-size: 48px; line-height: 64px; letter-spacing: .02em; }
 .sheet-hero__lead { margin-top: var(--space-30) !important; }
-.sheet-dg { margin: var(--space-40) 0 0; padding: var(--space-30) var(--space-30); border: 1px solid var(--line); background: var(--surface-alt); }
-.sheet-dg__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-30); align-items: center; }
-.sheet-dg__stage { width: var(--w); margin-inline: auto; background: var(--navy); color: var(--on-navy); text-align: center; padding: var(--space-10) var(--space-8); font-size: 16px; line-height: 28px; font-weight: 700; }
-.sheet-dg__stage--end { outline: 2px solid var(--navy); outline-offset: 3px; }
-.sheet-dg__step { position: relative; display: flex; justify-content: center; padding: var(--space-8) 0; }
-.sheet-dg__step::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 2px solid var(--navy); }
-.sheet-dg__step::after { content: ""; position: absolute; left: calc(50% - 6px); bottom: -1px; border: 6px solid transparent; border-top: 8px solid var(--navy); border-bottom: 0; }
-.sheet-dg__step span { position: relative; z-index: 1; margin-left: 120px; font-size: 14px; line-height: 24.5px; font-weight: 700; color: var(--navy); }
-.sheet-dg__note { display: flex; flex-direction: column; font-size: 14px; line-height: 24.5px; }
-.sheet-dg__row--gap .sheet-dg__note { border-left: 2px solid var(--navy); padding: var(--space-8) 0 var(--space-8) var(--space-16); background: var(--surface); }
-.sheet-dg__note b { color: var(--navy); font-size: 16px; line-height: 28px; }
-.sheet-dg__note em { font-style: normal; font-family: var(--font-numeral); color: var(--ink); }
-.sheet-dg__note--sum { padding-left: var(--space-16); }
+.sheet-fig { margin: var(--space-40) 0 0; padding: var(--space-30) var(--space-40) var(--space-24); border: 1px solid var(--line); background: var(--surface-alt); }
+.sheet-fig svg { display: block; width: 100%; max-width: 620px; height: auto; margin: 0 auto; font-family: var(--font-sans); }
+.sf-col, .sf-tip { fill: var(--navy); }
+.sf-keep { fill: var(--navy); opacity: .16; }
+.sf-bg { fill: var(--surface); } .sf-hl { stroke: var(--navy); stroke-width: 2.2; }
+.sf-lost { fill: url(#sf-hatch); stroke: var(--navy); stroke-width: 1.5; }
+.sf-yen { fill: var(--surface); stroke: var(--navy); stroke-width: 1.5; }
+.sf-t { fill: var(--on-navy); font-size: 22px; font-weight: 700; text-anchor: middle; }
+.sf-y { fill: var(--navy); font-size: 19px; font-weight: 700; text-anchor: middle; font-family: var(--font-numeral); } .sf-y--lg { font-size: 26px; }
+.sf-cap { fill: var(--navy); font-size: 18px; font-weight: 700; text-anchor: middle; }
 @media (max-width: 767px) {
   .sheet-hero__eyebrow { font-size: 14px !important; line-height: 24.5px !important; }
   .ex-phead h1.sheet-hero__name { font-size: 32px; line-height: 44px; }
-  .sheet-dg { margin-top: var(--space-24); padding: var(--space-16); }
-  .sheet-dg__row { grid-template-columns: 1fr 1.3fr; gap: var(--space-10); }
-  .sheet-dg__stage { font-size: 14px; line-height: 24.5px; padding: var(--space-8) var(--space-4); }
-  .sheet-dg__step span { margin-left: 0; padding-left: var(--space-8); transform: translateX(50%); font-size: 12px; background: var(--surface-alt); }
-  .sheet-dg__note, .sheet-dg__note b { font-size: 12px; line-height: 21px; }
-  .sheet-dg__row--gap .sheet-dg__note { padding: var(--space-8) var(--space-8) var(--space-8) var(--space-10); }
-  .sheet-dg__note--sum { padding-left: var(--space-10); }
+  .sheet-fig { margin-top: var(--space-24); padding: var(--space-20) var(--space-16) var(--space-16); }
   .sheet-hero__lead { margin-top: var(--space-24) !important; }
 }
