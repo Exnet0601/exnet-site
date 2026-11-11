@@ -796,17 +796,18 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .sheet-hero__lead { margin-top: var(--space-30) !important; }
 .sheet-fig { margin: var(--space-40) 0 0; padding: var(--space-30) var(--space-40) var(--space-24); border: 1px solid var(--line); background: var(--surface-alt); }
 .sheet-fig svg { display: block; width: 100%; max-width: 620px; height: auto; margin: 0 auto; font-family: var(--font-sans); }
-.sf-col, .sf-tip { fill: var(--navy); }
-.sf-keep { fill: var(--navy); opacity: .16; }
-.sf-bg { fill: var(--surface); } .sf-hl { stroke: var(--navy); stroke-width: 2.2; }
-.sf-lost { fill: url(#sf-hatch); stroke: var(--navy); stroke-width: 1.5; }
-.sf-yen { fill: var(--surface); stroke: var(--navy); stroke-width: 1.5; }
-.sf-t { fill: var(--on-navy); font-size: 22px; font-weight: 700; text-anchor: middle; }
-.sf-y { fill: var(--navy); font-size: 19px; font-weight: 700; text-anchor: middle; font-family: var(--font-numeral); } .sf-y--lg { font-size: 26px; }
-.sf-cap { fill: var(--navy); font-size: 18px; font-weight: 700; text-anchor: middle; }
+.sf-bar { fill: var(--navy); }
+.sf-ghost { fill: var(--surface); stroke: var(--navy); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.sf-guide { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 2 4; }
+.sf-base { stroke: var(--ink); stroke-width: 1.5; }
+.sf-ar { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+.sf-gt { fill: var(--navy); font-size: 15px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; }
+.sf-lb { fill: var(--navy); font-size: 20px; font-weight: 700; text-anchor: middle; }
+.sf-rt { fill: var(--muted); font-size: 14px; text-anchor: middle; }
 @media (max-width: 767px) {
   .sheet-hero__eyebrow { font-size: 14px !important; line-height: 24.5px !important; }
   .ex-phead h1.sheet-hero__name { font-size: 32px; line-height: 44px; }
-  .sheet-fig { margin-top: var(--space-24); padding: var(--space-20) var(--space-16) var(--space-16); }
+  .sheet-fig { margin-top: var(--space-24); padding: var(--space-20) var(--space-10) var(--space-16); }
+  .sf-gt { font-size: 21px; } .sf-lb { font-size: 26px; } .sf-rt { font-size: 20px; }
   .sheet-hero__lead { margin-top: var(--space-24) !important; }
 }
