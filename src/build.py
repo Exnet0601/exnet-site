@@ -21,6 +21,10 @@ open(os.path.join(OUT, 'site.css'), 'w').write(_css)
 # CSSが変わるたびにURLを変え、ブラウザに古いCSSが残って新しいHTMLと食い違うのを防ぐ
 import hashlib
 CSS_VER = hashlib.sha1(_css.encode()).hexdigest()[:8]
+# 画像も中身が変わったらURLが変わるように版を付ける（スマホに古い画像が残るのを防ぐ）
+def _ver(f):
+    with open(os.path.join(HERE, f), 'rb') as fh: return hashlib.sha1(fh.read()).hexdigest()[:8]
+FV_PC_VER, FV_SP_VER = _ver('fv-pc.webp'), _ver('fv-sp.webp')
 
 # ---------- 共通部品 ----------
 ARROW = '<svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h12M8 1l4 4-4 4"/></svg>'
@@ -334,7 +338,7 @@ top = f'''
 <section class="fv">
 <div class="fv4 wrap wrap--fv">
 <div class="fv4__photo">
-<picture class="fv4__pics" aria-hidden="true"><source media="(max-width: 767px)" srcset="fv-sp.webp" width="1100" height="578"><img src="fv-pc.webp" alt="" width="1400" height="734"></picture>
+<picture class="fv4__pics" aria-hidden="true"><source media="(max-width: 767px)" srcset="fv-sp.webp?v={FV_SP_VER}" width="1100" height="578"><img src="fv-pc.webp?v={FV_PC_VER}" alt="" width="1400" height="734"></picture>
 <h1 class="fv4__title">価値ある挑戦を<br>必要な人に届けるために</h1>
 </div>
 <div class="fv4__card">
