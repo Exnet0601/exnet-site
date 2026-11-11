@@ -14,7 +14,7 @@ tokens = subprocess.run([sys.executable, os.path.join(HERE, 'tokens_css.py'), os
 bundle = open(os.path.join(HERE, 'bundle.css')).read()
 site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
-for _f in ('ikai.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
+for _f in ('ikai.webp', 'fv-talk.webp', 'fv-board.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 shutil.copytree(os.path.join(HERE, 'docs'), os.path.join(OUT, 'docs'), dirs_exist_ok=True)   # サービス資料のPDF
 open(os.path.join(OUT, 'site.css'), 'w').write('/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site)
 
@@ -330,10 +330,13 @@ top = f'''
 <p class="fv2__lead"><span>2011年創業</span><br><span>講座・スクール・コンサルティング事業を</span><br class="pc"><span>支援するマーケティング会社</span></p>
 <div class="fv2__cta"><a class="ex-btn ex-btn--secondary ex-btn--section" href="download.html">資料請求<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--primary ex-btn--section" href="contact.html">無料相談（45分）<span class="ex-arrow">→</span></a></div>
 </div>
-<aside class="fv2__who" aria-label="伴走する人">
-<div class="fv2__who-head">{photo(False)}<div><div class="rep__roman">TOMOHIRO IKAI</div><div class="rep__title">代表取締役／商談の伴走者</div><p class="rep__name">猪飼 智弘</p></div></div>
-<p class="fv2__word">「私自身、講座や<span>コンサルティングを、</span><span>ウェブから</span><span>商談につなげて</span><span>売ってきました。</span><span>だから最初に、</span><span>御社の商談と、</span><span>そこに至る流れを</span><span>拝見します。」</span></p>
+<aside class="fv2__who fv3" aria-label="伴走する人">
+<div class="fv3__pics" aria-hidden="true"><img class="fv3__a" src="fv-talk.webp" alt="" width="900" height="601"><img class="fv3__b" src="fv-board.webp" alt="" width="680" height="453"></div>
+<div class="fv3__body">
+<p class="fv3__who"><span class="fv3__roman">TOMOHIRO IKAI</span>代表取締役／商談の伴走者　<b>猪飼 智弘</b></p>
+<p class="fv3__word">「私自身、講座や<span>コンサルティングを、</span><span>ウェブから</span><span>商談につなげて</span><span>売ってきました。</span><span>だから最初に、</span><span>御社の商談と、</span><span>そこに至る流れを</span><span>拝見します。」</span></p>
 {more('代表メッセージを読む', 'message.html')}
+</div>
 </aside>
 </div>
 <div class="fv__band"><div class="wrap wrap--fv"><nav class="entry" aria-label="入口">

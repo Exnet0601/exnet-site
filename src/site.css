@@ -682,3 +682,29 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .rel-cols li { border-bottom: 1px solid var(--line); }
 .rel-cols a { display: block; word-break: auto-phrase; padding: var(--space-16) 0; color: inherit; text-decoration: none; }
 .rel-cols a:hover { text-decoration: underline; }
+
+/* トップFV（試作）：代表カードを、代表の写真2枚に紺を重ねたパネルにする（sairuのFVの作法：写真に言葉を重ねる） */
+.fv2__who.fv3 { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-self: stretch; min-height: 367px;
+  padding: 0; border: 0; background: var(--navy); color: var(--on-navy); overflow: hidden; }
+.fv3__pics { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+.fv3__pics img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fv3__a { object-position: 72% 30%; }
+.fv3__b { object-position: 28% 40%; }
+.fv3__pics::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, color-mix(in srgb, var(--navy) 92%, transparent) 0%, color-mix(in srgb, var(--navy) 70%, transparent) 45%, color-mix(in srgb, var(--navy) 25%, transparent) 100%); }
+.fv3__body { position: relative; padding: var(--space-28) var(--space-36); }
+.fv3__who { margin: 0; font-size: 12px; line-height: 21px; }
+.fv3__who b { font-size: 18px; font-weight: 500; }
+.fv3__roman { display: block; letter-spacing: .1em; color: var(--on-navy-muted); }
+.fv3__word { margin: var(--space-16) 0 0; font-size: 16px; line-height: 28px; text-wrap: pretty; }
+.fv3__word span { display: inline-block; }
+.fv3 .ex-more { margin-top: var(--space-16); color: var(--on-navy); font-size: 14px; line-height: 24.5px; }
+.fv3 .ex-circle { width: 28px; height: 28px; background: var(--on-navy); color: var(--navy); }
+@media (min-width: 1100px) { .fv2__who.fv3 { padding: 0; } .fv3__body { padding: var(--space-36) var(--space-40); } }
+@media (max-width: 767px) {
+  .fv2__who.fv3 { min-height: 0; padding: 0; }
+  .fv3__pics { position: relative; height: 220px; }   /* スマホは写真と言葉を上下に分け、顔に文字をかけない */
+  .fv3__pics::after { background: linear-gradient(to top, color-mix(in srgb, var(--navy) 60%, transparent), transparent 50%); }
+  .fv3__body { padding: var(--space-20) var(--space-16); }
+  .fv3__word { font-size: 14px; line-height: 24.5px; }
+}
