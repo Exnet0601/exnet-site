@@ -640,7 +640,7 @@ sheet = f'''
 <div class="ex-phead__body sheet-hero__body">
 <p class="sheet-hero__eyebrow">予約から成約までの取りこぼしを、金額で把握する</p>
 <h1 class="sheet-hero__name">商談の歩留まり<wbr>試算ツール</h1>
-<figure class="sheet-mock" role="img" aria-label="試算画面のイメージ。予約125件、面談95件、成約13件の棒グラフと、取りこぼし30件・82件、面談の実施率76.0%、成約率13.7%、取りこぼし単価約123万円を示す">
+<figure class="sheet-mock" role="img" aria-label="試算画面のイメージ。予約125件、面談95件、成約13件の棒グラフと、取りこぼし30件・82件、面談の実施率76.0%、成約率13.7%、成約率が1ポイント上がると約117万円増えることを示す">
 <div class="sheet-mock__top"><i></i><i></i><i></i><span>商談の歩留まり試算ツール</span><em>サンプル</em></div>
 <div class="sheet-mock__body">
 <div class="sheet-mock__chart"><p class="sheet-mock__h">段階別の件数</p>
@@ -656,7 +656,7 @@ sheet = f'''
 <ul class="sheet-mock__kpis">
 <li><span>面談の実施率</span><b>76.0<small>%</small></b></li>
 <li><span>面談の成約率</span><b>13.7<small>%</small></b></li>
-<li><span>取りこぼし単価</span><b><small>約</small>123<small>万円</small></b></li>
+<li><span>成約率+1ptで</span><b><small>+約</small>117<small>万円</small></b></li>
 </ul></div></figure>
 <p class="sheet-hero__lead">面談の予約数、実施数、成約数と平均単価から、各段階の歩留まりと、取りこぼした1件あたりの売上を試算します。登録は不要。入力した数値は、送信も保存もされません。</p>
 <div class="ex-phead__cta"><a class="ex-btn ex-btn--primary" href="#input">試算する<span class="ex-arrow">→</span></a></div>
@@ -689,13 +689,14 @@ sheet = f'''
 <h2 class="sheet__h">結果</h2>
 <div class="sheet-loss mt-24">
 <div class="sheet-loss__box"><p class="sheet-loss__label">面談に至らなかった予約</p><p class="sheet-loss__num"><b data-r="noshow"></b>件</p><p class="sheet-loss__w">1件あたり <b data-r="perMeet"></b> の売上機会</p></div>
-<div class="sheet-loss__box"><p class="sheet-loss__label">成約に至らなかった面談</p><p class="sheet-loss__num"><b data-r="lost"></b>件</p><p class="sheet-loss__w">1件あたり <b data-r="price"></b> の売上機会</p></div>
+<div class="sheet-loss__box"><p class="sheet-loss__label">成約に至らなかった面談</p><p class="sheet-loss__num"><b data-r="lost"></b>件</p><p class="sheet-loss__w">成約率が1ポイント上がると <b data-r="up"></b></p></div>
 </div>
 <div class="tbl-wrap mt-40"><table class="tbl sheet-tbl"><tbody>
 <tr><th>面談の実施率</th><td data-r="showRate"></td><td class="sheet-tbl__f">面談数 ÷ 予約数</td></tr>
 <tr><th>面談の成約率</th><td data-r="winRate"></td><td class="sheet-tbl__f">ご成約数 ÷ 面談数</td></tr>
 <tr><th>売上</th><td data-r="sales"></td><td class="sheet-tbl__f">ご成約数 × 平均単価</td></tr>
 <tr><th>面談1件が生む売上</th><td data-r="perMeet"></td><td class="sheet-tbl__f">売上 ÷ 面談数</td></tr>
+<tr><th>成約率が1ポイント上がると</th><td data-r="up"></td><td class="sheet-tbl__f">面談数 × 1% × 平均単価</td></tr>
 <tr data-r-row="ad"><th>面談1件あたりの広告費</th><td data-r="adPer"></td><td class="sheet-tbl__f">広告費 ÷ 面談数</td></tr>
 </tbody></table></div>
 <div class="sheet-first mt-40"><p class="sheet-first__label">最初に試す1つ</p><p class="sheet-first__text" data-r="first"></p><div data-r="firstLink"></div></div>
@@ -755,13 +756,13 @@ if(!ok){var x=f.querySelector('.field-err');if(x)x.parentNode.scrollIntoView({bl
 var noshow=b-m,lost=m-w,sales=w*p,per=sales/m;
 var cand=[];if(ans.q1==='no')cand.push(['q1',noshow,0]);if(ans.q2==='no')cand.push(['q2',lost,1]);if(ans.q3==='no')cand.push(['q3',lost,2]);
 cand.sort(function(a,c){return c[1]-a[1]||a[2]-c[2]});var key=cand.length?cand[0][0]:'all',fs=FIRST[key];
-var r={noshow:noshow.toLocaleString('ja-JP'),lost:lost.toLocaleString('ja-JP'),perMeet:yen(per),price:yen(p),showRate:b?pct(m/b):'—',winRate:pct(w/m),sales:yen(sales),adPer:ad?yen(ad/m):'',first:fs[0]};
+var r={noshow:noshow.toLocaleString('ja-JP'),lost:lost.toLocaleString('ja-JP'),perMeet:yen(per),up:'+'+yen(m*0.01*p),showRate:b?pct(m/b):'—',winRate:pct(w/m),sales:yen(sales),adPer:ad?yen(ad/m):'',first:fs[0]};
 Object.keys(r).forEach(function(k){all('[data-r="'+k+'"]').forEach(function(n){n.textContent=r[k]})});
 $('[data-r-row="ad"]').hidden=!ad;
 $('[data-r="firstLink"]').innerHTML='<a class="ex-more" href="'+fs[1]+'">'+fs[2]+'<span class="ex-circle" aria-hidden="true"></span></a>';
 last=['商談の歩留まり試算ツールの結果','入れた数字：予約 '+b+'件／面談 '+m+'件／ご成約 '+w+'件／平均単価 '+Math.round(p).toLocaleString('ja-JP')+'円'+(ad?'／広告費 '+Math.round(ad).toLocaleString('ja-JP')+'円':''),
 '・面談の実施率：'+r.showRate,'・面談の成約率：'+r.winRate,'・売上：'+r.sales,'・面談1件が生む売上：'+r.perMeet,(ad?'・面談1件あたりの広告費：'+r.adPer:null),
-'・面談に至らなかった予約：'+r.noshow+'件（1件あたりの売上機会 '+r.perMeet+'）','・成約に至らなかった面談：'+r.lost+'件（1件あたりの売上機会 '+r.price+'）','最初に試す1つ：'+fs[0],'https://exnet.biz/sheet.html'].filter(Boolean).join('\\n');
+'・面談に至らなかった予約：'+r.noshow+'件（1件あたりの売上機会 '+r.perMeet+'）','・成約に至らなかった面談：'+r.lost+'件（成約率が1ポイント上がると '+r.up+'）','最初に試す1つ：'+fs[0],'https://exnet.biz/sheet.html'].filter(Boolean).join('\\n');
 var res=$('[data-sheet-result]');res.hidden=false;$('[data-sheet-copied]').textContent='';res.scrollIntoView({behavior:'smooth',block:'start'});ev('sheet_calc');});
 $('[data-sheet-copy]').addEventListener('click',function(){var d=$('[data-sheet-copied]');function done(){d.textContent='コピーしました';ev('sheet_copy')}
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(last).then(done,fb)}else fb();
