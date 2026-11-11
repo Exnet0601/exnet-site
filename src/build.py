@@ -14,7 +14,7 @@ tokens = subprocess.run([sys.executable, os.path.join(HERE, 'tokens_css.py'), os
 bundle = open(os.path.join(HERE, 'bundle.css')).read()
 site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
-for _f in ('ikai.webp', 'fv-talk.webp', 'fv-board.webp', 'fv-seminar.webp', 'fv-smile.webp', 'fv-talk2.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
+for _f in ('ikai.webp', 'fv-board.webp', 'fv-seminar.webp', 'fv-smile.webp', 'fv-talk2.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 shutil.copytree(os.path.join(HERE, 'docs'), os.path.join(OUT, 'docs'), dirs_exist_ok=True)   # サービス資料のPDF
 open(os.path.join(OUT, 'site.css'), 'w').write('/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site)
 
@@ -325,7 +325,7 @@ top = f'''
 <section class="fv">
 <div class="fv4 wrap wrap--fv">
 <div class="fv4__photo">
-<div class="fv4__pics" aria-hidden="true"><img class="fv4__p1" src="fv-seminar.webp" alt="" width="1100" height="600"><img class="fv4__p2" src="fv-talk.webp" alt="" width="900" height="601"><img class="fv4__p3" src="fv-board.webp" alt="" width="680" height="453"><img class="fv4__p4" src="fv-smile.webp" alt="" width="640" height="640"><img class="fv4__p5" src="fv-talk2.webp" alt="" width="640" height="820"></div>
+<div class="fv4__pics" aria-hidden="true"><img class="fv4__p1" src="fv-seminar.webp" alt="" width="1100" height="600"><img class="fv4__p3" src="fv-board.webp" alt="" width="680" height="453"><img class="fv4__p4" src="fv-smile.webp" alt="" width="640" height="640"><img class="fv4__p5" src="fv-talk2.webp" alt="" width="640" height="820"></div>
 <h1 class="fv4__title">価値ある挑戦を<br>必要な人に届けるために</h1>
 </div>
 <div class="fv4__card">
