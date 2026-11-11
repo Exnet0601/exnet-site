@@ -692,7 +692,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 
 /* トップFV（試作）：sairuのFVと同じ形。左に写真（700×367、言葉を重ねる）、右に白いカード（幅700、写真に140px重ね、上下は写真より内側）。
    写真は代表2枚＋素材3枚の組み写真に紺を重ねる */
-.fv4 { position: relative; display: flex; align-items: center; padding-block: var(--space-60); }
+.fv4 { position: relative; display: flex; align-items: center; padding-block: var(--space-60) 55px; }  /* 下55pxは才流実測 */
 .fv4__photo { position: relative; flex: 0 1 700px; min-width: 0; aspect-ratio: 700 / 367; overflow: hidden; background: var(--navy); color: var(--on-navy);
   display: flex; align-items: center; }
 /* 写真はPC用（4枚）とスマホ用（3枚）をそれぞれ1枚の画像に組んで固定（ブラウザで並びが崩れないように）。
@@ -711,9 +711,11 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .fv4__more .ex-more { font-size: 14px; line-height: 24.5px; }
 .fv4__more .ex-circle { width: 28px; height: 28px; }
 @media (min-width: 768px) { .fv4 + .fv__band { padding-top: 0; } }
+/* スマホ：才流実測。カードの下32pxで紺に切り替え、紺の上端から32pxで次のカード */
+@media (max-width: 767px) { .fv4 + .fv__band { padding-top: 32px; background: var(--navy); } }
 @media (max-width: 1099px) and (min-width: 768px) { .fv4__title { font-size: 28px; line-height: 42px; padding-inline: var(--space-36); } }
 @media (max-width: 767px) {
-  .fv4 { flex-direction: column; align-items: stretch; padding-block: 0 var(--space-40); }
+  .fv4 { flex-direction: column; align-items: stretch; padding-block: 0 32px; }
   .fv4__photo { flex: none; width: 100%; aspect-ratio: 555 / 291; }
   .fv4__title { font-size: 20px; line-height: 32px; padding-inline: var(--space-16); }
   .fv4__card { flex: none; margin: -18px 15px 0; padding: var(--space-16); }
