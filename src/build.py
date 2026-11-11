@@ -16,7 +16,11 @@ site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
 for _f in ('ikai.webp', 'fv-pc.webp', 'fv-sp.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 shutil.copytree(os.path.join(HERE, 'docs'), os.path.join(OUT, 'docs'), dirs_exist_ok=True)   # サービス資料のPDF
-open(os.path.join(OUT, 'site.css'), 'w').write('/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site)
+_css = '/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site
+open(os.path.join(OUT, 'site.css'), 'w').write(_css)
+# CSSが変わるたびにURLを変え、ブラウザに古いCSSが残って新しいHTMLと食い違うのを防ぐ
+import hashlib
+CSS_VER = hashlib.sha1(_css.encode()).hexdigest()[:8]
 
 # ---------- 共通部品 ----------
 ARROW = '<svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h12M8 1l4 4-4 4"/></svg>'
@@ -225,7 +229,7 @@ def analytics(fname):
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     full_title = 'エクスネット｜講座・スクール・コンサルティング事業を支援するマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
     head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html')) +
-            '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css">')
+            '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css?v=' + CSS_VER + '">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
     if lp:
         inner = f'<div class="ex-root" id="top"><header class="lp-head"><span class="ex-header__logo"><a href="index.html" aria-label="エクスネット トップへ">{logo("lg-lp")}</a></span></header>\n<main>{body}</main>\n<footer class="lp-foot">© Exnet Co., Ltd.</footer></div>{TOP_JS}{extra_js}'
