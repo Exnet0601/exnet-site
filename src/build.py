@@ -958,7 +958,7 @@ company = f'''
 <section class="sec" style="padding-top:0"><div class="wrap">
 {rule('会社概要', True)}
 <dl class="ex-dl">
-<dt>会社名</dt><dd>株式会社エクスネット（Exnet Co., Ltd.）<br><small>※東京都新宿区の株式会社エックスネット（XNET）とは別の会社です。</small></dd>
+<dt>会社名</dt><dd>株式会社エクスネット（Exnet Co., Ltd.）</dd>
 <dt>法人番号</dt><dd>3180001101495</dd>
 <dt>設立</dt><dd>2011年6月1日</dd>
 <dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX</dd><dt>最寄り駅</dt><dd>東京メトロ半蔵門線 半蔵門駅から徒歩3分</dd>
