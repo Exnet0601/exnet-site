@@ -748,6 +748,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .sheet-q { margin: var(--space-24) 0 0; padding: var(--space-20) var(--space-24); border: 1px solid var(--line); }
 .sheet-q legend { float: left; width: 100%; padding: 0; font-size: 16px; line-height: 28px; font-weight: 700; }
 .sheet-q legend span { display: block; color: var(--navy); font-family: var(--font-numeral); font-size: 14px; line-height: 24.5px; }
+.sheet-q legend span[data-t] { display: inline; color: inherit; font: inherit; }   /* numbers.html：相手の呼び方の差し込み */
 .sheet-q > label { display: inline-flex; align-items: center; gap: var(--space-8); margin: var(--space-16) var(--space-40) 0 0; font-size: 16px; line-height: 28px; cursor: pointer; }
 .sheet-q > label input { width: 18px; height: 18px; accent-color: var(--navy); }
 .sheet-q .field-err { clear: both; }
@@ -786,7 +787,7 @@ svg.logo { display: block; width: 104px; height: 22px; }
   .sheet-q { padding: var(--space-16); }
   .sheet-loss__box { padding: var(--space-24) var(--space-16); }
   .sheet-loss__num b { font-size: 56px; }
-  .sheet-tbl tbody th { width: auto; }
+  .sheet-tbl tbody th { width: auto; white-space: normal; }   /* 呼び方が長い型（無料カウンセリング）でも数字が切れないように */
   .sheet-tbl, .sheet-tbl th, .sheet-tbl td { font-size: 14px; line-height: 24.5px; }
   .sheet-tbl th, .sheet-tbl td { padding: var(--space-8) var(--space-10); }
   .sheet-tbl__f { display: none; }
