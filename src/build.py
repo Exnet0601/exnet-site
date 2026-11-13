@@ -235,7 +235,7 @@ def analytics(fname):
 
 def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
     full_title = 'エクスネット｜講座・スクール・コンサルティング事業を支援するマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
-    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html')) +
+    head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html', 'numbers.html')) +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css?v=' + CSS_VER + '">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
     if lp:
@@ -682,7 +682,7 @@ sheet = f'''
 </div></section>
 
 <section class="sec" id="input"><div class="wrap wrap--article">
-<form class="sheet" data-sheet novalidate>
+<form class="sheet" data-sheet data-clarity-mask="true" novalidate>
 <div class="sheet__head"><h2 class="sheet__h">1. 数字を入れる</h2>
 <div class="sheet__tools"><button type="button" class="sheet__tool" data-sheet-ex>例を入れてみる</button><button type="button" class="sheet__tool" data-sheet-none>まだ数えていない</button></div></div>
 <p class="sheet__p">直近1ヶ月の数字を入れてください。分かれば、直近3ヶ月の合計のほうが、ぶれが小さくなります。</p>
@@ -704,7 +704,7 @@ sheet = f'''
 </div>
 </div></section>
 
-<section class="sec bg-alt" id="result" data-sheet-result hidden><div class="wrap wrap--article">
+<section class="sec bg-alt" id="result" data-sheet-result data-clarity-mask="true" hidden><div class="wrap wrap--article">
 <h2 class="sheet__h">結果</h2>
 <div class="sheet-loss mt-24">
 <div class="sheet-loss__box"><p class="sheet-loss__label">面談に至らなかった予約</p><p class="sheet-loss__num"><b data-r="noshow"></b>件</p><p class="sheet-loss__w">1件あたり <b data-r="perMeet"></b> の売上機会</p></div>
@@ -791,6 +791,153 @@ all('[data-sheet-to-contact]').forEach(function(a){a.addEventListener('click',fu
 </script>'''
 SHEET_JS = SHEET_JS.replace('<span class="ex-circle" aria-hidden="true"></span>', circle())
 doc('sheet.html', '商談歩留まり試算ツール', sheet, extra_js=SHEET_JS)
+
+# ── 面談の3つの数字シート（DM・紹介で手渡す版。11-13 試作、noindex） ──
+# 商談歩留まり試算ツール（sheet.html）と同じ計算を、相手の言葉で見せる。
+#   t=    相手の呼び方の型（下の SHEET_TYPES）。会社ごとには作らない。知らない値・なしは「面談／ご成約」
+#   from= 運んだ経路の印（dm1・dm2 など）。GA4 のイベントに from として載せる
+# 入れた数字は送信も保存もしない。GA4 にはイベント名と from・t だけを送り、Clarity の録画からは入力欄と結果を隠す
+SHEET_TYPES = {  # 型: (面談にあたる言葉, 決まることの言葉, 「実際に面談した数」の言い方)
+ '':   ('面談', 'ご成約', '実際に面談した数'),
+ 'cs': ('無料カウンセリング', 'ご入会', '実際にカウンセリングを受けられた方の数'),
+ 'sm': ('説明会', 'お申し込み', '当日、説明会に参加された方の数'),
+ 'tk': ('体験レッスン', 'お申し込み', '当日、体験レッスンに参加された方の数'),
+ 'sd': ('ご相談', 'ご依頼', '実際にご相談をお受けした数'),
+ 'sk': ('ご相談', 'ご契約', '実際にご相談をお受けした数'),
+ 'so': ('ご相談', 'お申し込み', '実際にご相談をお受けした数'),
+ 'mk': ('面談', 'ご契約', '実際に面談した数'),
+}
+DESC['numbers.html'] = '面談の予約数、実際に面談した数、ご成約数と平均単価を入れると、どこで何人の方が離れているかと、最初に試すことが一つ分かります。登録は不要です。'
+TITLES['numbers.html'] = '面談の3つの数字シート'
+def T(k): return f'<span data-t="{k}">{SHEET_TYPES[""][{"m": 0, "w": 1, "a": 2}[k]]}</span>'
+N_FIELDS = [  # id, ラベル, 数え方, 例, 必須
+ ('s-book', f'{T("m")}のご予約数', '予約カレンダーやフォームに入った件数', '125', True),
+ ('s-meet', T('a'), 'Zoomの履歴や、受付の記録', '95', True),
+ ('s-won', f'{T("w")}の数', '入金・ご契約まで進んだ件数', '13', True),
+ ('s-price', '平均単価（円・税込）', f'売上 ÷ {T("w")}の数でも構いません', '1232308', True),
+ ('s-ad', '広告費（円）', f'入れると、{T("m")}1件あたりの広告費が出ます', '1880000', False),
+]
+N_QS = [
+ ('q1', f'{T("m")}のご予約のあと、前日か当日に、こちらから連絡していますか。'),
+ ('q2', f'この1ヶ月で、{T("w")}に至らなかった{T("m")}の録画かメモを見返しましたか。'),
+ ('q3', f'{T("w")}に至らなかった方に、その後もう一度、個別に連絡していますか。'),
+]
+numbers = f'''
+{phead([('ホーム', 'index.html'), ('面談の3つの数字シート', None)], '面談の3つの数字シート',
+       f'{T("m")}のどこで、何人の方が<br class="pc">離れているかを数えます',
+       f'{T("m")}のご予約数、実際に来られた方の数、{T("w")}の数と平均単価を入れると、どこで何人の方が離れ、その1人がどれだけの売上にあたるかが分かります。最初に試すことも一つ出ます。<br>登録は要りません。入れた数字はこのページの中だけで計算し、弊社には届きません。', False).replace('class="ex-phead__body"', 'class="ex-phead__body sheet-hero__body"', 1)}
+
+<section class="sec" id="input" style="padding-top:0"><div class="wrap wrap--article">
+<form class="sheet" data-sheet data-clarity-mask="true" novalidate>
+<div class="sheet__head"><h2 class="sheet__h">1. 数字を入れる</h2>
+<div class="sheet__tools"><button type="button" class="sheet__tool" data-sheet-ex>例を入れてみる</button><button type="button" class="sheet__tool" data-sheet-none>まだ数えていない</button></div></div>
+<p class="sheet__p">直近1ヶ月の数字を入れてください。分かれば、直近3ヶ月の合計のほうが、ぶれが小さくなります。</p>
+<p class="sheet__ex" data-sheet-exnote hidden>弊社自身の2025年度（1商材）の数字を入れました。<a href="case-exnet-btob.html">事例ページ</a>と同じ数字です。</p>
+<div class="sheet__grid">{''.join(sheet_field(*f) for f in N_FIELDS)}</div>
+<h2 class="sheet__h mt-40">2. 3つの問いに答える</h2>
+{''.join(sheet_q(n, name, q) for n, (name, q) in enumerate(N_QS, 1))}
+<button type="submit" class="ex-btn ex-btn--primary sheet__go">計算する<span class="ex-arrow">→</span></button>
+</form>
+
+<div class="sheet-none box mt-40" data-sheet-nobox hidden>
+<h2 class="sheet__h">来月1ヶ月、この3つだけ数えてみてください</h2>
+<ol class="sheet-none__list">
+<li><b>{T("m")}のご予約数</b>：予約カレンダーやフォームに入った件数</li>
+<li><b>{T("a")}</b>：Zoomの履歴や、受付の記録</li>
+<li><b>{T("w")}の数</b>：入金・ご契約まで進んだ件数</li></ol>
+<p>数がそろったら、このページでもう一度入れてみてください。数字が手元になくても、無料相談の45分で一緒に数えることもできます。</p>
+<div class="end-links mt-24">{more('無料相談の内容を見る', 'contact.html?from=numbers').replace('<a ', '<a data-sheet-to-contact ', 1)}</div>
+</div>
+</div></section>
+
+<section class="sec bg-alt" id="result" data-sheet-result data-clarity-mask="true" hidden><div class="wrap wrap--article">
+<h2 class="sheet__h">結果</h2>
+<div class="sheet-loss mt-24">
+<div class="sheet-loss__box"><p class="sheet-loss__label">予約したのに<br>来られなかった方</p><p class="sheet-loss__num"><b data-r="noshow"></b>人</p><p class="sheet-loss__w">1人が来ていたら <b data-r="perMeet"></b></p></div>
+<div class="sheet-loss__box"><p class="sheet-loss__label">{T("m")}のあと、<br>{T("w")}に至らなかった方</p><p class="sheet-loss__num"><b data-r="lost"></b>人</p><p class="sheet-loss__w">1人が決まっていたら <b data-r="price"></b></p></div>
+</div>
+<div class="tbl-wrap mt-40"><table class="tbl sheet-tbl"><tbody>
+<tr><th>来てくださった割合</th><td data-r="showRate"></td><td class="sheet-tbl__f">来られた方 ÷ ご予約数</td></tr>
+<tr><th>{T("m")}で決まった割合</th><td data-r="winRate"></td><td class="sheet-tbl__f">{T("w")}の数 ÷ 来られた方</td></tr>
+<tr><th>売上</th><td data-r="sales"></td><td class="sheet-tbl__f">{T("w")}の数 × 平均単価</td></tr>
+<tr><th>{T("m")}1件が生む売上</th><td data-r="perMeet"></td><td class="sheet-tbl__f">売上 ÷ 来られた方</td></tr>
+<tr data-r-row="ad"><th>{T("m")}1件あたりの広告費</th><td data-r="adPer"></td><td class="sheet-tbl__f">広告費 ÷ 来られた方</td></tr>
+</tbody></table></div>
+<div class="sheet-first mt-40"><p class="sheet-first__label">最初に試す1つ</p><p class="sheet-first__text" data-r="first"></p><div data-r="firstLink"></div></div>
+<div class="sheet-copy mt-24"><button type="button" class="ex-btn ex-btn--secondary" data-sheet-copy>結果をコピー</button><span class="sheet-copy__done" data-sheet-copied role="status"></span></div>
+<p class="sheet__p">コピーした文章は、社内の方や、ご紹介くださった方にそのまま渡せます。</p>
+<div class="sheet-exit mt-40">
+<p>数字は出たけれど、次に何を試すか迷ったら、45分で一緒に見ます。この結果をお持ちください。</p>
+<div class="sheet-exit__btns"><a class="ex-btn ex-btn--primary" href="contact.html?from=numbers" data-sheet-to-contact>この結果で相談する<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--secondary" href="download.html">資料を受け取る<span class="ex-arrow">→</span></a></div>
+</div>
+<p class="note mt-24">表示する数字は入力した値からの計算で、成果をお約束するものではありません。</p>
+</div></section>
+
+<section class="sec"><div class="wrap wrap--article">
+{rule('数字の読み方の例')}
+<div class="prose mt-40"><p>お客様の事例では、予約した面談に来てくださる割合が、31.3%から63.2%になりました。予約の数が同じでも、実際にお話しできる方がおよそ2倍になる変化です。広告を増やす前に、すでにある予約の中で離れている方から見ていきます。</p></div>
+<div class="mt-24">{more('事例を読む', 'case-edu.html')}</div>
+</div></section>
+
+<section class="sec bg-alt"><div class="wrap">
+{rule('代表から一言')}
+<div class="rep" style="margin-top:var(--space-40)">
+{photo(False)}
+<div><div class="rep__roman">TOMOHIRO IKAI</div><p class="rep__name">猪飼 智弘</p><div class="rep__title">株式会社エクスネット 代表取締役</div>
+<p class="rep__word">弊社は、自社の面談も毎月この3つで数えています。広告を止められたとき、手元に残ったのは、すでにある面談と、その数字でした。ですので、まず数えるところから一緒に始めたいと思っています。</p>
+{more('代表メッセージを読む', 'message.html')}</div></div>
+</div></section>
+'''
+NUMBERS_JS = '''<script>
+(function(){var f=document.querySelector('[data-sheet]');if(!f)return;
+function $(s){return document.querySelector(s)}function all(s){return document.querySelectorAll(s)}
+var TYPES=%TYPES%,qs=new URLSearchParams(location.search),t=qs.get('t')||'',src=qs.get('from')||'';
+if(!TYPES[t])t='';if(!/^[a-z0-9_-]{1,20}$/i.test(src))src='';
+var W=TYPES[t],M=W[0],D=W[1];
+if(t)all('[data-t]').forEach(function(n){n.textContent=W[{m:0,w:1,a:2}[n.getAttribute('data-t')]]});
+all('a[href^="contact.html?from=numbers"]').forEach(function(a){if(src)a.href+='&via='+encodeURIComponent(src)});
+function ev(n){try{if(window.gtag)gtag('event',n,{from:src||'(none)',wording:t||'(none)'})}catch(e){}}
+function num(id){var v=$('#'+id).value.replace(/[,，円\\s]/g,'').replace(/[０-９]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248)});return v===''?null:Number(v)}
+function yen(v){if(v>=10000){var m=v/10000;return '約'+(m>=100?Math.round(m).toLocaleString('ja-JP'):(Math.round(m*10)/10).toLocaleString('ja-JP'))+'万円'}return Math.round(v).toLocaleString('ja-JP')+'円'}
+function pct(v){return (Math.round(v*1000)/10).toFixed(1)+'%'}
+var FIRST={q1:['次のご予約から、'+M+'の前日に一言だけ、個別に連絡してみてください。'+M+'で何が分かるかも一行添えます。','column-no-show.html','予約した方が来てくださらない理由を読む'],
+q2:['直近で'+D+'に至らなかった3件を見返し、決まらなかった理由を1行ずつ書いてみてください。','column-closing-rate.html','面談で決まる割合の見方を読む'],
+q3:['先月'+D+'に至らなかった方に、1通だけ個別に連絡してみてください。売り込みではなく、その後を伺う一通です。','column-lost-deals.html','決まらなかった方との、その後を読む'],
+all:['手は打てています。次は、'+D+'に至った方と至らなかった方の違いを見る段階です。','contact.html?from=numbers'+(src?'&via='+encodeURIComponent(src):''),'無料相談で一緒に見る']};
+var last='';
+function err(el,msg){var s=document.createElement('span');s.className='field-err';s.textContent=msg;el.appendChild(s)}
+$('[data-sheet-ex]').addEventListener('click',function(){all('[data-ex]').forEach(function(i){i.value=Number(i.getAttribute('data-ex')).toLocaleString('ja-JP')});$('[data-sheet-exnote]').hidden=false;$('[data-sheet-nobox]').hidden=true;});
+$('[data-sheet-none]').addEventListener('click',function(){var b=$('[data-sheet-nobox]');b.hidden=false;b.scrollIntoView({behavior:'smooth',block:'start'});ev('sheet_not_counted');});
+f.addEventListener('submit',function(e){e.preventDefault();f.querySelectorAll('.field-err').forEach(function(x){x.remove()});
+var ok=true,b=num('s-book'),m=num('s-meet'),w=num('s-won'),p=num('s-price'),ad=num('s-ad');
+[['s-book',b],['s-meet',m],['s-won',w],['s-price',p]].forEach(function(a){if(a[1]===null||isNaN(a[1])||a[1]<0){ok=false;err($('#'+a[0]).closest('label'),'数字を入れてください')}});
+if(ad!==null&&(isNaN(ad)||ad<0)){ok=false;err($('#s-ad').closest('label'),'数字で入れるか、空のままにしてください')}
+if(ok&&m>b){ok=false;err($('#s-meet').closest('label'),'ご予約数より多くなっています')}
+if(ok&&w>m){ok=false;err($('#s-won').closest('label'),'来られた方の数より多くなっています')}
+if(ok&&m===0){ok=false;err($('#s-meet').closest('label'),'1以上を入れてください')}
+var ans={};all('.sheet-q').forEach(function(q){var c=q.querySelector('input:checked');if(!c){ok=false;err(q,'はい・いいえを選んでください')}else ans[q.getAttribute('data-q')]=c.value});
+if(!ok){var x=f.querySelector('.field-err');if(x)x.parentNode.scrollIntoView({block:'center'});return}
+var noshow=b-m,lost=m-w,sales=w*p,per=sales/m;
+var cand=[];if(ans.q1==='no')cand.push(['q1',noshow,0]);if(ans.q2==='no')cand.push(['q2',lost,1]);if(ans.q3==='no')cand.push(['q3',lost,2]);
+cand.sort(function(a,c){return c[1]-a[1]||a[2]-c[2]});var key=cand.length?cand[0][0]:'all',fs=FIRST[key];
+var r={noshow:noshow.toLocaleString('ja-JP'),lost:lost.toLocaleString('ja-JP'),perMeet:yen(per),price:yen(p),showRate:b?pct(m/b):'—',winRate:pct(w/m),sales:yen(sales),adPer:ad?yen(ad/m):'',first:fs[0]};
+Object.keys(r).forEach(function(k){all('[data-r="'+k+'"]').forEach(function(n){n.textContent=r[k]})});
+$('[data-r-row="ad"]').hidden=!ad;
+$('[data-r="firstLink"]').innerHTML='<a class="ex-more" href="'+fs[1]+'"'+(key==='all'?' data-sheet-to-contact':'')+'>'+fs[2]+'<span class="ex-circle" aria-hidden="true"></span></a>';
+last=['面談の3つの数字シートの結果','入れた数字：'+M+'のご予約 '+b+'件／来られた方 '+m+'件／'+D+' '+w+'件／平均単価 '+Math.round(p).toLocaleString('ja-JP')+'円'+(ad?'／広告費 '+Math.round(ad).toLocaleString('ja-JP')+'円':''),
+'・予約したのに来られなかった方：'+r.noshow+'人（1人が来ていたら '+r.perMeet+'）','・'+M+'のあと、'+D+'に至らなかった方：'+r.lost+'人（1人が決まっていたら '+r.price+'）',
+'・来てくださった割合：'+r.showRate,'・'+M+'で決まった割合：'+r.winRate,'・売上：'+r.sales,'・'+M+'1件が生む売上：'+r.perMeet,(ad?'・'+M+'1件あたりの広告費：'+r.adPer:null),
+'最初に試す1つ：'+fs[0],'https://exnet.biz/numbers.html'+(t?'?t='+t:'')].filter(Boolean).join('\\n');
+var res=$('[data-sheet-result]');res.hidden=false;$('[data-sheet-copied]').textContent='';res.scrollIntoView({behavior:'smooth',block:'start'});ev('sheet_calc');});
+$('[data-sheet-copy]').addEventListener('click',function(){var d=$('[data-sheet-copied]');function done(){d.textContent='コピーしました';ev('sheet_copy')}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(last).then(done,fb)}else fb();
+function fb(){var x=document.createElement('textarea');x.value=last;x.setAttribute('readonly','');x.style.position='fixed';x.style.opacity='0';document.body.appendChild(x);x.select();try{document.execCommand('copy');done()}catch(e){d.textContent='コピーできませんでした。お手数ですが選択してコピーしてください'}x.remove()}});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-sheet-to-contact]');if(a)ev('sheet_to_contact')});
+})();
+</script>'''
+NUMBERS_JS = (NUMBERS_JS.replace('%TYPES%', json.dumps({k: list(v) for k, v in SHEET_TYPES.items()}, ensure_ascii=False))
+              .replace('<span class="ex-circle" aria-hidden="true"></span>', circle()))
+doc('numbers.html', '面談の3つの数字シート', numbers, extra_js=NUMBERS_JS)
 
 # ====================================================================
 # 料金と契約
@@ -1212,7 +1359,7 @@ BOOK_SRC = 'https://ut.exnet.biz/p/sA61r06GNKyM'
 opts = lambda xs: ''.join(f'<option>{x}</option>' for x in xs)
 contact2 = contact[:-len("</div>")] + f'''<div class="book" data-book>
 <div class="ex-form"><p class="ex-form__note">お客様の情報をご入力いただき、次の画面で日時を選ぶと、その場で予約が確定します。オンライン会議のURLは、確定のメールでお送りします。</p>
-<p class="fit fit--static" data-from-sheet hidden>歩留まり試算からお越しいただき、ありがとうございます。「いちばんご相談したいこと」は「商談で決まる件数」にしてあります。コピーした結果は、当日の画面で一緒に見ますので、お手元にご用意ください。</p>
+<p class="fit fit--static" data-from-sheet hidden><span data-from-name>歩留まり試算</span>からお越しいただき、ありがとうございます。「いちばんご相談したいこと」は「商談で決まる件数」にしてあります。コピーした結果は、当日の画面で一緒に見ますので、お手元にご用意ください。</p>
 <p class="fit fit--static">弊社の支援が力を発揮するのは、販売単価30万円以上の商品・サービスをメインで扱われている事業者様です。当てはまるか迷われた方は、先に資料請求でお確かめいただくこともできます。<br><a href="download.html">資料請求はこちら</a></p>
 <div data-book-step>
 <div class="ex-field-row"><label class="ex-field" for="b-sei">姓 <em>*</em><input id="b-sei" name="sei" autocomplete="family-name" required></label><label class="ex-field" for="b-mei">名 <em>*</em><input id="b-mei" name="mei" autocomplete="given-name" required></label></div>
@@ -1229,7 +1376,7 @@ contact2 = contact[:-len("</div>")] + f'''<div class="book" data-book>
 <p class="book__alt">日時の選択が表示されない場合は、<a href="{BOOK_SRC}" target="_blank" rel="noopener">予約ページを別の画面で開く</a>からお申し込みください。</p>
 </div></div>'''
 BOOK2_JS = open(os.path.join(os.path.dirname(__file__), 'book2.js')).read().replace('%SRC%', BOOK_SRC)
-FROM_SHEET_JS = '<script>(function(){if(!/[?&]from=sheet\\b/.test(location.search))return;var t=document.getElementById("b-topic"),n=document.querySelector("[data-from-sheet]");if(t)t.value="商談で決まる件数";if(n)n.hidden=false;})();</script>'
+FROM_SHEET_JS = '<script>(function(){var m=/[?&]from=(sheet|numbers)\\b/.exec(location.search);if(!m)return;var t=document.getElementById("b-topic"),n=document.querySelector("[data-from-sheet]"),k=document.querySelector("[data-from-name]");if(t)t.value="商談で決まる件数";if(n)n.hidden=false;if(k&&m[1]==="numbers")k.textContent="数字のシート";})();</script>'
 doc('contact.html', '無料相談', contact2, lp=True, extra_js=BOOK2_JS + FROM_SHEET_JS)
 
 def thanks(fname, h1, body, links, skip):
