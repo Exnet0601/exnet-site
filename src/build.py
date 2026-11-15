@@ -964,7 +964,7 @@ company = f'''
 <dt>設立</dt><dd>2011年6月1日</dd>
 <dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX</dd><dt>最寄り駅</dt><dd>東京メトロ半蔵門線 半蔵門駅から徒歩3分</dd>
 <dt>代表者</dt><dd>代表取締役　猪飼 智弘</dd>
-<dt>事業内容</dt><dd>講座・スクール・コンサルティング・士業などを支援するマーケティング事業<br>マーケティングの伴走支援（商談の改善、LINE・UTAGEの導線設計、ハウスリストの活用、広告の運用）<br>自社システムの開発・運用</dd>
+<dt>事業内容</dt><dd>講座・スクール・コンサルティング・士業などを支援するマーケティング事業<br>マーケティングの伴走支援（商談の改善、LINE・UTAGEの導線設計、ハウスリストの活用、広告の運用）<br>自社の業務に使うAI・システムの開発</dd>
 <dt>電話番号</dt><dd>03-6262-1694</dd>
 <dt>メール</dt><dd><a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></dd>
 <dt>沿革</dt><dd><ul class="hist"><li><span>2011年6月</span><span>名古屋でウェブ制作会社として創業</span></li><li><span>2012年5月</span><span>自社講座の販売を開始</span></li><li><span>2016年4月</span><span>自社システムの開発を始める</span></li><li><span>2018年8月</span><span>集客の仕組みづくりを自社で開始</span></li><li><span>2020年7月</span><span>パートナー会社と物販講座の運営を始める</span></li><li><span>2023年8月</span><span>本社を東京都千代田区麹町へ移転</span></li><li><span>2026年</span><span>伴走支援（伴走＋実務型）の提供を開始</span></li></ul></dd>
@@ -974,7 +974,7 @@ company = f'''
 
 <section class="sec bg-alt" id="news"><div class="wrap">
 {rule('お知らせ', True)}
-<ul class="ex-news"><li><time datetime="2026-10-17">2026.10.17</time><span>コーポレートサイトをリニューアルしました</span></li></ul>
+<ul class="ex-news"><li><time datetime="2026-11-10">2026.11.10</time><a class="ex-ul" href="https://www.value-press.com/pressrelease/384134" target="_blank" rel="noopener">プレスリリース「講座・コンサルの売上は面談のあとで決まる。商談記録を集計、面談の数を言えた会社は3社に1社」を配信しました</a></li><li><time datetime="2026-10-17">2026.10.17</time><span>コーポレートサイトをリニューアルしました</span></li></ul>
 </div></section>
 
 <section class="sec"><div class="wrap">
@@ -1389,5 +1389,7 @@ open(os.path.join(OUT, 'llms.txt'), 'w').write(
     '- 広告費の何%という形で報酬をいただくことはしません。\n'
     '- 完全成果報酬の契約はしません。成果報酬は、エクスネットが担当した経路のご成約だけが対象です。\n'
     '- 作業をすべてお預かりする丸投げのご依頼は受けません。やり方が御社に残る形で進めます。\n'
-    '- 代表が毎週お会いできる数を超えてお引き受けしません。\n\n## ページ\n\n' +
+    '- 代表が毎週お会いできる数を超えてお引き受けしません。\n\n'
+    '## 外部での紹介\n\n'
+    '- [プレスリリース：講座・コンサルの売上は面談のあとで決まる。商談記録を集計、面談の数を言えた会社は3社に1社](https://www.value-press.com/pressrelease/384134)（2026年11月10日、ValuePress）\n\n## ページ\n\n' +
     ''.join(f'- [{LLMS_NAMES.get(u.replace(BASE, "") or "index.html") or ("コラム：" + COLUMNS[u.replace(BASE, "")]["title"].split("｜")[0] if u.replace(BASE, "") in COLUMNS else u)}]({u})：{DESC.get(u.replace(BASE, "") or "index.html", "")}\n' for u in PAGES))
