@@ -833,3 +833,6 @@ svg.logo { display: block; width: 104px; height: 22px; }
   .sheet-mock__kpis b small { font-size: 10px; }
   .sheet-hero__lead { margin-top: var(--space-24) !important; }
 }
+
+/* 資料請求フォームのおとりの欄（ボット除け）。人には見えず、入力もしない。値が入っていたら送信しない（build.py FORM_JS） */
+.ex-hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
