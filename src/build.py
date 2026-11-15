@@ -228,7 +228,8 @@ GA4_ID = 'G-6TWGWMNKEK'          # GA4 プロパティ「exnet.biz コーポレ�
 CLARITY_ID = 'yz19bttupo'        # Clarity プロジェクト「exnet.biz コーポレートサイト」
 def analytics(fname):
     lead = {'thanks-download.html': 'download', 'thanks-contact.html': 'contact'}.get(fname)
-    ev = f"gtag('event','generate_lead',{{form:'{lead}'}});" if lead else ''
+    # おとりの欄で止めた送信（#hp 付きで来る）は申し込みに数えず、form_blocked として別に数える
+    ev = f"if(location.hash==='#hp')gtag('event','form_blocked',{{form:'{lead}'}});else gtag('event','generate_lead',{{form:'{lead}'}});" if lead else ''
     return (f'\n<script async src="https://www.googletagmanager.com/gtag/js?id={GA4_ID}"></script>'
             f"\n<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA4_ID}');{ev}</script>"
             f'\n<script>(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","{CLARITY_ID}");</script>')
@@ -1164,7 +1165,7 @@ var g=p.querySelector('[data-need-one]');if(g&&!g.querySelector('input:checked')
 f.querySelectorAll('[data-next]').forEach(function(b){b.addEventListener('click',function(){if(ok(ps[n]))show(n+1)})});
 f.querySelectorAll('[data-back]').forEach(function(b){b.addEventListener('click',function(){show(n-1)})});
 var fit=f.querySelector('.fit');if(fit){var pr=f.querySelector('#c-price'),sl=f.querySelector('#c-sell');function chk(){fit.hidden=!(pr.value==='30万円未満'||(sl&&sl.value==='no'))}pr.addEventListener('change',chk);if(sl)sl.addEventListener('change',chk);}
-f.addEventListener('submit',function(e){e.preventDefault();if(!ok(ps[n]))return;var hp=f.querySelector('[data-hp]');if(hp&&hp.value){location.href=f.getAttribute('data-thanks');return}if(hp)hp.disabled=true;if(f.getAttribute('action'))f.submit();else location.href=f.getAttribute('data-thanks');});show(0,true);})();
+f.addEventListener('submit',function(e){e.preventDefault();if(!ok(ps[n]))return;var hp=f.querySelector('[data-hp]');if(hp&&hp.value){location.href=f.getAttribute('data-thanks')+'#hp';return}if(hp)hp.disabled=true;if(f.getAttribute('action'))f.submit();else location.href=f.getAttribute('data-thanks');});show(0,true);})();
 </script>'''
 
 SLOT_JS = '''<script>
