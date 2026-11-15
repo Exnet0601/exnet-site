@@ -1164,7 +1164,7 @@ var g=p.querySelector('[data-need-one]');if(g&&!g.querySelector('input:checked')
 f.querySelectorAll('[data-next]').forEach(function(b){b.addEventListener('click',function(){if(ok(ps[n]))show(n+1)})});
 f.querySelectorAll('[data-back]').forEach(function(b){b.addEventListener('click',function(){show(n-1)})});
 var fit=f.querySelector('.fit');if(fit){var pr=f.querySelector('#c-price'),sl=f.querySelector('#c-sell');function chk(){fit.hidden=!(pr.value==='30万円未満'||(sl&&sl.value==='no'))}pr.addEventListener('change',chk);if(sl)sl.addEventListener('change',chk);}
-f.addEventListener('submit',function(e){e.preventDefault();if(!ok(ps[n]))return;if(f.getAttribute('action'))f.submit();else location.href=f.getAttribute('data-thanks');});show(0,true);})();
+f.addEventListener('submit',function(e){e.preventDefault();if(!ok(ps[n]))return;var hp=f.querySelector('[data-hp]');if(hp&&hp.value){location.href=f.getAttribute('data-thanks');return}if(hp)hp.disabled=true;if(f.getAttribute('action'))f.submit();else location.href=f.getAttribute('data-thanks');});show(0,true);})();
 </script>'''
 
 SLOT_JS = '''<script>
@@ -1188,6 +1188,7 @@ download = f'''<div class="lp">
 <label class="ex-field" for="d-mail">メールアドレス <em>*</em><input id="d-mail" type="email" name="mail" autocomplete="email" required></label>
 <label class="ex-field" for="d-co">会社名 <em>*</em><input id="d-co" name="free93" autocomplete="organization" required></label>
 <label class="agree" for="d-agree"><input id="d-agree" type="checkbox" required> <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意する <em style="color:var(--required);font-style:normal">*</em></span></label>
+<div class="ex-hp" aria-hidden="true"><label for="d-hp">確認用（入力しないでください）<input id="d-hp" name="ex_confirm" tabindex="-1" autocomplete="off" data-hp></label></div>
 <button type="submit" class="ex-submit">資料を受け取る</button></div>
 </form></div>'''
 doc('download.html', '資料請求', download, lp=True, extra_js=FORM_JS)
