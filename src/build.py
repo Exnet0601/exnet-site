@@ -1177,7 +1177,7 @@ ss.forEach(function(s){s.insertAdjacentHTML('beforeend',o)});})();
 # 資料請求の受付先（2026-11-16 スパム対策）。フォームは UTAGE に直接送らず、Google Apps Script のウェブアプリ
 # （tools/forms/download-intake.gs）に送り、そこで reCAPTCHA などを確かめてから UTAGE に登録する。
 # UTAGE の受付先はアプリ側の設定にだけ置き、ここやページには書かない。空にするとフォームを止めて、メールでの受付案内を出す。
-DOWNLOAD_ENDPOINT = ''
+DOWNLOAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxxcIOFhz_vhDh3d60I4xhYSD9Ta6359wLD2HfGckIepJmb6f00YiU5M6NUSnTe6kWg/exec'
 RECAPTCHA_SITE_KEY = '6LcDHiMuAAAAAEd_r8ADWjzYVICPgaRXEUwkY61R'
 DOWNLOAD_FORM = '''<form class="ex-form" data-endpoint="__ENDPOINT__" data-steps data-thanks="thanks-download.html" novalidate>
 <p class="ex-form__note">4項目だけ、30秒ほどで終わります。</p>
