@@ -1177,21 +1177,15 @@ ss.forEach(function(s){s.insertAdjacentHTML('beforeend',o)});})();
 download = f'''<div class="lp">
 <div class="lp__body"><h1>サービス資料の<br class="pc">ご請求</h1>
 <p>サイトでご紹介しているサービス内容を、図解入りの1冊にまとめました。社内で回覧しやすいPDFでお送りします。DMでご案内している資料と同じものです。</p>
-<p>ご入力いただいたメールアドレスに、すぐにお送りします。</p>
 <h2>資料に入っていること</h2>
 <ul class="list-dash"><li>商談から入る理由と、4つの打ち手の順番</li><li>伴走型と伴走＋実務型の違い</li><li>月額、成果報酬、契約期間の条件</li><li>最初の2週間でお渡しするもの</li></ul>
 <h2>別の窓口</h2><p style="margin-top:var(--space-8)">いまのご商談を直接見てほしい方は</p>{more('無料相談へ', 'contact.html')}
 </div>
-<form class="ex-form" action="https://ut.exnet.biz/r/YpY0rGMHY4MT/store" method="post" data-steps data-thanks="thanks-download.html" novalidate>
-<p class="ex-form__note">4項目だけ、30秒ほどで終わります。</p>
-<div data-step>
-<label class="ex-field" for="d-name">お名前 <em>*</em><input id="d-name" name="name" autocomplete="name" required></label>
-<label class="ex-field" for="d-mail">メールアドレス <em>*</em><input id="d-mail" type="email" name="mail" autocomplete="email" required></label>
-<label class="ex-field" for="d-co">会社名 <em>*</em><input id="d-co" name="free93" autocomplete="organization" required></label>
-<label class="agree" for="d-agree"><input id="d-agree" type="checkbox" required> <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意する <em style="color:var(--required);font-style:normal">*</em></span></label>
-<div class="ex-hp" aria-hidden="true"><label for="d-hp">確認用（入力しないでください）<input id="d-hp" name="ex_confirm" tabindex="-1" autocomplete="off" data-hp></label></div>
-<button type="submit" class="ex-submit">資料を受け取る</button></div>
-</form></div>'''
+<!-- 2026-11-16 スパム対策のため一時停止中。再開時は git の履歴からフォームを戻す -->
+<div class="ex-form" data-paused>
+<p class="ex-form__note">ただいま、フォームからの資料請求を一時的に停止しています。ご不便をおかけして申し訳ありません。</p>
+<p class="ex-form__note">資料をご希望の方は、お名前と会社名を添えて <a href="mailto:info@exnet.biz?subject=%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E8%B3%87%E6%96%99%E3%81%AE%E3%81%94%E8%AB%8B%E6%B1%82">info@exnet.biz</a> までメールでお知らせください。担当から資料をお送りします。</p>
+</div>'''
 doc('download.html', '資料請求', download, lp=True, extra_js=FORM_JS)
 
 contact = f'''<div class="lp">
