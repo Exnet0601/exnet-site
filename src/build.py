@@ -1165,7 +1165,7 @@ var g=p.querySelector('[data-need-one]');if(g&&!g.querySelector('input:checked')
 f.querySelectorAll('[data-next]').forEach(function(b){b.addEventListener('click',function(){if(ok(ps[n]))show(n+1)})});
 f.querySelectorAll('[data-back]').forEach(function(b){b.addEventListener('click',function(){show(n-1)})});
 var fit=f.querySelector('.fit');if(fit){var pr=f.querySelector('#c-price'),sl=f.querySelector('#c-sell');function chk(){fit.hidden=!(pr.value==='30万円未満'||(sl&&sl.value==='no'))}pr.addEventListener('change',chk);if(sl)sl.addEventListener('change',chk);}
-f.addEventListener('submit',function(e){e.preventDefault();if(!ok(ps[n]))return;var hp=f.querySelector('[data-hp]');if(hp&&hp.value){location.href=f.getAttribute('data-thanks')+'#hp';return}if(hp)hp.disabled=true;if(f.getAttribute('action'))f.submit();else location.href=f.getAttribute('data-thanks');});show(0,true);})();
+f.addEventListener('submit',function(e){e.preventDefault();if(!ok(ps[n]))return;var hp=f.querySelector('[data-hp]');if(hp&&hp.value){location.href=f.getAttribute('data-thanks')+'#hp';return}if(f.getAttribute('data-endpoint')&&window.exIntake){window.exIntake(f);return}if(hp)hp.disabled=true;if(f.getAttribute('action'))f.submit();else location.href=f.getAttribute('data-thanks');});show(0,true);})();
 </script>'''
 
 SLOT_JS = '''<script>
@@ -1174,19 +1174,46 @@ while(k<12){d.setDate(d.getDate()+1);var w=d.getDay();if(w===0||w===6)continue;k
 ss.forEach(function(s){s.insertAdjacentHTML('beforeend',o)});})();
 </script>'''
 
+# 資料請求の受付先（2026-11-16 スパム対策）。フォームは UTAGE に直接送らず、Google Apps Script のウェブアプリ
+# （tools/forms/download-intake.gs）に送り、そこで reCAPTCHA などを確かめてから UTAGE に登録する。
+# UTAGE の受付先はアプリ側の設定にだけ置き、ここやページには書かない。空にするとフォームを止めて、メールでの受付案内を出す。
+DOWNLOAD_ENDPOINT = ''
+RECAPTCHA_SITE_KEY = '6LcDHiMuAAAAAEd_r8ADWjzYVICPgaRXEUwkY61R'
+DOWNLOAD_FORM = '''<form class="ex-form" data-endpoint="__ENDPOINT__" data-steps data-thanks="thanks-download.html" novalidate>
+<p class="ex-form__note">4項目だけ、30秒ほどで終わります。</p>
+<div data-step>
+<label class="ex-field" for="d-name">お名前 <em>*</em><input id="d-name" name="name" autocomplete="name" required></label>
+<label class="ex-field" for="d-mail">メールアドレス <em>*</em><input id="d-mail" type="email" name="mail" autocomplete="email" required></label>
+<label class="ex-field" for="d-co">会社名 <em>*</em><input id="d-co" name="company" autocomplete="organization" required></label>
+<label class="agree" for="d-agree"><input id="d-agree" type="checkbox" required> <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意する <em style="color:var(--required);font-style:normal">*</em></span></label>
+<div class="ex-hp" aria-hidden="true"><label for="d-hp">確認用（入力しないでください）<input id="d-hp" name="ex_confirm" tabindex="-1" autocomplete="off" data-hp></label></div>
+<button type="submit" class="ex-submit">資料を受け取る</button>
+<p class="ex-form__note" data-send-err hidden>送信できませんでした。時間をおいてもう一度お試しいただくか、お名前と会社名を添えて info@exnet.biz までメールでお知らせください。</p></div>
+</form>'''
+DOWNLOAD_FORM = DOWNLOAD_FORM.replace('__ENDPOINT__', DOWNLOAD_ENDPOINT)
+DOWNLOAD_PAUSED = '''<div class="ex-form" data-paused>
+<p class="ex-form__note">ただいま、フォームからの資料請求を一時的に停止しています。ご不便をおかけして申し訳ありません。</p>
+<p class="ex-form__note">資料をご希望の方は、お名前と会社名を添えて <a href="mailto:info@exnet.biz?subject=%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E8%B3%87%E6%96%99%E3%81%AE%E3%81%94%E8%AB%8B%E6%B1%82">info@exnet.biz</a> までメールでお知らせください。担当から資料をお送りします。</p>
+</div>'''
+INTAKE_JS = ('<script src="https://www.google.com/recaptcha/api.js?render=' + RECAPTCHA_SITE_KEY + '" async defer></script>\n<script>\n'
+ "window.exIntake=function(f){var b=f.querySelector('.ex-submit'),er=f.querySelector('[data-send-err]'),hp=f.querySelector('[data-hp]'),t=b.textContent;"
+ "er.hidden=true;b.disabled=true;b.textContent='送信しています…';"
+ "var d={name:f.querySelector('#d-name').value.trim(),mail:f.querySelector('#d-mail').value.trim(),company:f.querySelector('#d-co').value.trim(),ex_confirm:hp?hp.value:''};"
+ "function fail(){b.disabled=false;b.textContent=t;er.hidden=false;}"
+ "function post(tk){d.token=tk||'';fetch(f.getAttribute('data-endpoint'),{method:'POST',body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(j){if(j&&j.ok)location.href=f.getAttribute('data-thanks');else fail();}).catch(fail);}"
+ "if(window.grecaptcha&&grecaptcha.ready){grecaptcha.ready(function(){grecaptcha.execute('" + RECAPTCHA_SITE_KEY + "',{action:'download'}).then(post,function(){post('')});});}else post('');};"
+ "\n</script>")
+
 download = f'''<div class="lp">
 <div class="lp__body"><h1>サービス資料の<br class="pc">ご請求</h1>
 <p>サイトでご紹介しているサービス内容を、図解入りの1冊にまとめました。社内で回覧しやすいPDFでお送りします。DMでご案内している資料と同じものです。</p>
+{'<p>ご入力いただいたメールアドレスに、すぐにお送りします。</p>' if DOWNLOAD_ENDPOINT else ''}
 <h2>資料に入っていること</h2>
 <ul class="list-dash"><li>商談から入る理由と、4つの打ち手の順番</li><li>伴走型と伴走＋実務型の違い</li><li>月額、成果報酬、契約期間の条件</li><li>最初の2週間でお渡しするもの</li></ul>
 <h2>別の窓口</h2><p style="margin-top:var(--space-8)">いまのご商談を直接見てほしい方は</p>{more('無料相談へ', 'contact.html')}
 </div>
-<!-- 2026-11-16 スパム対策のため一時停止中。再開時は git の履歴からフォームを戻す -->
-<div class="ex-form" data-paused>
-<p class="ex-form__note">ただいま、フォームからの資料請求を一時的に停止しています。ご不便をおかけして申し訳ありません。</p>
-<p class="ex-form__note">資料をご希望の方は、お名前と会社名を添えて <a href="mailto:info@exnet.biz?subject=%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E8%B3%87%E6%96%99%E3%81%AE%E3%81%94%E8%AB%8B%E6%B1%82">info@exnet.biz</a> までメールでお知らせください。担当から資料をお送りします。</p>
-</div>'''
-doc('download.html', '資料請求', download, lp=True, extra_js=FORM_JS)
+{DOWNLOAD_FORM if DOWNLOAD_ENDPOINT else DOWNLOAD_PAUSED}'''
+doc('download.html', '資料請求', download, lp=True, extra_js=FORM_JS + (INTAKE_JS if DOWNLOAD_ENDPOINT else ''))
 
 contact = f'''<div class="lp">
 <div class="lp__body"><h1>無料相談<br><small style="font-size:16px;font-weight:500">オンライン45分</small></h1>
@@ -1274,7 +1301,7 @@ POLICY = [
   ['法令にもとづく場合','人の生命、身体または財産の保護のために必要で、ご本人の同意を得ることが難しい場合','国の機関などが法令の定める事務を行うことに協力する必要がある場合']),
  ('5. 業務の委託', ['弊社は、利用目的の達成に必要な範囲で、個人情報の取り扱いを外部に委託することがあります（例：フォームとメール配信のシステム、決済、支援の実務を担う業務委託先）。委託先は、個人情報を適切に扱えることを確かめたうえで選び、必要な監督を行います。'], None),
  ('6. 安全管理', ['弊社は、個人情報の漏えい、滅失または毀損を防ぐため、アクセスできる人の限定、パスワードの管理、委託先の監督など、必要で適切な措置をとります。お預かりした商談の録画や資料は、支援の目的以外には使いません。'], None),
- ('7. Cookie とアクセス解析', ['当サイトでは、利用状況を把握するため、Cookie を使ったアクセス解析を行う場合があります。取得する情報に、個人を特定するものは含まれません。Cookie は、ブラウザの設定で無効にできます。'], None),
+ ('7. Cookie とアクセス解析', ['当サイトでは、利用状況を把握するため、Cookie を使ったアクセス解析を行う場合があります。取得する情報に、個人を特定するものは含まれません。Cookie は、ブラウザの設定で無効にできます。', '資料請求のフォームでは、機械による不正な送信を防ぐため、Google の reCAPTCHA を使っています。reCAPTCHA の利用には、Google のプライバシーポリシーと利用規約が適用されます。'], None),
  ('8. 開示・訂正・利用停止などのご請求', ['ご本人から、ご自身の個人情報の利用目的の通知、開示、訂正、追加、削除、利用停止、第三者への提供の停止を求められた場合は、ご本人であることを確かめたうえで、法令にもとづき速やかに対応します。ご請求は、下記の窓口までご連絡ください。'], None),
  ('9. このポリシーの変更', ['弊社は、法令の改正や事業の変化にあわせて、このポリシーを変更することがあります。変更後の内容は、このページに掲載した時点から効力を持ちます。'], None),
 ]
