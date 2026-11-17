@@ -14,7 +14,7 @@ tokens = subprocess.run([sys.executable, os.path.join(HERE, 'tokens_css.py'), os
 bundle = open(os.path.join(HERE, 'bundle.css')).read()
 site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
-for _f in ('ikai.webp', 'fv-pc.webp', 'fv-sp.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
+for _f in ('ikai.webp', 'fv-pc.webp', 'fv-sp.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png', 'logo-square.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 shutil.copytree(os.path.join(HERE, 'docs'), os.path.join(OUT, 'docs'), dirs_exist_ok=True)   # サービス資料のPDF
 _css = '/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site
 open(os.path.join(OUT, 'site.css'), 'w').write(_css)
@@ -144,7 +144,7 @@ DESC = {
 ORG = {
     '@type': 'Organization', '@id': BASE + '#org', 'name': SITE_NAME, 'alternateName': ['エクスネット', 'Exnet Co., Ltd.'],
     'url': BASE, 'email': 'info@exnet.biz', 'telephone': '+81-3-6262-1694', 'foundingDate': '2011-06',
-    'logo': BASE + 'apple-touch-icon.png',
+    'logo': BASE + 'logo-square.png',   # 正方形 1024px（検索エンジンのロゴは112px以上・正方形が目安）
     'knowsAbout': ['個別相談・面談の成約率', '面談の来場率（着座率）', '高単価の商品・サービスの販売', '講座・スクール・コンサルティングの販売導線', '商談までの導線設計', 'マーケティングの伴走支援', 'LINE・メールの配信設計', 'Web広告の運用'],
     'description': DESC['index.html'],
     'address': {'@type': 'PostalAddress', 'postalCode': '102-0083', 'addressRegion': '東京都', 'addressLocality': '千代田区',
@@ -160,7 +160,8 @@ ORG = {
 PERSON = {'@type': 'Person', '@id': BASE + 'message.html#ikai', 'name': '猪飼 智弘', 'alternateName': 'Tomohiro Ikai',
           'jobTitle': '代表取締役', 'worksFor': {'@id': BASE + '#org'}, 'image': BASE + 'ikai.webp', 'url': BASE + 'message.html',
           # 代表本人の公式アカウント（AI検索が同じ人物だと結びつけるための印）。会社のアカウントは ORG に足す
-          'sameAs': ['https://note.com/exnet', 'https://x.com/ikaitomohiro']}
+          'sameAs': ['https://note.com/exnet', 'https://x.com/ikaitomohiro', 'https://www.instagram.com/ikai_tomohiro/',
+                     'https://www.facebook.com/tomohiro.ikai0624/', 'https://www.amazon.co.jp/e/B077GYJVY8']}
 
 def strip_tags(t): return re.sub(r'<[^>]+>', '', t).strip()
 
@@ -214,6 +215,7 @@ def seo_head(fname, title, noindex):
 
 # 検索結果に出るタイトル。お客さんが検索する言葉（高単価・個別相談・成約率・成果報酬）を入れる
 TITLES = {
+    'message.html': '代表メッセージ｜代表取締役 猪飼智弘',
     'service.html': '高単価の商品・サービスの成約率を上げる、商談から入る伴走支援',
     'course.html': '講座・スクールの販売導線を、個別相談の成約率から見直すマーケティング支援',
     'price.html': '料金と契約｜月額＋成果報酬型のマーケティング支援',
