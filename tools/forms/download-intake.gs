@@ -53,6 +53,8 @@ function doPost(e) {
   } catch (err) { v = { success: false }; }
   if (!v.success || v.score < MIN_SCORE || v.action !== 'download' || (v.hostname && v.hostname !== 'exnet.biz')) {
     count_('captcha');
+    console.log('captcha NG: success=' + v.success + ' score=' + v.score + ' action=' + v.action +
+      ' hostname=' + v.hostname + ' errors=' + JSON.stringify(v['error-codes'] || []));
     return out_({ ok: false, code: 'captcha' });
   }
 
