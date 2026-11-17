@@ -160,8 +160,7 @@ ORG = {
 PERSON = {'@type': 'Person', '@id': BASE + 'message.html#ikai', 'name': '猪飼 智弘', 'alternateName': 'Tomohiro Ikai',
           'jobTitle': '代表取締役', 'worksFor': {'@id': BASE + '#org'}, 'image': BASE + 'ikai.webp', 'url': BASE + 'message.html',
           # 代表本人の公式アカウント（AI検索が同じ人物だと結びつけるための印）。会社のアカウントは ORG に足す
-          'sameAs': ['https://note.com/exnet', 'https://x.com/ikaitomohiro', 'https://www.instagram.com/ikai_tomohiro/',
-                     'https://www.facebook.com/tomohiro.ikai0624/', 'https://www.amazon.co.jp/e/B077GYJVY8']}
+          'sameAs': ['https://note.com/exnet', 'https://x.com/ikaitomohiro', 'https://www.instagram.com/ikai_tomohiro/', 'https://www.amazon.co.jp/e/B077GYJVY8']}
 
 def strip_tags(t): return re.sub(r'<[^>]+>', '', t).strip()
 
