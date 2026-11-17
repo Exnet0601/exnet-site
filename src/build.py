@@ -1206,7 +1206,7 @@ INTAKE_JS = ('<script src="https://www.google.com/recaptcha/api.js?render=' + RE
  "\n</script>")
 
 download = f'''<div class="lp">
-<div class="lp__body"><h1>サービス資料の<br class="pc">ご請求</h1>
+<div class="lp__body"><h1>サービス資料のご請求</h1>
 <p>サイトでご紹介しているサービス内容を、図解入りの1冊にまとめました。社内で回覧しやすいPDFでお送りします。DMでご案内している資料と同じものです。</p>
 {'<p>ご入力いただいたメールアドレスに、すぐにお送りします。</p>' if DOWNLOAD_ENDPOINT else ''}
 <h2>資料に入っていること</h2>
