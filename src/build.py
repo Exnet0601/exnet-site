@@ -1188,6 +1188,7 @@ DOWNLOAD_FORM = '''<form class="ex-form" data-endpoint="__ENDPOINT__" data-steps
 <label class="agree" for="d-agree"><input id="d-agree" type="checkbox" required> <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意する <em style="color:var(--required);font-style:normal">*</em></span></label>
 <div class="ex-hp" aria-hidden="true"><label for="d-hp">確認用（入力しないでください）<input id="d-hp" name="ex_confirm" tabindex="-1" autocomplete="off" data-hp></label></div>
 <button type="submit" class="ex-submit">資料を受け取る</button>
+<p class="ex-form__note ex-recaptcha">このフォームは reCAPTCHA で保護されており、Google の<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">プライバシーポリシー</a>と<a href="https://policies.google.com/terms" target="_blank" rel="noopener">利用規約</a>が適用されます。</p>
 <p class="ex-form__note" data-send-err hidden>送信できませんでした。時間をおいてもう一度お試しいただくか、お名前と会社名を添えて info@exnet.biz までメールでお知らせください。</p></div>
 </form>'''
 DOWNLOAD_FORM = DOWNLOAD_FORM.replace('__ENDPOINT__', DOWNLOAD_ENDPOINT)
