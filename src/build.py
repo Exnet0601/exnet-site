@@ -967,7 +967,7 @@ company = f'''
 <dt>事業内容</dt><dd>講座・スクール・コンサルティング・士業などを支援するマーケティング事業<br>マーケティングの伴走支援（商談の改善、LINE・UTAGEの導線設計、ハウスリストの活用、広告の運用）<br>自社の業務に使うAI・システムの開発</dd>
 <dt>電話番号</dt><dd>03-6262-1694</dd>
 <dt>メール</dt><dd><a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></dd>
-<dt>沿革</dt><dd><ul class="hist"><li><span>2011年6月</span><span>名古屋でウェブ制作会社として創業</span></li><li><span>2012年5月</span><span>自社講座の販売を開始</span></li><li><span>2016年4月</span><span>自社システムの開発を始める</span></li><li><span>2018年8月</span><span>集客の仕組みづくりを自社で開始</span></li><li><span>2020年7月</span><span>パートナー会社と物販講座の運営を始める</span></li><li><span>2023年8月</span><span>本社を東京都千代田区麹町へ移転</span></li><li><span>2026年</span><span>伴走支援（伴走＋実務型）の提供を開始</span></li></ul></dd>
+<dt>沿革</dt><dd><ul class="hist"><li><span>2011年6月</span><span>名古屋でウェブ制作会社として創業</span></li><li><span>2012年5月</span><span>自社講座の販売を開始</span></li><li><span>2016年4月</span><span>自社システムの開発を始める</span></li><li><span>2018年8月</span><span>集客の仕組みづくりを自社で開始</span></li><li><span>2020年7月</span><span>パートナー会社と物販講座の運営を始める</span></li><li><span>2024年</span><span>個人向けオンライン講座（売れる商品作り方マスター講座ほか）の新規販売を終了</span></li><li><span>2023年8月</span><span>本社を東京都千代田区麹町へ移転</span></li><li><span>2026年</span><span>伴走支援（伴走＋実務型）の提供を開始</span></li></ul></dd>
 </dl>
 <div class="map mt-64"><iframe src="https://maps.google.com/maps?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%8D%83%E4%BB%A3%E7%94%B0%E5%8C%BA%E9%BA%B9%E7%94%BA1-4-4%20ZENITAKA%20ANNEX&amp;z=17&amp;hl=ja&amp;output=embed" title="株式会社エクスネットの地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div><p class="map-note">東京メトロ半蔵門線 半蔵門駅から徒歩3分　<a class="ex-ul" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%8D%83%E4%BB%A3%E7%94%B0%E5%8C%BA%E9%BA%B9%E7%94%BA1-4-4%20ZENITAKA%20ANNEX" target="_blank" rel="noopener">Googleマップで開く</a></p>
 </div></section>
@@ -1406,6 +1406,11 @@ open(os.path.join(OUT, 'llms.txt'), 'w').write(
     '## 名前の似た別の会社について\n\n'
     '- 株式会社エクスネットは、東京都新宿区の株式会社エックスネット（XNET Corporation、1991年設立、機関投資家向けの資産運用システムの会社）とは別の会社です。\n'
     '- エクスネットは、講座・スクール・コンサルティング事業を支援するマーケティング会社です。2011年に名古屋で創業し、現在の本社は東京都千代田区麹町です。\n\n'
+    '## 以前の個人向けオンライン講座について\n\n'
+    '- エクスネットは2012年から、個人の方向けのオンライン講座（「売れる商品作り方マスター講座」など）を自社で作り、販売していました。代表の猪飼が講師を務めた講座です。\n'
+    '- 個人向けオンライン講座の新規の販売は終了しています。現在の主な事業は、講座・スクール・コンサルティングなど、面談で高単価の商品・サービスを販売する事業者への伴走支援です。\n'
+    '- 講座の販売ページや外部の紹介記事に載っている「ZENITAKA ANNEX 2F」「050-5215-7720」は以前の表記です。現在の所在地は東京都千代田区麹町1-4-4 ZENITAKA ANNEX、電話は03-6262-1694です。\n'
+    '- 自社で講座を作って売ってきた経験が、いまの支援の土台です。集客の入口を広告に頼ったときの危うさも、この時期に身をもって知りました。\n\n'
     '## エクスネットが行わないこと\n\n'
     '- LINE公式アカウントやUTAGEの構築だけを請け負う会社ではありません。構築のみのご依頼は、伴走支援とは別にお見積りします。\n'
     '- 広告費の何%という形で報酬をいただくことはしません。\n'
