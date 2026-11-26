@@ -16,6 +16,7 @@ site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
 for _f in ('ikai.webp', 'fv-pc.webp', 'fv-sp.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png', 'logo-square.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 shutil.copytree(os.path.join(HERE, 'docs'), os.path.join(OUT, 'docs'), dirs_exist_ok=True)   # サービス資料のPDF
+if os.path.isdir(os.path.join(HERE, 'col-img')): shutil.copytree(os.path.join(HERE, 'col-img'), os.path.join(OUT, 'col-img'), dirs_exist_ok=True)   # コラムの写真（一次情報だけ）
 _css = '/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site
 open(os.path.join(OUT, 'site.css'), 'w').write(_css)
 # CSSが変わるたびにURLを変え、ブラウザに古いCSSが残って新しいHTMLと食い違うのを防ぐ
@@ -1339,6 +1340,39 @@ AUTHOR_BOX = (f'<div class="col-author"><img src="ikai.webp" alt="猪飼 智弘"
               '<p>2011年に名古屋で創業。自社でも講座の販売や広告の運用を続けながら、面談で販売する高単価の商品・サービスの売上を、商談と導線から伸ばす伴走支援をしています。</p>'
               f'{more("代表メッセージ", "message.html")}</div></div>')
 
+# ---------- コラムの写真・図解（素材は一次情報だけ。from に何をもとにしたかを書く） ----------
+def col_fig(b):
+    """secs の段落に dict を置くと図になる。type: photo / flow / compare / funnel / change"""
+    from html import escape as E
+    t, cap, foot, src = b['type'], b.get('cap', ''), b.get('foot', ''), b.get('from', '')
+    cap_h = f'<figcaption class="fig__cap">{cap}</figcaption>' if cap else ''
+    foot_h = (f'<p class="fig__foot">{foot}</p>' if foot else '') + (f'<p class="fig__src">もとにしたもの：{src}</p>' if src else '')
+    if t == 'photo':
+        return (f'<figure class="col-fig col-photo"><img src="{b["src"]}" alt="{E(b["alt"])}" width="{b["w"]}" height="{b["h"]}" loading="lazy">'
+                f'{f"<figcaption>{cap}</figcaption>" if cap else ""}{foot_h}</figure>')
+    if t == 'flow':
+        items = ''.join(f'<li{" class=\"is-key\"" if len(s) > 2 and s[2] else ""}><span class="col-flow__n">{i+1:02d}</span><div><b>{s[0]}</b>{f"<small>{s[1]}</small>" if len(s) > 1 and s[1] else ""}</div></li>' for i, s in enumerate(b['steps']))
+        return f'<figure class="fig col-fig col-flow" aria-label="{E(cap)}">{cap_h}<ol>{items}</ol>{foot_h}</figure>'
+    if t == 'compare':
+        ha, hb = b['heads']
+        rows = ''.join(f'<tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>' for r in b['rows'])
+        return (f'<figure class="fig col-fig col-compare" aria-label="{E(cap)}">{cap_h}<div class="col-compare__grid">'
+                f'<div class="col-compare__h"></div><div class="col-compare__h">{ha}</div><div class="col-compare__h is-key">{hb}</div>'
+                + ''.join(f'<div class="col-compare__l">{r[0]}</div><div>{r[1]}</div><div class="is-key">{r[2]}</div>' for r in b['rows'])
+                + f'</div>{foot_h}</figure>')
+    if t == 'record':
+        rows = ''.join(f'<div{" class=\"is-key\"" if len(r) > 2 and r[2] else ""}><dt>{r[0]}</dt><dd>{r[1]}</dd></div>' for r in b['rows'])
+        return f'<figure class="fig col-fig col-record" aria-label="{E(cap)}">{cap_h}<dl>{rows}</dl>{foot_h}</figure>'
+    if t == 'funnel':
+        return f'<div class="col-fig">{fig_funnel([tuple(x) for x in b["steps"]], cap)}{foot_h}</div>'
+    if t == 'change':
+        return f'<div class="col-fig">{fig_change(b["before"], b["after"], b["unit"], cap)}{foot_h}</div>'
+    raise ValueError('col_fig: unknown type ' + t)
+
+def col_par(p):
+    if isinstance(p, dict): return col_fig(p)
+    return p if p.startswith('<') and not p.startswith(('<b>', '<strong>')) else f'<p>{p}</p>'
+
 def column(fname, title, date, lead, answer, secs, links, desc, faqs=(), updated=None):
     """記事1本。answer は冒頭で問いに一文で答える箇所（AIの引用を受けやすい）"""
     COLUMNS[fname] = {'title': title, 'date': date, 'lead': lead, 'updated': updated or date}
@@ -1349,7 +1383,7 @@ def column(fname, title, date, lead, answer, secs, links, desc, faqs=(), updated
 <div class="ex-ccard__cat">コラム<span class="col-date">{date.replace('-', '.')}{f"（更新 {updated.replace('-', '.')}）" if updated and updated != date else ''}</span></div>
 <h1>{title}</h1>
 <div class="seebox col-answer"><div class="seebox__h">先に結論</div><p>{answer}</p></div>
-{''.join(f'<h2>{h}</h2>' + ''.join(p if p.startswith('<') and not p.startswith(('<b>', '<strong>')) else f'<p>{p}</p>' for p in ps) for h, ps in secs)}
+{''.join(f'<h2>{h}</h2>' + ''.join(col_par(p) for p in ps) for h, ps in secs)}
 {('<h2>よくある質問</h2>' + faq(faqs)) if faqs else ''}
 <div class="mt-64">{toolbar()}</div>
 {AUTHOR_BOX}
