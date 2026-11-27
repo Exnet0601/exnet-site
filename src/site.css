@@ -870,3 +870,11 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .ex-article .col-fig .fig__src { margin: var(--space-8) 0 0; font-size: 12px; line-height: 20px; color: var(--muted); }
 .ex-article .col-fig .fig__cap { font-size: 13px; }
 .col-flow { --num-badge: 36px; }
+
+/* AIの導入支援（/ai/）：動画と、リンクでない2カラムの箱 */
+.two > .ai-two { display: flex; flex-direction: column; border: 1px solid var(--line); background: var(--surface); padding: var(--space-30); }
+.ai-video { max-width: var(--container-article); margin: 0 auto; border: 1px solid var(--line); background: var(--surface); line-height: 0; }
+.ai-video video { display: block; width: 100%; height: auto; }
+.ai-video__cap { max-width: var(--container-article); margin: var(--space-16) auto 0; }
+@media (max-width: 767px) { .two > .ai-two { padding: var(--space-20) var(--space-16); } }
+.dl-link { color: var(--link); }
