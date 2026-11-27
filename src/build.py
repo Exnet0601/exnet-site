@@ -676,25 +676,18 @@ ai_faq = [
 ]
 ai = f'''
 <section class="fv ai-top">{crumb([('ホーム', 'index.html'), ('AIの導入支援', None)]).replace('class="ex-crumb"', 'class="ex-crumb ai-top__crumb"')}
-<div class="fv4 wrap wrap--fv">
-<div class="fv4__photo">
-<picture class="fv4__pics" aria-hidden="true"><source media="(max-width: 767px)" srcset="ai/fv-ai-sp.webp?v={_ver('ai/fv-ai-sp.webp')}" width="1100" height="578"><img src="ai/fv-ai-pc.webp?v={_ver('ai/fv-ai-pc.webp')}" alt="" width="1400" height="734"></picture>
-<h1 class="fv4__title">{AI_H1}</h1>
-</div>
-<div class="fv4__card">
+<div class="fv4 ai-top__fv wrap wrap--fv">
+<div class="ai-top__media"><div class="ai-video"><video autoplay muted loop playsinline controls preload="auto" poster="ai/karte-demo-poster.webp" width="1280" height="720" data-ai-video><source src="ai/karte-demo.mp4" type="video/mp4">お使いのブラウザでは動画を再生できません。</video></div>
+<p class="ai-top__cap">記録の係の動き（45秒・音は右下で出せます）。弊社で使っている動きを架空の会社で再現した画面で、会社名・内容はすべて架空です。</p></div>
+<div class="fv4__card ai-top__card">
 <p class="fv4__name">株式会社エクスネット　AIの導入支援</p>
-<p class="fv4__lead">AIを入れたいけれど、何から任せるか決まらない。そんな会社と一緒に、AIに任せる「1人目」を決めて、使われるところまでつくります。</p>
-<div class="fv4__cta"><a class="ex-btn ex-btn--secondary ex-btn--section" href="#video">45秒の動画を見る<span class="ex-arrow">→</span></a><a class="ex-btn ex-btn--primary ex-btn--section" href="{AI_MAIL}" data-ai-mail>メールで相談する<span class="ex-arrow">→</span></a></div>
+<h1 class="ai-top__title">{AI_H1}</h1>
+<p class="fv4__lead">AIを入れたいけれど、何から任せるか決まらない。そんな会社と一緒に、AIに任せる「1人目」を決めて、使われるところまでつくります。1人目は、面談の約束と期日を朝に知らせる、記録の係です。</p>
+<div class="fv4__cta"><a class="ex-btn ex-btn--primary ex-btn--section" href="{AI_MAIL}" data-ai-mail>メールで相談する<span class="ex-arrow">→</span></a></div>
 <div class="ai-top__who"><img src="ikai.webp" alt="代表取締役 猪飼 智弘" width="48" height="48"><p><b>代表取締役　猪飼 智弘</b>何を任せるかは、代表が一緒に決めます</p></div>
 </div>
 </div>
 </section>
-
-<section class="sec bg-alt" id="video"><div class="wrap">
-{rule('記録の係の動き（45秒）')}
-<div class="ai-video"><video controls playsinline preload="none" poster="ai/karte-demo-poster.webp" width="1280" height="720" data-ai-video><source src="ai/karte-demo.mp4" type="video/mp4">お使いのブラウザでは動画を再生できません。</video></div>
-<p class="ai-video__cap note">朝礼で、記録の係が「今日が期日の約束」と、午後の面談に向けた顧客カルテを知らせます。見積書の下書きまで作り、送るのは社長です。<br>弊社で使っている記録の係の動きを、架空の会社で再現した画面です。会社名・日付・内容はすべて架空です。音が出ます。</p>
-</div></section>
 
 <section class="sec"><div class="wrap">
 {rule('よくあるご相談')}
