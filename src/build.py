@@ -675,11 +675,16 @@ ai_faq = [
  ('システムの開発やつなぎ込みも、お願いできますか。', '弊社が引き受けるのは、何をAIに任せるかを決め、1人目をつくって使われるところまでです。いまお使いのシステムとのつなぎ込みなど、開発が必要なところは開発会社の方にお願いしています。'),
 ]
 ai = f'''
-<section class="ex-hero"><div class="wrap--header">{crumb([('ホーム', 'index.html'), ('AIの導入支援', None)], True)}<div class="ex-hero__body"><h1>{AI_H1}</h1>
-<p>AIを入れたいけれど、何から任せるか決まらない。<br class="pc">株式会社エクスネットは、そんな会社と一緒に、AIに任せる「1人目」を決めて、使われるところまでつくります。</p>
-<div class="ex-hero__cta"><a class="ex-btn ex-btn--on-navy-fill" href="{AI_MAIL}" data-ai-mail>メールで相談する<span class="ex-arrow">→</span></a></div></div></div></section>
+<section class="ai-fv"><div class="wrap">{crumb([('ホーム', 'index.html'), ('AIの導入支援', None)])}<div class="ai-fv__grid">
+<div class="ai-fv__main"><p class="ai-fv__label">AIの導入支援</p><h1 class="ai-fv__title">{AI_H1}</h1>
+<p class="ai-fv__lead">AIを入れたいけれど、何から任せるか決まらない。株式会社エクスネットは、そんな会社と一緒に、AIに任せる「1人目」を決めて、使われるところまでつくります。</p>
+<div class="ai-fv__cta"><a class="ex-btn ex-btn--primary ex-btn--section" href="{AI_MAIL}" data-ai-mail>メールで相談する<span class="ex-arrow">→</span></a></div>
+<div class="ai-fv__who"><img src="ikai.webp" alt="代表取締役 猪飼 智弘" width="72" height="72"><div><p class="ai-fv__name">代表取締役　猪飼 智弘</p><p>何を任せるかを決めるところは、代表の猪飼が一緒に行います。</p></div></div></div>
+<div class="ai-fv__media"><div class="ai-video"><video controls playsinline preload="none" poster="ai/karte-demo-poster.webp" width="1280" height="720" data-ai-video><source src="ai/karte-demo.mp4" type="video/mp4">お使いのブラウザでは動画を再生できません。</video></div>
+<p class="ai-fv__cap">記録の係の動き（45秒・音が出ます）。朝礼で「今日が期日の約束」と顧客カルテを知らせ、見積書の下書きまで作ります。送るのは社長です。弊社で使っている動きを架空の会社で再現した画面で、会社名・内容はすべて架空です。</p></div>
+</div></div></section>
 
-<section class="sec bg-alt"><div class="wrap">
+<section class="sec"><div class="wrap">
 {rule('よくあるご相談')}
 <ul class="issues" style="border:1px solid var(--line)">
 <li>AIを入れたいが、何を任せるか決まらない</li>
@@ -690,16 +695,10 @@ ai = f'''
 <p>AIで何でもできる、と言われても、最初の1人目が決まらなければ何も始まりません。弊社は、御社の1週間の仕事を一緒に書き出し、AIに任せる1人目を決めて、実際に使われるところまでをつくります。目指すのは、約束と期日を人が覚えていなくても回る状態です。</p>
 </div></div></section>
 
-<section class="sec"><div class="wrap">
+<section class="sec bg-alt"><div class="wrap">
 {rule('進め方')}
 <p class="lead-c">どの会社でも、1人目は面談や打ち合わせの記録の係です。<br class="pc">記録が残ると、2人目に何を任せるかが、その会社の記録から決まります。</p>
 <div class="steps mt-40">{''.join(f'<div class="step">{numh(n, s, t)}<p>{d}</p></div>' for n, t, s, d in ai_steps)}</div>
-</div></section>
-
-<section class="sec bg-alt"><div class="wrap">
-{rule('記録の係の動き（45秒）')}
-<div class="ai-video"><video controls playsinline preload="none" poster="ai/karte-demo-poster.webp" width="1280" height="720" data-ai-video><source src="ai/karte-demo.mp4" type="video/mp4">お使いのブラウザでは動画を再生できません。</video></div>
-<p class="ai-video__cap note">朝礼で、記録の係が「今日が期日の約束」と、午後の面談に向けた顧客カルテを知らせます。見積書の下書きまで作り、送るのは社長です。<br>弊社で使っている記録の係の動きを、架空の会社で再現した画面です。会社名・日付・内容はすべて架空です。音が出ます。</p>
 </div></section>
 
 <section class="sec"><div class="wrap">
