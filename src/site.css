@@ -870,3 +870,65 @@ svg.logo { display: block; width: 104px; height: 22px; }
 .ex-article .col-fig .fig__src { margin: var(--space-8) 0 0; font-size: 12px; line-height: 20px; color: var(--muted); }
 .ex-article .col-fig .fig__cap { font-size: 13px; }
 .col-flow { --num-badge: 36px; }
+
+/* AIの導入支援（/ai/）：動画と、リンクでない2カラムの箱 */
+.two > .ai-two { display: flex; flex-direction: column; border: 1px solid var(--line); background: var(--surface); padding: var(--space-30); }
+.ai-video { max-width: var(--container-article); margin: 0 auto; border: 1px solid var(--line); background: var(--surface); line-height: 0; }
+.ai-video video { display: block; width: 100%; height: auto; }
+.ai-video__cap { max-width: var(--container-article); margin: var(--space-16) auto 0; }
+@media (max-width: 767px) { .two > .ai-two { padding: var(--space-20) var(--space-16); } }
+.dl-link { color: var(--link); }
+/* /ai/ の最初の1画面：名刺から来た人が「会った人」と「何をするか」を一度に確かめられるよう、左に見出しと代表、右に動画 */
+.ai-fv { background: var(--surface-alt); padding-block: var(--space-30) var(--space-80); }
+.ai-fv__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: var(--space-60); align-items: center; margin-top: var(--space-40); }
+.ai-fv__label { margin: 0; font-size: 14px; line-height: 24.5px; font-weight: 500; color: var(--navy); }
+.ai-fv__title { margin: var(--space-8) 0 0; color: var(--navy); font-size: 36px; line-height: 54px; font-weight: 700; }
+.ai-fv__lead { margin: var(--space-24) 0 0; font-size: 16px; line-height: 32px; }
+.ai-fv__cta { margin-top: var(--space-40); }
+.ai-fv__who { margin-top: var(--space-40); display: flex; gap: var(--space-20); align-items: center; padding: var(--space-16) var(--space-20); background: var(--surface); border: 1px solid var(--line); }
+.ai-fv__who img { display: block; width: 72px; height: 72px; flex: none; }
+.ai-fv__who p { margin: 0; font-size: 14px; line-height: 24.5px; }
+.ai-fv__who .ai-fv__name { color: var(--navy); font-size: 16px; line-height: 28px; font-weight: 700; }
+.ai-fv__media .ai-video { max-width: none; }
+.ai-fv__cap { margin: var(--space-16) 0 0; font-size: 12px; line-height: 21px; color: var(--ink); }
+@media (max-width: 767px) {
+  .ai-fv { padding-block: var(--space-30) var(--space-64); }
+  .ai-fv__grid { grid-template-columns: 1fr; gap: var(--space-40); margin-top: 0; }
+  .ai-fv__title { font-size: 28px; line-height: 42px; }
+  .ai-fv__lead { font-size: 14px; line-height: 24.5px; }
+  .ai-fv__cta { margin-top: var(--space-24); }
+  .ai-fv__cta .ex-btn--section { min-width: var(--button-sp-width); height: 41px; font-size: 14px; padding-left: var(--space-24); }
+  .ai-fv__who { margin-top: var(--space-24); padding: var(--space-16); }
+  .ai-fv__who img { width: 64px; height: 64px; }
+}
+/* /ai/ はトップと同じFVの形（写真に見出し、右に白いカード）。写真はAIの画面と代表 */
+.ai-top { background: var(--surface-alt); }
+.ai-top__crumb { max-width: calc(var(--container-wide) + 2 * var(--space-25)); margin: 0 auto; padding: var(--space-24) var(--space-25) 0; }
+.ai-top .fv4__card .ai-fv__who { margin-top: var(--space-24); background: var(--surface-alt); border: 0; }
+.ai-top .ex-btn--secondary { background: var(--surface); }
+@media (max-width: 767px) { .ai-top__crumb { display: none; } .ai-top .fv4 { padding-top: 32px; } .ai-top .fv4__card .ai-fv__who { margin-top: var(--space-16); } }
+.ai-top__who { display: flex; align-items: center; gap: var(--space-16); margin-top: var(--space-20); padding-top: var(--space-16); border-top: 1px solid var(--line); }
+.ai-top__who img { display: block; width: 48px; height: 48px; flex: none; }
+.ai-top__who p { margin: 0; font-size: 14px; line-height: 24.5px; }
+.ai-top__who b { display: block; color: var(--navy); font-weight: 700; }
+/* 写真の代わりに動画を置く版：動画は隠さないので、カードは重ねずに右に並べる */
+.ai-top__fv { align-items: center; gap: var(--space-40); }
+.ai-top__media { flex: 0 1 700px; min-width: 0; }
+.ai-top__media .ai-video { max-width: none; }
+.ai-top__cap { margin: var(--space-8) 0 0; font-size: 12px; line-height: 21px; color: var(--ink); }
+.ai-top .ai-top__card { margin-left: 0; flex: 1 1 0; border: 1px solid var(--line); }
+.ai-top__title { margin: var(--space-8) 0 0; color: var(--navy); font-size: 30px; line-height: 45px; font-weight: 700; }
+@media (max-width: 1099px) and (min-width: 768px) { .ai-top__fv { flex-direction: column; align-items: stretch; } .ai-top__media { flex: none; } }
+@media (max-width: 767px) {
+  .ai-top__fv { gap: 0; }
+  .ai-top__media { flex: none; }
+  .ai-top .ai-top__card { margin: var(--space-16) 0 0; }
+  .ai-top__title { font-size: 24px; line-height: 36px; }
+}
+/* PCもスマホと同じく、動画 → カードの縦並び（11-28 代表案） */
+.ai-top .ai-top__fv { flex-direction: column; align-items: stretch; max-width: calc(var(--container) + 2 * var(--space-25)); gap: var(--space-24); }
+.ai-top .ai-top__media { flex: none; }
+@media (min-width: 768px) {
+  .ai-top .ai-top__card { flex: none; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: var(--space-40); align-items: center; padding: var(--space-36) var(--space-40); }
+  .ai-top__act .ai-top__who { margin-top: var(--space-24); }
+}

@@ -16,6 +16,7 @@ site = open(os.path.join(HERE, 'site.css')).read()
 import shutil
 for _f in ('ikai.webp', 'fv-pc.webp', 'fv-sp.webp', 'ogp.png', 'favicon.svg', 'apple-touch-icon.png', 'logo-square.png'): shutil.copy(os.path.join(HERE, _f), os.path.join(OUT, _f))
 shutil.copytree(os.path.join(HERE, 'docs'), os.path.join(OUT, 'docs'), dirs_exist_ok=True)   # サービス資料のPDF
+shutil.copytree(os.path.join(HERE, 'ai'), os.path.join(OUT, 'ai'), dirs_exist_ok=True)   # /ai/ の動画と静止画（名刺のQRから来る人向け）
 if os.path.isdir(os.path.join(HERE, 'col-img')): shutil.copytree(os.path.join(HERE, 'col-img'), os.path.join(OUT, 'col-img'), dirs_exist_ok=True)   # コラムの写真（一次情報だけ）
 _css = '/* tokens（tokens.json から生成） */\n' + tokens + '\n' + bundle + '\n' + site
 open(os.path.join(OUT, 'site.css'), 'w').write(_css)
@@ -119,7 +120,7 @@ addEventListener('pageshow',function(e){if(e.persisted){moved=false;go();}});})(
 </script>"""
 
 # ---------- 検索・AI向けの情報（説明文、OGP、構造化データ、サイトマップ） ----------
-import json, re, datetime, glob
+import json, re, datetime, glob, urllib.parse
 BASE = 'https://exnet.biz/'
 SITE_NAME = '株式会社エクスネット'
 SEO = {'crumbs': None, 'faqs': []}
@@ -167,7 +168,7 @@ PERSON = {'@type': 'Person', '@id': BASE + 'message.html#ikai', 'name': '猪飼 
 def strip_tags(t): return re.sub(r'<[^>]+>', '', t).strip()
 
 def seo_head(fname, title, noindex):
-    url = BASE + ('' if fname == 'index.html' else fname)
+    url = BASE + ('' if fname == 'index.html' else fname.removesuffix('index.html'))   # ai/index.html → https://exnet.biz/ai/
     desc = DESC.get(fname, '')
     out = []
     if desc: out.append(f'<meta name="description" content="{desc}">')
@@ -237,19 +238,24 @@ def analytics(fname):
             f"\n<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA4_ID}');{ev}</script>"
             f'\n<script>(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","{CLARITY_ID}");</script>')
 
-def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None):
+def doc(fname, title, body, cur=None, lp=False, extra_js='', fcta_skip=None, simple=False):
     full_title = 'エクスネット｜講座・スクール・コンサルティング事業を支援するマーケティング会社' if fname == 'index.html' else f'{TITLES.get(fname, title)}｜{SITE_NAME}'
     head = (f'<title>{full_title}</title>\n' + seo_head(fname, full_title, fname.startswith(('thanks-', 'test-')) or fname in ('404.html', 'material.html')) +
             '\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<link rel="stylesheet" href="site.css?v=' + CSS_VER + '">')
     if not os.environ.get('SITE_ARTIFACT'): head += analytics(fname)   # プレビューでは計測しない
     if lp:
         inner = f'<div class="ex-root" id="top"><header class="lp-head"><span class="ex-header__logo"><a href="index.html" aria-label="エクスネット トップへ">{logo("lg-lp")}</a></span></header>\n<main>{body}</main>\n<footer class="lp-foot">© Exnet Co., Ltd.</footer></div>{TOP_JS}{extra_js}'
+    elif simple:   # メニューに出さないページ（/ai/）：ヘッダーはロゴだけ、下は通常のフッター（会社の住所とサイトマップ）
+        inner = f'<div class="ex-root" id="top"><header class="lp-head"><span class="ex-header__logo"><a href="index.html" aria-label="エクスネット トップへ">{logo("lg-lp")}</a></span></header>\n<main>{body}</main>\n{FOOTER}</div>{TOP_JS}{extra_js}'
     else:
         inner = f'<div class="ex-root" id="top">{header(cur)}\n<main>{body}</main>\n{foot_cta(fcta_skip)}\n{FOOTER}</div>{TOP_JS}{MENU_JS}{extra_js}'
     if fname == 'index.html' and os.environ.get('SITE_ARTIFACT'):   # Artifact 公開用：doctype などは公開時に付く
         html = head + '\n' + inner
     else:
         html = f'<!doctype html>\n<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n{head}\n</head><body>\n{inner}\n</body></html>'
+    if '/' in fname:   # フォルダの中のページ（ai/index.html）：サイト直下からの相対パスで書いた href・src を、1つ上からの形に直す
+        html = re.sub(r'((?:href|src|srcset|poster)=")(?!https?:|/|#|mailto:|tel:|data:|\.\./)', r'\1../', html)
+        os.makedirs(os.path.dirname(os.path.join(OUT, fname)), exist_ok=True)
     open(os.path.join(OUT, fname), 'w').write(html)
 
 def crumb(items, navy=False):
@@ -425,7 +431,10 @@ top = f'''
 <div class="rows rows--grid">
 <a class="ex-row" href="company.html"><span>会社概要</span>{circle()}</a><a class="ex-row" href="message.html"><span>代表メッセージ</span>{circle()}</a>
 <a class="ex-row" href="mission.html"><span>PMVV</span>{circle()}</a><a class="ex-row" href="company.html#news"><span>お知らせ</span>{circle()}</a>
-</div></div></section>
+</div>
+<div class="ex-dlbar mt-64"><div><h3>面談の記録から始める、AIの導入も行っています</h3><p>中小企業がAIに任せる1人目を、記録の係から決めてつくります。</p></div>
+<a class="ex-btn ex-btn--secondary" href="ai/">AIの導入支援を見る<span class="ex-arrow">→</span></a></div>
+</div></section>
 '''
 doc('index.html', '', top)
 
@@ -633,6 +642,113 @@ course = f'''
 {TOC_JS}
 '''
 doc('course.html', '講座・スクール・コンサルティングの方へ', course, 'service')
+
+# ====================================================================
+# AIの導入支援（exnet.biz/ai/）。名刺のQRから来る人向けで、メニューには出さない（11-28 代表承認）
+# 主役は「AIを入れたいけれど、何から任せるか決まらない社長」。開発会社の方には最下段で紹介をお願いする
+# （開発会社がこのページをそのまま自分のお客様に転送できるように。会社情報・トップから来る社長にも届くように）。
+# 並びは 現状 → なりたい姿 → 1人目（記録の係）と動画 → なぜ集客の会社か → 相談 → 開発会社の方へ。
+# 料金は載せない（話の中で伝える）。「AI社員」を見出し・商品名にしない。会社の名乗り（AIO用）は変えない
+# ====================================================================
+AI_H1_OPTIONS = [   # 見出しの候補。代表が選び直すときは AI_H1 の番号を変える
+    'AIに任せる1人目を、<br>一緒に決めてつくります',
+    'AIを入れたいけれど、<br>何から任せるか<br class="sp">決まらない会社へ',
+    '1人目のAIは、<br>面談の記録の係から',
+]
+AI_H1 = AI_H1_OPTIONS[0]   # 仮置き：①
+def ai_mail(subject, extra):
+    return ('mailto:info@exnet.biz?subject=' + urllib.parse.quote(subject) + '&body=' +
+            urllib.parse.quote('会社名：\nお名前：\n' + extra + '\n\nご相談の内容：\n'))
+AI_MAIL = ai_mail('【AIの導入】ご相談', 'ご紹介者・お会いした場（あれば）：')
+AI_MAIL_DEV = ai_mail('【開発会社】紹介し合うご相談', 'お会いした場（交流会の名前など）：')
+DESC['ai/index.html'] = DESC['ai/'] = ('AIを入れたいけれど、何から任せるか決まらない中小企業と一緒に、AIに任せる1人目を決めてつくる、'
+                                       '株式会社エクスネットのAIの導入支援です。1人目は、面談や打ち合わせの記録の係から始めます。開発会社の方からのご紹介も受けています。')
+TITLES['ai/index.html'] = 'AIの導入支援｜中小企業がAIに任せる1人目を、決めてつくる'
+ai_steps = [
+ ('01', '業務の棚卸し（30分）', '何をAIに任せるか', '御社の1週間の仕事を一緒に書き出し、AIに任せられるものを3つまで挙げます。そのうえで、最初の1人目を1つに決めます。'),
+ ('02', '1人目をつくる', '面談・打ち合わせの記録の係', '1人目は、面談や打ち合わせの記録を読み、約束と期日を覚えて、朝に知らせる係から始めます。見積書などの下書きまでを作り、送るかどうかは人が決めます。'),
+ ('03', '30日、一緒に直す', '使われ続けるところまで', '動き始めてから30日は、実際の使われ方を見ながら一緒に直します。2人目に何を任せるかは、1人目が残した記録を見て決めます。'),
+]
+ai_faq = [
+ ('AIに詳しい社員がいなくても、頼めますか。', 'はい。何を任せるかを決めるところから一緒に行い、動き始めてから30日は、使われ方を見ながら直します。'),
+ ('費用はいくらですか。', '御社の業務と、任せる係の数によって変わるため、お話を伺ったうえでお伝えします。'),
+ ('システムの開発やつなぎ込みも、お願いできますか。', '弊社が引き受けるのは、何をAIに任せるかを決め、1人目をつくって使われるところまでです。いまお使いのシステムとのつなぎ込みなど、開発が必要なところは開発会社の方にお願いしています。'),
+]
+ai = f'''
+<section class="fv ai-top">{crumb([('ホーム', 'index.html'), ('AIの導入支援', None)]).replace('class="ex-crumb"', 'class="ex-crumb ai-top__crumb"')}
+<div class="fv4 ai-top__fv wrap wrap--fv">
+<div class="ai-top__media"><div class="ai-video"><video autoplay muted loop playsinline controls preload="auto" poster="ai/karte-demo-poster.webp" width="1280" height="720" data-ai-video><source src="ai/karte-demo.mp4" type="video/mp4">お使いのブラウザでは動画を再生できません。</video></div>
+<p class="ai-top__cap">記録の係の動き（68秒・音は右下で出せます）。弊社で使っている動きを架空の会社で再現した画面で、会社名・内容はすべて架空です。</p></div>
+<div class="fv4__card ai-top__card"><div class="ai-top__text">
+<p class="fv4__name">株式会社エクスネット　AIの導入支援</p>
+<h1 class="ai-top__title">{AI_H1}</h1>
+<p class="fv4__lead">AIを入れたいけれど、何から任せるか決まらない。そんな会社と一緒に、AIに任せる「1人目」を決めて、使われるところまでつくります。1人目は、面談の約束と期日を朝に知らせる、記録の係です。</p>
+</div><div class="ai-top__act"><div class="fv4__cta"><a class="ex-btn ex-btn--primary ex-btn--section" href="{AI_MAIL}" data-ai-mail>メールで相談する<span class="ex-arrow">→</span></a></div>
+<div class="ai-top__who"><img src="ikai.webp" alt="代表取締役 猪飼 智弘" width="48" height="48"><p><b>代表取締役　猪飼 智弘</b>何を任せるかは、代表が一緒に決めます</p></div>
+</div></div>
+</div>
+</section>
+
+<section class="sec"><div class="wrap">
+{rule('よくあるご相談')}
+<ul class="issues" style="border:1px solid var(--line)">
+<li>AIを入れたいが、何を任せるか決まらない</li>
+<li>前回の打ち合わせで何を約束したか、思い出すのに時間がかかる</li>
+<li>ツールは契約したが、使っているのは社長だけ</li>
+</ul>
+<div class="wrap--article prose mt-40" style="margin-inline:auto;padding:0">
+<p>AIで何でもできる、と言われても、最初の1人目が決まらなければ何も始まりません。弊社は、御社の1週間の仕事を一緒に書き出し、AIに任せる1人目を決めて、実際に使われるところまでをつくります。目指すのは、約束と期日を人が覚えていなくても回る状態です。</p>
+</div></div></section>
+
+<section class="sec bg-alt"><div class="wrap">
+{rule('進め方')}
+<p class="lead-c">どの会社でも、1人目は面談や打ち合わせの記録の係です。<br class="pc">記録が残ると、2人目に何を任せるかが、その会社の記録から決まります。</p>
+<div class="steps mt-40">{''.join(f'<div class="step">{numh(n, s, t)}<p>{d}</p></div>' for n, t, s, d in ai_steps)}</div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+{rule('AIの導入を行う理由')}
+<div class="wrap--article prose" style="margin:0 auto;padding:0">
+<p><b>15年、面談で売る現場を見てきました。だから1人目は、面談の記録の係から始めます。</b></p>
+<p>エクスネットは2011年に創業し、いまは講座・スクール・コンサルティング事業を支援するマーケティング会社です。面談で決まる件数を見るとき、最初に確かめるのは、前回の面談で何を話し、何を約束したかです。記録が残っていれば、次の一手が決まります。</p>
+<p>弊社自身も、月次の請求、広告の事前審査、Xとnoteへの発信、営業の文面の下書きなどを、AIとシステムで回しています。お客様にお渡しするのは、自社で使って確かめたやり方です。</p>
+</div>
+<div class="mt-40" style="max-width:var(--container-article);margin-inline:auto">{more('代表メッセージを読む', 'message.html')}</div>
+</div></section>
+
+<section class="sec bg-alt" id="contact"><div class="wrap">
+{rule('お問い合わせ')}
+<div class="ex-dlbar ex-dlbar--on-alt"><div><h3>メールでのお問い合わせ</h3><p>ご相談の内容を一言添えていただければ、代表の猪飼がお返事します。ご紹介でお越しの方は、ご紹介者のお名前もお書きください。</p></div>
+<a class="ex-btn ex-btn--primary" href="{AI_MAIL}" data-ai-mail>メールで相談する<span class="ex-arrow">→</span></a></div>
+<p class="note mt-24" style="text-align:center">info@exnet.biz ／ 03-6262-1694</p>
+</div></section>
+
+<section class="sec" id="dev"><div class="wrap">
+{rule('開発会社の方へ')}
+<p class="lead-c">お客様から「AIで何かできない?」と聞かれたら、<br class="pc">このページをそのままお客様に送ってください。</p>
+<div class="two mt-40">
+<div class="ai-two"><h3>御社にAIの相談が来たら</h3><p>何を任せるかが決まっていない段階のご相談を、弊社にご紹介ください。1人目を決めてつくり、開発が必要なところは御社にお戻しします。</p></div>
+<div class="ai-two"><h3>弊社のお客様に開発が要るとき</h3><p>弊社のお客様で、システムの開発やつなぎ込みが必要になったときに、ご相談できる開発会社を探しています。</p></div>
+</div>
+<div class="mt-40" style="text-align:center">{more('紹介し合うご相談（メール）', AI_MAIL_DEV).replace('class="ex-more"', 'class="ex-more" data-ai-mail')}</div>
+</div></section>
+
+<section class="sec bg-alt" id="faq"><div class="wrap wrap--article">
+{rule('よくある質問')}
+{faq(ai_faq)}
+</div></section>
+
+<section class="sec"><div class="wrap">
+{rule('エクスネットについて')}
+<p class="lead-c">マーケティングの伴走支援と、AIの導入支援を行っています。</p>
+<div class="rows rows--grid">
+<a class="ex-row" href="index.html"><span>トップページ<small>面談で決まる件数から見直す、マーケティングの伴走支援</small></span>{circle()}</a><a class="ex-row" href="company.html"><span>会社情報<small>会社概要・沿革・代表</small></span>{circle()}</a>
+<a class="ex-row" href="message.html"><span>代表メッセージ<small>代表取締役 猪飼 智弘</small></span>{circle()}</a><a class="ex-row" href="column.html"><span>コラム<small>面談と記録の話</small></span>{circle()}</a>
+</div></div></section>
+'''
+AI_JS = ("<script>(function(){document.querySelectorAll('[data-ai-mail]').forEach(function(a){a.addEventListener('click',function(){if(window.gtag)gtag('event','ai_contact_mail');});});"
+         "var v=document.querySelector('[data-ai-video]');if(v)v.addEventListener('play',function(){if(window.gtag)gtag('event','ai_video_play');},{once:true});})();</script>")
+doc('ai/index.html', 'AIの導入支援', ai, simple=True, extra_js=AI_JS)
 
 # ── 商談歩留まり試算ツール（11-11 公開。トップ・サービス・コラムから案内する） ──
 # 計算はすべてブラウザの中だけ。数字は送信も保存もしない（GA4 にはイベント名だけ送る）
@@ -967,7 +1083,7 @@ company = f'''
 <dt>設立</dt><dd>2011年6月1日</dd>
 <dt>所在地</dt><dd>〒102-0083 東京都千代田区麹町1-4-4 ZENITAKA ANNEX</dd><dt>最寄り駅</dt><dd>東京メトロ半蔵門線 半蔵門駅から徒歩3分</dd>
 <dt>代表者</dt><dd>代表取締役　猪飼 智弘</dd>
-<dt>事業内容</dt><dd>講座・スクール・コンサルティング・士業などを支援するマーケティング事業<br>マーケティングの伴走支援（商談の改善、LINE・UTAGEの導線設計、ハウスリストの活用、広告の運用）<br>自社の業務に使うAI・システムの開発</dd>
+<dt>事業内容</dt><dd>マーケティングの伴走支援（講座・スクール・コンサルティング・士業など。商談の改善、LINE・UTAGEの導線設計、ハウスリストの活用、広告の運用）<br><a class="ex-ul dl-link" href="ai/">AIの導入支援</a>（中小企業がAIに任せる1人目を、決めてつくる。自社の業務に使うAI・システムの開発も含む）</dd>
 <dt>電話番号</dt><dd>03-6262-1694</dd>
 <dt>メール</dt><dd><a class="ex-ul" href="mailto:info@exnet.biz">info@exnet.biz</a></dd>
 <dt>沿革</dt><dd><ul class="hist"><li><span>2011年6月</span><span>名古屋でウェブ制作会社として創業</span></li><li><span>2012年5月</span><span>自社講座の販売を開始</span></li><li><span>2016年4月</span><span>自社システムの開発を始める</span></li><li><span>2018年8月</span><span>集客の仕組みづくりを自社で開始</span></li><li><span>2020年7月</span><span>パートナー会社と物販講座の運営を始める</span></li><li><span>2024年</span><span>個人向けオンライン講座（売れる商品作り方マスター講座ほか）の新規販売を終了</span></li><li><span>2023年8月</span><span>本社を東京都千代田区麹町へ移転</span></li><li><span>2026年</span><span>伴走支援（伴走＋実務型）の提供を開始</span></li></ul></dd>
@@ -1435,7 +1551,7 @@ LLMS_NAMES = {'index.html': 'トップ', 'service.html': 'サービス', 'course
               'sheet.html': '商談歩留まり試算ツール', 'column.html': 'コラム', 'column-before-ads.html': 'コラム：広告費を増やす前に、確かめたい3つの数字',
               'column-ad-fee.html': 'コラム：広告代理店の手数料と成果報酬の違い', 'column-lost-deals.html': 'コラム：決まらなかったお客様へのご連絡', 'column-platform-risk.html': 'コラム：広告やLINEが止まったときの備え', 'column-outsourcing.html': 'コラム：マーケティングの丸投げがうまくいかない理由',
               'column-no-show.html': 'コラム：予約した面談に来てもらえないとき', 'column-line-consult.html': 'コラム：LINEから個別相談の申し込みが来ないとき', 'column-cost-per-meeting.html': 'コラム：広告を面談1件あたりの広告費で見る',
-              'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー'}
+              'download.html': '資料請求', 'contact.html': '無料相談', 'privacy.html': 'プライバシーポリシー', 'ai/': 'AIの導入支援'}
 open(os.path.join(OUT, 'llms.txt'), 'w').write(
     f'# {SITE_NAME}\n\n> {DESC["index.html"]}\n\n'
     '- 主なお客様：講座・スクール、コンサルティング、士業など、個別相談・面談で販売する高単価の商品・サービスの事業者\n- 所在地：東京都千代田区麹町1-4-4 ZENITAKA ANNEX\n- 代表取締役：猪飼 智弘\n- 創業：2011年6月（名古屋）\n- 法人番号：3180001101495\n- お問い合わせ：info@exnet.biz\n\n'
