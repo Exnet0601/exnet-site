@@ -901,3 +901,13 @@ svg.logo { display: block; width: 104px; height: 22px; }
   .ai-fv__who { margin-top: var(--space-24); padding: var(--space-16); }
   .ai-fv__who img { width: 64px; height: 64px; }
 }
+/* /ai/ はトップと同じFVの形（写真に見出し、右に白いカード）。写真はAIの画面と代表 */
+.ai-top { background: var(--surface-alt); }
+.ai-top__crumb { max-width: calc(var(--container-wide) + 2 * var(--space-25)); margin: 0 auto; padding: var(--space-24) var(--space-25) 0; }
+.ai-top .fv4__card .ai-fv__who { margin-top: var(--space-24); background: var(--surface-alt); border: 0; }
+.ai-top .ex-btn--secondary { background: var(--surface); }
+@media (max-width: 767px) { .ai-top__crumb { display: none; } .ai-top .fv4 { padding-top: 32px; } .ai-top .fv4__card .ai-fv__who { margin-top: var(--space-16); } }
+.ai-top__who { display: flex; align-items: center; gap: var(--space-16); margin-top: var(--space-20); padding-top: var(--space-16); border-top: 1px solid var(--line); }
+.ai-top__who img { display: block; width: 48px; height: 48px; flex: none; }
+.ai-top__who p { margin: 0; font-size: 14px; line-height: 24.5px; }
+.ai-top__who b { display: block; color: var(--navy); font-weight: 700; }
