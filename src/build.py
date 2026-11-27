@@ -678,7 +678,7 @@ ai = f'''
 <section class="fv ai-top">{crumb([('ホーム', 'index.html'), ('AIの導入支援', None)]).replace('class="ex-crumb"', 'class="ex-crumb ai-top__crumb"')}
 <div class="fv4 ai-top__fv wrap wrap--fv">
 <div class="ai-top__media"><div class="ai-video"><video autoplay muted loop playsinline controls preload="auto" poster="ai/karte-demo-poster.webp" width="1280" height="720" data-ai-video><source src="ai/karte-demo.mp4" type="video/mp4">お使いのブラウザでは動画を再生できません。</video></div>
-<p class="ai-top__cap">記録の係の動き（55秒・音は右下で出せます）。弊社で使っている動きを架空の会社で再現した画面で、会社名・内容はすべて架空です。</p></div>
+<p class="ai-top__cap">記録の係の動き（58秒・音は右下で出せます）。弊社で使っている動きを架空の会社で再現した画面で、会社名・内容はすべて架空です。</p></div>
 <div class="fv4__card ai-top__card"><div class="ai-top__text">
 <p class="fv4__name">株式会社エクスネット　AIの導入支援</p>
 <h1 class="ai-top__title">{AI_H1}</h1>
