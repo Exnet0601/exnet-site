@@ -680,32 +680,30 @@ ai = f'''
 <div class="ex-hero__cta"><a class="ex-btn ex-btn--on-navy-fill" href="{AI_MAIL}" data-ai-mail>メールで相談する<span class="ex-arrow">→</span></a></div></div></div></section>
 
 <section class="sec bg-alt"><div class="wrap">
-{rule('こんなことは、ありませんか')}
+{rule('よくあるご相談')}
 <ul class="issues" style="border:1px solid var(--line)">
 <li>AIを入れたいが、何を任せるか決まらない</li>
 <li>前回の打ち合わせで何を約束したか、思い出すのに時間がかかる</li>
 <li>ツールは契約したが、使っているのは社長だけ</li>
 </ul>
-<div class="tri" aria-hidden="true"></div>
-{dash('約束と期日を、<br class="sp">人が覚えていなくても<br class="sp">回る会社へ')}
-<div class="wrap--article prose" style="margin:0 auto;padding:0">
-<p>AIで何でもできる、と言われても、最初の1人目が決まらなければ何も始まりません。弊社は、御社の1週間の仕事を一緒に書き出し、AIに任せる1人目を決めて、実際に使われるところまでをつくります。</p>
+<div class="wrap--article prose mt-40" style="margin-inline:auto;padding:0">
+<p>AIで何でもできる、と言われても、最初の1人目が決まらなければ何も始まりません。弊社は、御社の1週間の仕事を一緒に書き出し、AIに任せる1人目を決めて、実際に使われるところまでをつくります。目指すのは、約束と期日を人が覚えていなくても回る状態です。</p>
 </div></div></section>
 
 <section class="sec"><div class="wrap">
-{rule('1人目は、<br class="sp">記録の係から始めます')}
+{rule('進め方')}
 <p class="lead-c">どの会社でも、1人目は面談や打ち合わせの記録の係です。<br class="pc">記録が残ると、2人目に何を任せるかが、その会社の記録から決まります。</p>
 <div class="steps mt-40">{''.join(f'<div class="step">{numh(n, s, t)}<p>{d}</p></div>' for n, t, s, d in ai_steps)}</div>
 </div></section>
 
 <section class="sec bg-alt"><div class="wrap">
-{rule('記録の係の、ある朝（45秒）')}
+{rule('記録の係の動き（45秒）')}
 <div class="ai-video"><video controls playsinline preload="none" poster="ai/karte-demo-poster.webp" width="1280" height="720" data-ai-video><source src="ai/karte-demo.mp4" type="video/mp4">お使いのブラウザでは動画を再生できません。</video></div>
 <p class="ai-video__cap note">朝礼で、記録の係が「今日が期日の約束」と、午後の面談に向けた顧客カルテを知らせます。見積書の下書きまで作り、送るのは社長です。<br>弊社で使っている記録の係の動きを、架空の会社で再現した画面です。会社名・日付・内容はすべて架空です。音が出ます。</p>
 </div></section>
 
 <section class="sec"><div class="wrap">
-{dash('なぜ、集客の会社がAIなのか')}
+{rule('AIの導入を行う理由')}
 <div class="wrap--article prose" style="margin:0 auto;padding:0">
 <p><b>15年、面談で売る現場を見てきました。だから1人目は、面談の記録の係から始めます。</b></p>
 <p>エクスネットは2011年に創業し、いまは講座・スクール・コンサルティング事業を支援するマーケティング会社です。面談で決まる件数を見るとき、最初に確かめるのは、前回の面談で何を話し、何を約束したかです。記録が残っていれば、次の一手が決まります。</p>
@@ -715,13 +713,14 @@ ai = f'''
 </div></section>
 
 <section class="sec bg-alt" id="contact"><div class="wrap">
-<div class="ex-dlbar ex-dlbar--on-alt"><div><h3>まずは、<br class="sp">メールで一言ください</h3><p>いま困っていることを一言添えていただければ、代表の猪飼がお返事します。ご紹介でお越しの方は、ご紹介者のお名前もお書きください。</p></div>
+{rule('お問い合わせ')}
+<div class="ex-dlbar ex-dlbar--on-alt"><div><h3>メールでのお問い合わせ</h3><p>ご相談の内容を一言添えていただければ、代表の猪飼がお返事します。ご紹介でお越しの方は、ご紹介者のお名前もお書きください。</p></div>
 <a class="ex-btn ex-btn--primary" href="{AI_MAIL}" data-ai-mail>メールで相談する<span class="ex-arrow">→</span></a></div>
 <p class="note mt-24" style="text-align:center">info@exnet.biz ／ 03-6262-1694</p>
 </div></section>
 
 <section class="sec" id="dev"><div class="wrap">
-{dash('開発会社の方へ')}
+{rule('開発会社の方へ')}
 <p class="lead-c">お客様から「AIで何かできない?」と聞かれたら、<br class="pc">このページをそのままお客様に送ってください。</p>
 <div class="two mt-40">
 <div class="ai-two"><h3>御社にAIの相談が来たら</h3><p>何を任せるかが決まっていない段階のご相談を、弊社にご紹介ください。1人目を決めてつくり、開発が必要なところは御社にお戻しします。</p></div>
